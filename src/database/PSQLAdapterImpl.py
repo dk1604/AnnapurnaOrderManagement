@@ -13,7 +13,7 @@ class PSQLAdapterImpl:
         self.database = database
         self.connection = None
         self.cursor = None
-        print("\nMySQL Adapter Initialized")
+        print("\nPSQL Adapter Initialized")
 
     def connect(self):
         try:
