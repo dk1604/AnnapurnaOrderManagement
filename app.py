@@ -23,7 +23,7 @@ def create_table():
     conn = get_db_connection()
     conn.execute_query('''
         CREATE TABLE IF NOT EXISTS menu_sjop (
-            id INT AUTO_INCREMENT PRIMARY KEY,
+            id SERIAL PRIMARY KEY,
             name VARCHAR(255) NOT NULL,
             description TEXT NOT NULL,
             price DECIMAL(10, 2) NOT NULL
