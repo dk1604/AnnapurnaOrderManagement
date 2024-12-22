@@ -49,22 +49,9 @@ class PSQLAdapterImpl:
             self.cursor.execute(query, params or ())
             self.connection.commit()
             print("Query executed successfully.")
-
-            if query.strip().lower().startswith("select"):
-                results = self.cursor.fetchall()
-
-                # If no rows are returned (empty table), handle it
-                if not results:
-                    print("No results found, table might be empty.")
-                    return None  # Or return an empty list [] if you prefer
-
-                return results
-
         except psycopg2.Error as e:
             print(f"Error executing query: {e}")
             self.connection.rollback()  # Rollback on error
-
-        return []
 
     def fetch_all(self, query, params=None):
         try:
