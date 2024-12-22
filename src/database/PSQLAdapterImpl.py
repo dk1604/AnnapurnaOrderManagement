@@ -53,12 +53,12 @@ class PSQLAdapterImpl:
             if query.strip().lower().startswith("select"):
                 results = self.cursor.fetchall()
 
-            # If no rows are returned (empty table), handle it
-            if not results:
-                print("No results found, table might be empty.")
-                return None  # Or return an empty list [] if you prefer
+                # If no rows are returned (empty table), handle it
+                if not results:
+                    print("No results found, table might be empty.")
+                    return None  # Or return an empty list [] if you prefer
 
-            return results
+                return results
 
         except psycopg2.Error as e:
             print(f"Error executing query: {e}")
