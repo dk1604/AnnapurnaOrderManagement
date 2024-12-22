@@ -1,7 +1,5 @@
-import mysql.connector
 import psycopg2
-from mysql.connector import Error
-from src.database import Adaptor
+import psycopg2.extras
 
 
 class PSQLAdapterImpl:
