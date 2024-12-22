@@ -8,7 +8,7 @@ import os
 # database='annapurna_caterers'
 
 # render
-db_type = os.getenv("db_type")
+db_type = os.getenv("db_type").lower()
 host = "dpg-ctk3halumphs73fe6i5g-a"
 port = "5432"
 database = "menu_sjop"
