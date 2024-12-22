@@ -29,26 +29,27 @@ def create_table():
             price DECIMAL(10, 2) NOT NULL
         )
     ''')
-    print('\n successfully menu table created')
+    print('\nsuccessfully menu table created')
 
 
 # Home route to display the menu
 @app.route('/')
 def index():
+    print("\ninside default route")
     try:
-        print("\ninside default route")
         conn = get_db_connection()
         print("\n4.................", conn)
         menu_items = conn.fetch_all('SELECT * FROM menu')
         print("\n5.........")
-        print("menu_items...........", menu_items)
-        conn.disconnect()
-        if not menu_items:  # If the list is empty
-            print("\n menu items are none")
-            return render_template('index.html', menu_items=None)  # Pass `None` or empty list
-
-        # If the menu is not empty, render the template with data
-        return render_template('index.html', menu_items=menu_items)
+        print("\nmenu_items...........", menu_items)
+        # conn.disconnect()
+        # if not menu_items:  # If the list is empty
+        #     print("\nmenu items are none")
+        #     return render_template('index.html', menu_items=None)  # Pass `None` or empty list
+        #
+        # # If the menu is not empty, render the template with data
+        # return render_template('index.html', menu_items=menu_items)
+        return "hello world"
     except Exception as e:
         print("exception at getting index......", str(e))
 
