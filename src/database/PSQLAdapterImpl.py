@@ -51,7 +51,14 @@ class PSQLAdapterImpl:
             print("Query executed successfully.")
 
             if query.strip().lower().startswith("select"):
-                return self.cursor.fetchall()
+                results = self.cursor.fetchall()
+
+            # If no rows are returned (empty table), handle it
+            if not results:
+                print("No results found, table might be empty.")
+                return None  # Or return an empty list [] if you prefer
+
+            return results
 
         except psycopg2.Error as e:
             print(f"Error executing query: {e}")
@@ -60,20 +67,19 @@ class PSQLAdapterImpl:
         return []
 
     def fetch_all(self, query, params=None):
-        """Fetch all records from a query"""
         try:
-            self.cursor.execute(query, params or ())
-            return self.cursor.fetchall()  # Returns list of dictionaries
+            print("\n inside fetch all............")
+            self.cursor.execute(query, params)
+            return self.cursor.fetchall()
         except psycopg2.Error as e:
             print(f"Error fetching all data: {e}")
             return None
 
     def fetch_one(self, query, params=None):
-        """Fetch one record from a query"""
         try:
-            print(f"\nExecuting query: {query}")
+            print("\n inside fetch one............")
             self.cursor.execute(query, params or ())
-            return self.cursor.fetchone()  # Returns a single row (dictionary) or None
+            return self.cursor.fetchone()
         except psycopg2.Error as e:
-            print(f"Error fetching one data: {e}")
+            print(f"Error fetching by id data: {e}")
             return None
