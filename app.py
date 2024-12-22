@@ -11,6 +11,7 @@ app = Flask(__name__)
 
 # Create a database connection
 def get_db_connection():
+    print("*** inside get_db_connection ***")
     db_adapter = AdaptorFactory.AdapterFactory.create_adapter(db_type, host, port, user, password, database)
     # Connect to the database
     db_adapter.connect()
@@ -33,7 +34,7 @@ def create_table():
 @app.route('/')
 def index():
     try:
-        print("\n1.................")
+        print("\ninside default route")
         conn = get_db_connection()
         print("\n4.................", conn)
         menu_items = conn.fetch_all('SELECT * FROM menu')
