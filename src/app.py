@@ -3,8 +3,8 @@ import os
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 
-from src.Properties import db_type, host, port, user, password, database
-from src.database import AdaptorFactory
+from Properties import db_type, host, port, user, password, database
+from database import AdaptorFactory
 
 app = Flask(__name__)
 
