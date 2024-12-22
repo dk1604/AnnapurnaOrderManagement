@@ -29,6 +29,8 @@ def create_table():
             price DECIMAL(10, 2) NOT NULL
         )
     ''')
+    print('\n successfully menu table created')
+
 
 # Home route to display the menu
 @app.route('/')
