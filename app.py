@@ -41,6 +41,10 @@ def index():
         print("\n5.........")
         print("menu_items...........", menu_items)
         conn.disconnect()
+        if not menu_items:  # If the list is empty
+            return render_template('index.html', menu_items=None)  # Pass `None` or empty list
+
+        # If the menu is not empty, render the template with data
         return render_template('index.html', menu_items=menu_items)
     except Exception as e:
         print("exception at getting index......", str(e))
@@ -67,4 +71,3 @@ def order(item_id):
 if __name__ == '__main__':
     create_table()  # Make sure the menu table is created
     app.run(host='0.0.0.0', port=5000, debug=True)
-    
