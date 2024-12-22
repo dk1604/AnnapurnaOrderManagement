@@ -42,6 +42,7 @@ def index():
         print("menu_items...........", menu_items)
         conn.disconnect()
         if not menu_items:  # If the list is empty
+            print("\n menu items are none")
             return render_template('index.html', menu_items=None)  # Pass `None` or empty list
 
         # If the menu is not empty, render the template with data
