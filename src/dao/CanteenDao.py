@@ -7,7 +7,7 @@ from src.models.CanteenModels import menu_table_response
 def fetch_all(session, model_class):
     try:
         logging.error("model_class is: ", Menu)
-        records = session.query(model_class).all()
+        records = session.query(Menu).all()
         logging.error("Fetched all records.")
 
         response_list = [
