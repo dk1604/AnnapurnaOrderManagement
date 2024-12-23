@@ -9,14 +9,14 @@ from src.database.PSQLAdapterImpl import SessionFactory, Menu
 
 def get_index_route_repo():
     try:
-        print("\n11.............")
+        logging.info("\n11.............")
         get_session = SessionFactory.get_session()
         with get_session as session:
             with session.begin():
-                print("\n12.............")
+                logging.info("\n12.............")
                 menu_items = fetch_all(session, Menu)
-                print("\n5.........")
-                print("\nmenu_items...........menu_items: %s", menu_items)
+                logging.info("\n5.........")
+                logging.info("\nmenu_items...........menu_items: %s", menu_items)
                 return menu_items
     except Exception as ex:
         session.rollback()
