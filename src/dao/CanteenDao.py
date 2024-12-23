@@ -1,8 +1,5 @@
 import logging
 
-from sqlalchemy.engine import row
-from sqlalchemy.exc import SQLAlchemyError
-
 from src.models.CanteenModels import menu_table_response
 
 
