@@ -1,77 +1,59 @@
+import logging
 import os
+import secrets
+import sys
 
-from flask import Flask, render_template, request, redirect, url_for
-import sqlite3
+from alembic import command
+from alembic.config import Config
+from flask import Flask
 
 from Properties import db_type, host, port, user, password, database
 from src.database import AdaptorFactory
+from src.controller.routes import configure_routes
+from src.database.PSQLAdapterImpl import PSQLAdapterImpl
 
-app = Flask(__name__)
+
+def handle_exception(exc_type, exc_value, exc_tb):
+    if exc_type == KeyboardInterrupt:
+        sys.__excepthook__(exc_type, exc_value, exc_tb)
+    else:
+        # Custom behavior for uncaught exceptions (e.g., log it without printing the full stack trace)
+        print(f"Handled exception: {exc_value}")
+
+sys.excepthook = handle_exception
+
+template_folder = os.path.join(os.getcwd(), 'src', 'templates')
+static_folder = os.path.join(os.getcwd(), 'src', 'static')
+
+app = Flask(__name__, template_folder=template_folder, static_folder=static_folder)
+
+app.secret_key = secrets.token_hex(16)
+logging.basicConfig(level=logging.INFO)
+
+configure_routes(app)
+
+def run_db_migrations():
+    logging.info("Running Alembic migrations")
+    try:
+        alembic_cfg = Config("alembic.ini")  # Ensure the path is correct
+        command.upgrade(alembic_cfg, "head")
+        logging.info("Alembic migrations completed successfully")
+    except Exception as e:
+        logging.error(f"Error during migrations: {e}")
 
 
-# Create a database connection
-def get_db_connection():
-    print("*** inside get_db_connection ***")
-    db_adapter = AdaptorFactory.AdapterFactory.create_adapter(db_type, host, port, user, password, database)
-    # Connect to the database
-    db_adapter.connect()
-    return db_adapter
+def initialize_engines():
+    """Initialize the engines at service startup."""
+    PSQLAdapterImpl.get_engine()
 
 
 # Create a table for menu items (if it doesn't exist)
 def create_table():
-    conn = get_db_connection()
-    conn.execute_query('''
-        CREATE TABLE IF NOT EXISTS menu_sjop (
-            id SERIAL PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
-            description TEXT NOT NULL,
-            price DECIMAL(10, 2) NOT NULL
-        )
-    ''')
-    print('\nsuccessfully menu table created')
-
-
-# Home route to display the menu
-@app.route('/')
-def index():
-    print("\ninside default route")
-    try:
-        conn = get_db_connection()
-        print("\n4.................", conn)
-        menu_items = conn.fetch_all('SELECT * FROM menu')
-        print("\n5.........")
-        print("\nmenu_items...........", menu_items)
-        # conn.disconnect()
-        # if not menu_items:  # If the list is empty
-        #     print("\nmenu items are none")
-        #     return render_template('index.html', menu_items=None)  # Pass `None` or empty list
-        #
-        # # If the menu is not empty, render the template with data
-        # return render_template('index.html', menu_items=menu_items)
-        return "hello world"
-    except Exception as e:
-        print("exception at getting index......", str(e))
-
-# Order route
-@app.route('/order/<int:item_id>', methods=['GET', 'POST'])
-def order(item_id):
-    print("\n100..........", item_id)
-    conn = get_db_connection()
-    item = conn.fetch_one('SELECT * FROM menu WHERE id = %s', (item_id,))
-    print("item............", item)
-
-    if request.method == 'POST':
-        print("\n101................")
-        # Here you can add order functionality (e.g., save the order)
-        name = request.form['name']
-        quantity = request.form['quantity']
-        # You can save this to an "orders" table or send a confirmation email
-        return redirect(url_for('index'))
-
-    return render_template('order.html', item=item)
+    run_db_migrations()
+    logging.info('\nsuccessfully menu table created')
 
 
 if __name__ == '__main__':
     create_table()  # Make sure the menu table is created
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    initialize_engines()
+    app.run(host='0.0.0.0', port=5000, debug=False)
