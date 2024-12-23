@@ -129,6 +129,6 @@ def configure_routes(app):
             logging.error("name, quantity, item....%s, %s, %s", name, quantity, item.name)
 
             # You can save this to an "orders" table or send a confirmation email
-            return redirect(url_for('index'))
+            return redirect(url_for('food_preference'))
 
         return render_template('order.html', item=item)
