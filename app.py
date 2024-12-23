@@ -7,8 +7,6 @@ from alembic import command
 from alembic.config import Config
 from flask import Flask
 
-from Properties import db_type, host, port, user, password, database
-from src.database import AdaptorFactory
 from src.controller.routes import configure_routes
 from src.database.PSQLAdapterImpl import PSQLAdapterImpl
 
@@ -33,8 +31,7 @@ app.secret_key = secrets.token_hex(16)
 configure_routes(app)
 
 def run_db_migrations():
-    logging.error("33.................")
-    logging.error("Running Alembic migrations")
+    logging.info("Running Alembic migrations")
     try:
         alembic_cfg = Config("alembic.ini")  # Ensure the path is correct
         command.upgrade(alembic_cfg, "head")
@@ -50,13 +47,11 @@ def initialize_engines():
 
 # Create a table for menu items (if it doesn't exist)
 def create_table():
-    logging.error("22.................")
     run_db_migrations()
     logging.error('successfully menu table created')
 
 
 if __name__ == '__main__':
-    logging.error("11.................")
     create_table()  # Make sure the menu table is created
     initialize_engines()
     app.run(host='0.0.0.0', port=5000, debug=False)
