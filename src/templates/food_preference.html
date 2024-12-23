@@ -17,16 +17,18 @@
             align-items: center;
             height: 100vh;
             text-align: center;
+            flex-direction: column;
         }
 
         h1 {
             color: #2c3e50;
             margin-bottom: 20px;
+            font-size: 24px;
         }
 
         p {
             font-size: 18px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         button {
@@ -39,45 +41,49 @@
             border-radius: 5px;
             margin: 10px;
             transition: background-color 0.3s;
+            width: 80%;  /* Make buttons full width for mobile */
+            max-width: 300px;  /* Limit the maximum width */
         }
 
         button:hover {
             background-color: #2980b9;
         }
 
-        /* Mobile and tablet-friendly styles */
-        @media (max-width: 768px) {
+        /* Mobile-friendly styles */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 22px;  /* Slightly smaller font size on mobile */
+            }
+
+            p {
+                font-size: 16px;  /* Adjust paragraph font size */
+            }
+
+            button {
+                padding: 15px;
+                font-size: 16px;  /* Adjust font size of the buttons */
+                width: 90%;  /* Ensure buttons take almost full width on small devices */
+            }
+        }
+
+        /* Styles for tablets and larger screens */
+        @media (min-width: 601px) {
             body {
                 padding: 20px;
             }
 
             h1 {
-                font-size: 24px;
+                font-size: 28px;  /* Larger font size for tablets and desktops */
             }
 
             p {
-                font-size: 16px;
+                font-size: 20px;  /* Adjust paragraph size for larger screens */
             }
 
             button {
-                width: 100%;
-                padding: 15px;
-                font-size: 16px;
-                margin-top: 10px;
+                width: 200px;  /* Set a fixed width for larger screens */
             }
         }
-
-        /* Styles for large screens */
-        @media (min-width: 769px) {
-            body {
-                padding: 50px;
-            }
-
-            button {
-                width: 200px;
-            }
-        }
-
     </style>
 </head>
 <body>
