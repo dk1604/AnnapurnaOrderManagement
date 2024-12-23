@@ -15,6 +15,8 @@ def get_all_options_by_food_category(food_category):
             return CanteenRepo.get_all_options_repo()
         case "veg" | "non_veg" | "desert":
             return CanteenRepo.get_all_options_by_food_category_repo(food_category)
+        case _:
+            return "Invalid category. Please choose from 'all', 'veg', 'non_veg', or 'desert'."
 
 
 def get_order_item_by_id(item_id):
