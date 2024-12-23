@@ -38,7 +38,7 @@ def run_db_migrations():
     try:
         alembic_cfg = Config("alembic.ini")  # Ensure the path is correct
         command.upgrade(alembic_cfg, "head")
-        logging.info("Alembic migrations completed successfully")
+        app.logger.info("Alembic migrations completed successfully")
     except Exception as e:
         app.logger.info(f"Error during migrations: {e}")
         app.logger.error(f"Error during migrations: {e}")
