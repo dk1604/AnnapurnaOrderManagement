@@ -1,7 +1,18 @@
 import logging
+import sys
 
 from src.dao.CanteenDao import fetch_all, fetch_one
 from src.database.PSQLAdapterImpl import SessionFactory
+
+
+def handle_exception(exc_type, exc_value, exc_tb):
+    if exc_type == KeyboardInterrupt:
+        sys.__excepthook__(exc_type, exc_value, exc_tb)
+    else:
+        # Custom behavior for uncaught exceptions (e.g., log it without printing the full stack trace)
+        print(f"Handled exception: {exc_value}")
+
+sys.excepthook = handle_exception
 
 
 def get_index_route_repo():
