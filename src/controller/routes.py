@@ -16,13 +16,13 @@ app.logger.setLevel(logging.INFO)
 def configure_routes(app):
     @app.route('/')
     def index():
-        app.logger.info("inside default route")
+        app.logger.error("inside default route")
         try:
             menu_items = get_index_route_data()
 
             # conn.disconnect()
             if not menu_items:  # If the list is empty
-                app.logger.info("menu items are none")
+                app.logger.error("menu items are none")
                 # return "hello 1"
                 return render_template('index.html', menu_items=None)  # Pass `None` or empty list
 
@@ -30,7 +30,6 @@ def configure_routes(app):
             return render_template('index.html', menu_items=menu_items)
             # return "hello 2"
         except Exception as e:
-            app.logger.info("exception at getting index......%s", str(e))
             app.logger.error("exception at getting index......%s", str(e))
 
     # Order route
