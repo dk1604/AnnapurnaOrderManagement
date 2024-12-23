@@ -18,13 +18,14 @@ app = Flask(__name__, template_folder=template_folder, static_folder=static_fold
 def configure_routes(app):
     @app.route('/')
     def index():
-        print("\ninside default route")
+        logging.info("\ninside default route")
         try:
             menu_items = get_index_route_data()
+            logging.info("\nall item list:: %s", menu_items)
 
             # conn.disconnect()
             if not menu_items:  # If the list is empty
-                print("\nmenu items are none")
+                logging.info("\nmenu items are none")
                 # return "hello"
                 return render_template('index.html', menu_items=None)  # Pass `None` or empty list
 
