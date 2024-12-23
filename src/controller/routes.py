@@ -23,12 +23,12 @@ def configure_routes(app):
             # conn.disconnect()
             if not menu_items:  # If the list is empty
                 app.logger.info("menu items are none")
-                return "hello 1"
-                # return render_template('index.html', menu_items=None)  # Pass `None` or empty list
+                # return "hello 1"
+                return render_template('index.html', menu_items=None)  # Pass `None` or empty list
 
             # If the menu is not empty, render the template with data
-            # return render_template('index.html', menu_items=menu_items)
-            return "hello 2"
+            return render_template('index.html', menu_items=menu_items)
+            # return "hello 2"
         except Exception as e:
             app.logger.info("exception at getting index......%s", str(e))
             app.logger.error("exception at getting index......%s", str(e))
