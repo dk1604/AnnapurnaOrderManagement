@@ -7,6 +7,14 @@ import os
 # password='root'
 # database='annapurna_caterers'
 
+# local postgres
+# db_type = 'postgres'
+# host = '127.0.0.1'
+# port = '61720'
+# user = 'postgres'
+# password = 'admin'
+# database = 'canteen'
+
 # render
 db_type = os.getenv("db_type").lower()
 host = "dpg-ctk3halumphs73fe6i5g-a"
