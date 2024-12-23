@@ -6,7 +6,7 @@ from sqlalchemy import pool
 from alembic import context
 
 from Properties import user, password, host, database
-from src.database.DbModels import Base, CustomAlembicVersion
+from src.database.PSQLAdapterImpl import Base, CustomAlembicVersion
 
 # Define the custom version table
 custom_version_table = CustomAlembicVersion.__table__
