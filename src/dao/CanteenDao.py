@@ -11,8 +11,8 @@ def fetch_all(session, model_class):
         logging.error("Fetched all records.")
 
         response_list = [
-            menu_table_response(id=row[0].id, name=row[0].name, description=row[0].description, price=row[0].price
-                                ).model_dump() for row in records
+            menu_table_response(id=row.id, name=row.name, description=row.description, price=row.price
+                                ) for row in records
         ]
         logging.error("Fetched response_list_db %s", response_list)
         # response_list = [
