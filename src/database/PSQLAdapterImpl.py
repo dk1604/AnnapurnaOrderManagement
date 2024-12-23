@@ -6,6 +6,8 @@ from sqlalchemy.orm import declarative_base
 
 from Properties import user, password, host, port, database
 
+app.logger.setLevel(logging.INFO)
+
 Base = declarative_base()
 metadata = Base.metadata
 
@@ -25,7 +27,7 @@ class Menu(Base):
 
 
 class PSQLAdapterImpl:
-    logging.info("\nStart execution of psql connector adaptor............")
+    app.logger.info("\nStart execution of psql connector adaptor............")
 
     db_url = f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{database}"
 
@@ -42,7 +44,7 @@ class PSQLAdapterImpl:
 
     @classmethod
     def get_engine(cls):
-        logging.info("cls.db_url......", cls.db_url)
+        app.logger.info("cls.db_url......", cls.db_url)
         if cls._engine is None:
             cls._engine = create_engine(
                 cls.db_url,
