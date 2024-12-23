@@ -28,20 +28,24 @@ app = Flask(__name__, template_folder=template_folder, static_folder=static_fold
 
 def configure_routes(app):
     @app.route('/')
-    def index():
-        logging.error("inside default route")
-        try:
-            menu_items = get_index_route_data()
-
-            if not menu_items:  # If the list is empty
-                logging.error("menu items are none")
-                return render_template('index.html', menu_items=None)  # Pass `None` or empty list
-
-            # If the menu is not empty, render the template with data
-            logging.error("menu_items........", menu_items)
-            return render_template('index.html', menu_items=menu_items)
-        except Exception as e:
-            logging.error("exception at getting index......%s", str(e))
+    def food_preference():
+        logging.error("inside food preference route")
+        return render_template('food_preference.html')
+            
+    # def index():
+    #     logging.error("inside default route")
+    #     try:
+    #         menu_items = get_index_route_data()
+    #
+    #         if not menu_items:  # If the list is empty
+    #             logging.error("menu items are none")
+    #             return render_template('index.html', menu_items=None)  # Pass `None` or empty list
+    #
+    #         # If the menu is not empty, render the template with data
+    #         logging.error("menu_items........", menu_items)
+    #         return render_template('index.html', menu_items=menu_items)
+    #     except Exception as e:
+    #         logging.error("exception at getting index......%s", str(e))
 
     # Order route
     @app.route('/order/<int:item_id>', methods=['GET', 'POST'])
@@ -59,3 +63,18 @@ def configure_routes(app):
             return redirect(url_for('index'))
 
         return render_template('order.html', item=item)
+
+    # Route for Veg
+    @app.route('/veg')
+    def veg():
+        return "Veg options displayed here."
+
+    # Route for Non-Veg
+    @app.route('/nonveg')
+    def nonveg():
+        return "Non-Veg options displayed here."
+
+    # Route for All options
+    @app.route('/all')
+    def all_options():
+        return "All options displayed here."
