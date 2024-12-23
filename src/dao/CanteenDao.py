@@ -1,8 +1,17 @@
 import logging
+import sys
 
 from src.database.PSQLAdapterImpl import Menu
 from src.models.CanteenModels import menu_table_response
 
+def handle_exception(exc_type, exc_value, exc_tb):
+    if exc_type == KeyboardInterrupt:
+        sys.__excepthook__(exc_type, exc_value, exc_tb)
+    else:
+        # Custom behavior for uncaught exceptions (e.g., log it without printing the full stack trace)
+        print(f"Handled exception: {exc_value}")
+
+sys.excepthook = handle_exception
 
 def fetch_all(session):
     try:
