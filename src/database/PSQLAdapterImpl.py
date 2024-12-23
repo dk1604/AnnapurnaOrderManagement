@@ -1,9 +1,32 @@
-import psycopg2
-import psycopg2.extras
+from sqlalchemy.orm import sessionmaker, scoped_session
+
+from sqlalchemy import Column, String, Integer, VARCHAR, create_engine
+from sqlalchemy.orm import declarative_base
+
+from Properties import user, password, host, port, database
+
+Base = declarative_base()
+metadata = Base.metadata
+
+
+class CustomAlembicVersion(Base):
+    __tablename__ = 'canteen_alembic_version'
+    version_num = Column(String(32), primary_key=True)
+
+
+class Menu(Base):
+    __tablename__ = "menu"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(VARCHAR(250))
+    description = Column(VARCHAR(250))
+    price = Column(Integer)
 
 
 class PSQLAdapterImpl:
     print("\nStart execution of psql connector adaptor............")
+
+    db_url = f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{database}"
 
     def __init__(self, host, port, user, password, database):
         self.host = host
@@ -11,62 +34,32 @@ class PSQLAdapterImpl:
         self.user = user
         self.password = password
         self.database = database
-        self.connection = None
-        self.cursor = None
+        self.engine = None
         print("\nPSQL Adapter Initialized")
 
-    def connect(self):
-        try:
-            self.connection = psycopg2.connect(
-                host=self.host,
-                port=self.port,
-                user=self.user,
-                password=self.password,
-                database=self.database
+    _engine = None
+
+    @classmethod
+    def get_engine(cls):
+        print("cls.db_url......", cls.db_url)
+        if cls._engine is None:
+            cls._engine = create_engine(
+                cls.db_url,
+                pool_size=10,
+                max_overflow=20,
+                pool_timeout=120,  # Pool timeout 2 minute
+                pool_recycle=3600,  # Recycle connections every hour
+                pool_pre_ping=True
             )
-            self.connection.set_session(autocommit=True)
-            self.cursor = self.connection.cursor(cursor_factory=psycopg2.extras.DictCursor)  # For dictionary results
+        return cls._engine
 
-            # If connection is successful
-            print(f"Connected to PostgreSQL database: {self.database}")
-        except psycopg2.Error as err:
-            print(f"Error: {err}")
-            self.connection = None
 
-    def disconnect(self):
-        if self.cursor:
-            self.cursor.close()
-        if self.connection:
-            self.connection.close()
-            print(f"Connection to {self.database} closed.")
+class SessionFactory:
+    _session_factory = None
 
-    def execute_query(self, query, params=None):
-        if self.connection is None:
-            print("No database connection. Please connect first.")
-            return []
-        try:
-            print("\ninside execute_query......")
-            self.cursor.execute(query, params or ())
-            self.connection.commit()
-            print("Query executed successfully.")
-        except psycopg2.Error as e:
-            print(f"Error executing query: {e}")
-            self.connection.rollback()  # Rollback on error
-
-    def fetch_all(self, query, params=None):
-        try:
-            print("\n inside fetch all............")
-            self.cursor.execute(query, params)
-            return self.cursor.fetchall()
-        except psycopg2.Error as e:
-            print(f"Error fetching all data: {e}")
-            return None
-
-    def fetch_one(self, query, params=None):
-        try:
-            print("\n inside fetch one............")
-            self.cursor.execute(query, params or ())
-            return self.cursor.fetchone()
-        except psycopg2.Error as e:
-            print(f"Error fetching by id data: {e}")
-            return None
+    @classmethod
+    def get_session(cls):
+        if cls._session_factory is None:
+            engine = PSQLAdapterImpl.get_engine()
+            cls._session_factory = scoped_session(sessionmaker(bind=engine))
+        return cls._session_factory()
