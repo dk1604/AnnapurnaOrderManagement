@@ -49,7 +49,7 @@ def configure_routes(app):
             quantity = request.form['quantity']
             logging.error("name....", name)
             logging.error("quantity....", quantity)
-            logging.error("item....", item['name'])
+            logging.error("item....", item.name)
             # You can save this to an "orders" table or send a confirmation email
             return redirect(url_for('index'))
 
