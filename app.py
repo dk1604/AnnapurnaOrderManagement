@@ -28,19 +28,19 @@ static_folder = os.path.join(os.getcwd(), 'src', 'static')
 app = Flask(__name__, template_folder=template_folder, static_folder=static_folder)
 
 app.secret_key = secrets.token_hex(16)
-logging.basicConfig(level=logging.INFO)
+app.logger.setLevel(logging.INFO)
 
 configure_routes(app)
 
 def run_db_migrations():
-    logging.info("\n33.................")
-    logging.info("Running Alembic migrations")
+    app.logger.info("\n33.................")
+    app.logger.info("Running Alembic migrations")
     try:
         alembic_cfg = Config("alembic.ini")  # Ensure the path is correct
         command.upgrade(alembic_cfg, "head")
         logging.info("Alembic migrations completed successfully")
     except Exception as e:
-        logging.error(f"Error during migrations: {e}")
+        app.logger.info(f"Error during migrations: {e}")
 
 
 def initialize_engines():
@@ -50,13 +50,13 @@ def initialize_engines():
 
 # Create a table for menu items (if it doesn't exist)
 def create_table():
-    logging.info("\n22.................")
+    app.logger.info("\n22.................")
     run_db_migrations()
-    logging.info('\nsuccessfully menu table created')
+    app.logger.info('\nsuccessfully menu table created')
 
 
 if __name__ == '__main__':
-    logging.info("\n11.................")
+    app.logger.info("\n11.................")
     create_table()  # Make sure the menu table is created
     initialize_engines()
     app.run(host='0.0.0.0', port=5000, debug=False)
