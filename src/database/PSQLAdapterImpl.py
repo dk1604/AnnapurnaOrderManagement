@@ -1,4 +1,5 @@
 import logging
+import sys
 
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import Column, String, Integer, VARCHAR, create_engine
@@ -8,6 +9,15 @@ from Properties import user, password, host, port, database
 Base = declarative_base()
 metadata = Base.metadata
 
+
+def handle_exception(exc_type, exc_value, exc_tb):
+    if exc_type == KeyboardInterrupt:
+        sys.__excepthook__(exc_type, exc_value, exc_tb)
+    else:
+        # Custom behavior for uncaught exceptions (e.g., log it without printing the full stack trace)
+        print(f"Handled exception: {exc_value}")
+
+sys.excepthook = handle_exception
 
 class CustomAlembicVersion(Base):
     __tablename__ = 'canteen_alembic_version'
