@@ -82,7 +82,7 @@ def configure_routes(app):
             logging.error("exception at getting index......%s", str(e))
 
     # Route for Non-Veg
-    @app.route('/non-veg')
+    @app.route('/non_veg')
     def non_veg():
         logging.error("inside non_veg menu")
         try:
@@ -97,8 +97,8 @@ def configure_routes(app):
             return render_template('index.html', menu_items=menu_items)
         except Exception as e:
             logging.error("exception at getting index......%s", str(e))\
-    
-    
+
+
     @app.route('/desert')
     def desert():
         logging.error("inside desert menu")
