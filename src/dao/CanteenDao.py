@@ -1,13 +1,13 @@
 import logging
 
-from src.database.MySQLAdapterImpl import menu
+from src.database.PSQLAdapterImpl import Menu
 from src.models.CanteenModels import menu_table_response
 
 
 def fetch_all(session, model_class):
     try:
-        logging.error("model_class is: ", menu)
-        # records = session.query(model_class).all()
+        logging.error("model_class is: ", Menu)
+        records = session.query(model_class).all()
         logging.error("Fetched all records.")
 
         # response_list = [
@@ -29,7 +29,7 @@ def fetch_all(session, model_class):
 
 def fetch_one(session, item_id):
     try:
-        record = session.query(menu).filter(menu.item_id == item_id).first()
+        record = session.query(Menu).filter(Menu.id == item_id).first()
         if not record:
             logging.error('no record found for ',item_id)
             raise ValueError(f"Error: no record found for")
