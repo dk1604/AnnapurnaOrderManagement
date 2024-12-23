@@ -13,10 +13,26 @@ def handle_exception(exc_type, exc_value, exc_tb):
 
 sys.excepthook = handle_exception
 
+
 def fetch_all(session):
     try:
         records = session.query(Menu).all()
         logging.error("Fetched all records.")
+
+        response_list = [
+            menu_table_response(id=row.id, name=row.name, description=row.description, price=row.price) for row in records
+        ]
+        logging.error("Fetched response_list_db %s", response_list)
+        return response_list
+    except Exception as e:
+        logging.error(f"Error fetching all data: {e}")
+        return None
+
+
+def fetch_all_by_food_category(session, food_category):
+    try:
+        records = session.query(Menu).filter(Menu.food_category == food_category).all()
+        logging.error("Fetched all records for food category: ", food_category)
 
         response_list = [
             menu_table_response(id=row.id, name=row.name, description=row.description, price=row.price) for row in records
