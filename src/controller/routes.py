@@ -18,22 +18,21 @@ app = Flask(__name__, template_folder=template_folder, static_folder=static_fold
 def configure_routes(app):
     @app.route('/')
     def index():
-        logging.info("\ninside default route")
+        print("\ninside default route")
         try:
             menu_items = get_index_route_data()
-            logging.info("\nall item list:: %s", menu_items)
 
             # conn.disconnect()
             if not menu_items:  # If the list is empty
-                logging.info("\nmenu items are none")
-                # return "hello"
-                return render_template('index.html', menu_items=None)  # Pass `None` or empty list
+                app.logger.info("\nmenu items are none")
+                return "hello 1"
+                # return render_template('index.html', menu_items=None)  # Pass `None` or empty list
 
             # If the menu is not empty, render the template with data
-            return render_template('index.html', menu_items=menu_items)
-            # return "hello"
+            # return render_template('index.html', menu_items=menu_items)
+            return "hello 2"
         except Exception as e:
-            logging.info("exception at getting index......%s", str(e))
+            app.logger.info("exception at getting index......%s", str(e))
 
     # Order route
     # @app.route('/order/<int:item_id>', methods=['GET', 'POST'])
