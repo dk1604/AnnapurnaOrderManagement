@@ -31,6 +31,7 @@ class Menu(Base):
     name = Column(VARCHAR(250))
     description = Column(VARCHAR(250))
     price = Column(Integer)
+    food_category = Column(VARCHAR(100))
 
 
 class PSQLAdapterImpl:
