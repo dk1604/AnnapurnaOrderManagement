@@ -1,9 +1,8 @@
 import logging
-from sqlalchemy.orm import sessionmaker, scoped_session
 
+from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import Column, String, Integer, VARCHAR, create_engine
 from sqlalchemy.orm import declarative_base
-
 from Properties import user, password, host, port, database
 
 Base = declarative_base()
@@ -25,7 +24,6 @@ class Menu(Base):
 
 
 class PSQLAdapterImpl:
-    logging.info("\nStart execution of psql connector adaptor............")
 
     db_url = f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{database}"
 
@@ -36,13 +34,12 @@ class PSQLAdapterImpl:
         self.password = password
         self.database = database
         self.engine = None
-        print("\nPSQL Adapter Initialized")
+        logging.error("PSQL Adapter Initialized")
 
     _engine = None
 
     @classmethod
     def get_engine(cls):
-        logging.info("cls.db_url......", cls.db_url)
         if cls._engine is None:
             cls._engine = create_engine(
                 cls.db_url,
