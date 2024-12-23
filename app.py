@@ -33,6 +33,7 @@ logging.basicConfig(level=logging.INFO)
 configure_routes(app)
 
 def run_db_migrations():
+    logging.info("\n33.................")
     logging.info("Running Alembic migrations")
     try:
         alembic_cfg = Config("alembic.ini")  # Ensure the path is correct
@@ -49,11 +50,13 @@ def initialize_engines():
 
 # Create a table for menu items (if it doesn't exist)
 def create_table():
+    logging.info("\n22.................")
     run_db_migrations()
     logging.info('\nsuccessfully menu table created')
 
 
 if __name__ == '__main__':
+    logging.info("\n11.................")
     create_table()  # Make sure the menu table is created
     initialize_engines()
     app.run(host='0.0.0.0', port=5000, debug=False)
