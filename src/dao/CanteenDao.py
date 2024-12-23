@@ -17,6 +17,6 @@ def fetch_all(session, model_class):
         ]
         logging.error("Fetched response_list, %s", response_list)
         return response_list
-    except SQLAlchemyError as e:
+    except Exception as e:
         logging.error(f"Error fetching all data: {e}")
         return None
