@@ -33,14 +33,15 @@ app.logger.setLevel(logging.INFO)
 configure_routes(app)
 
 def run_db_migrations():
-    app.logger.info("\n33.................")
+    app.logger.info("33.................")
     app.logger.info("Running Alembic migrations")
     try:
         alembic_cfg = Config("alembic.ini")  # Ensure the path is correct
         command.upgrade(alembic_cfg, "head")
-        app.logger.info("Alembic migrations completed successfully")
+        logging.info("Alembic migrations completed successfully")
     except Exception as e:
         app.logger.info(f"Error during migrations: {e}")
+        app.logger.error(f"Error during migrations: {e}")
 
 
 def initialize_engines():
@@ -50,13 +51,13 @@ def initialize_engines():
 
 # Create a table for menu items (if it doesn't exist)
 def create_table():
-    app.logger.info("\n22.................")
+    app.logger.info("22.................")
     run_db_migrations()
-    app.logger.info('\nsuccessfully menu table created')
+    app.logger.info('successfully menu table created')
 
 
 if __name__ == '__main__':
-    app.logger.info("\n11.................")
+    app.logger.info("11.................")
     create_table()  # Make sure the menu table is created
     initialize_engines()
     app.run(host='0.0.0.0', port=5000, debug=False)
