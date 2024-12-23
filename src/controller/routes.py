@@ -4,7 +4,7 @@ import os
 from flask import request, redirect, url_for, render_template, Flask
 from flask.sansio.blueprints import Blueprint
 
-from src.service.Service import get_index_route_data
+from src.service.Service import get_index_route_data, get_order_item_by_id
 
 routes_blueprint = Blueprint("routes", __name__)
 logging.basicConfig(level=logging.INFO)
@@ -29,28 +29,28 @@ def configure_routes(app):
                 return render_template('index.html', menu_items=None)  # Pass `None` or empty list
 
             # If the menu is not empty, render the template with data
+            logging.error("menu_items........", menu_items)
             return render_template('index.html', menu_items=menu_items)
             # return "hello 2"
         except Exception as e:
             logging.error("exception at getting index......%s", str(e))
 
     # Order route
-    # @app.route('/order/<int:item_id>', methods=['GET', 'POST'])
-    # def order(item_id):
-    #     logging.info("\n100..........", item_id)
-    #     conn = get_db_connection()
-    #     item = conn.fetch_one('SELECT * FROM menu WHERE id = %s', (item_id,))
-    #     logging.info("item............%s", item)
-    #
-    #     if request.method == 'POST':
-    #         logging.info("\n101................")
-    #         # Here you can add order functionality (e.g., save the order)
-    #         name = request.form['name']
-    #         quantity = request.form['quantity']
-    #         print("\nname....", name)
-    #         print("\nquantity....", quantity)
-    #         print("\nitem....", item['name'])
-    #         # You can save this to an "orders" table or send a confirmation email
-    #         return redirect(url_for('index'))
-    #
-    #     return render_template('order.html', item=item)
+    @app.route('/order/<int:item_id>', methods=['GET', 'POST'])
+    def order(item_id):
+        logging.error("100..........", item_id)
+        item = get_order_item_by_id(item_id)
+        logging.error("item............%s", item)
+
+        if request.method == 'POST':
+            logging.error("101................")
+            # Here you can add order functionality (e.g., save the order)
+            name = request.form['name']
+            quantity = request.form['quantity']
+            logging.error("name....", name)
+            logging.error("quantity....", quantity)
+            logging.error("item....", item['name'])
+            # You can save this to an "orders" table or send a confirmation email
+            return redirect(url_for('index'))
+
+        return render_template('order.html', item=item)
