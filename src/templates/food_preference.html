@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Management</title>
+  <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 10px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Mobile and tablet-friendly styles */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            p {
+                font-size: 16px;
+            }
+
+            button {
+                width: 100%;
+                padding: 15px;
+                font-size: 16px;
+                margin-top: 10px;
+            }
+        }
+
+        /* Styles for large screens */
+        @media (min-width: 769px) {
+            body {
+                padding: 50px;
+            }
+
+            button {
+                width: 200px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<h1>Welcome to the Annapurna Order Management System</h1>
+<p>Select Your Food Preference</p>
+<button onclick="window.location.href='/veg'">Veg</button>
+<button onclick="window.location.href='/nonveg'">Non-Veg</button>
+<button onclick="window.location.href='/desert'">Desert</button>
+<button onclick="window.location.href='/all'">All</button>
+</body>
+</html>
