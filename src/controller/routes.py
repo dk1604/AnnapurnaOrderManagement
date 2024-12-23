@@ -7,8 +7,6 @@ from flask.sansio.blueprints import Blueprint
 from src.service.Service import get_index_route_data
 
 routes_blueprint = Blueprint("routes", __name__)
-logging.basicConfig(level=logging.INFO)
-
 
 template_folder = os.path.join(os.getcwd(), 'src', 'templates')
 static_folder = os.path.join(os.getcwd(), 'src', 'static')
