@@ -35,10 +35,8 @@ def fetch_one(session, item_id):
             raise ValueError(f"Error: no record found for")
         else:
             logging.error("success by id.................")
-            response = [
-                menu_table_response(id=record.id, name=record.name, description=record.description, price=record.price)
-                .model_dump() for row in record
-            ]
+            response = menu_table_response(id=record.id, name=record.name, description=record.description, price=record.price)
+
             return response
     except Exception as err:
         session.rollback()
