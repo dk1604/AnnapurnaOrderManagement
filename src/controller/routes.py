@@ -47,23 +47,6 @@ def configure_routes(app):
     #     except Exception as e:
     #         logging.error("exception at getting index......%s", str(e))
 
-    # Order route
-    @app.route('/order/<int:item_id>', methods=['GET', 'POST'])
-    def order(item_id):
-        item = get_order_item_by_id(item_id)
-        logging.error("item............%s", item)
-
-        if request.method == 'POST':
-            # Here you can add order functionality (e.g., save the order)
-            name = request.form['name']
-            quantity = request.form['quantity']
-            logging.error("name, quantity, item....%s, %s, %s", name, quantity, item.name)
-
-            # You can save this to an "orders" table or send a confirmation email
-            return redirect(url_for('index'))
-
-        return render_template('order.html', item=item)
-
     # Route for Veg
     @app.route('/veg')
     def veg():
@@ -132,3 +115,20 @@ def configure_routes(app):
             return render_template('index.html', menu_items=menu_items)
         except Exception as e:
             logging.error("exception at getting index......%s", str(e))
+
+    # Order route
+    @app.route('/order/<int:item_id>', methods=['GET', 'POST'])
+    def order(item_id):
+        item = get_order_item_by_id(item_id)
+        logging.error("item............%s", item)
+
+        if request.method == 'POST':
+            # Here you can add order functionality (e.g., save the order)
+            name = request.form['name']
+            quantity = request.form['quantity']
+            logging.error("name, quantity, item....%s, %s, %s", name, quantity, item.name)
+
+            # You can save this to an "orders" table or send a confirmation email
+            return redirect(url_for('index'))
+
+        return render_template('order.html', item=item)
