@@ -170,6 +170,6 @@ def configure_routes(app):
         return render_template('cart.html', cart_items=cart_items)
 
     @app.route('/checkout')
-    def cart():
+    def checkout():
         cart_items = session.get('cart', [])
         return render_template('checkout.html', cart_items=cart_items)
