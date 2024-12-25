@@ -126,7 +126,8 @@ def configure_routes(app):
             # Here you can add order functionality (e.g., save the order)
             name = request.form['name']
             quantity = request.form['quantity']
-            logging.error("name, quantity, item....%s, %s, %s", name, quantity, item.name)
+            logging.error("name, quantity, item, price....%s, %s, %s, %s", name, quantity, item.name, item.price)
+            logging.error("name, quantity, item, price....%s, %s, %s, %s", type(name), type(quantity), type(item.name), type(item.price))
 
             # logic to add item and quantity in cart and maintain session
             if 'cart' not in session:
@@ -135,12 +136,15 @@ def configure_routes(app):
             # Check if the item already exists in the cart
             item_exists = False
             for cart_item in session['cart']:
+                logging.error("cart item exist............%s", cart_item)
                 if cart_item['id'] == item.id:
+                    logging.error("cart item qty............%s", cart_item['quantity'])
                     cart_item['quantity'] += quantity  # Update the quantity if item is already in the cart
                     item_exists = True
                     break
 
             if not item_exists:
+                logging.error("cart item not exist............")
                 # If the item doesn't exist in the cart, add it
                 session['cart'].append({
                     'id': item.id,
