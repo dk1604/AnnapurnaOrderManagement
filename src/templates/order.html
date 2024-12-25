@@ -166,12 +166,12 @@
             <label for="quantity" class="quantity-label">Quantity:</label>
             <button type="button" class="quantity-button" onclick="adjustQuantity(-1)">-</button>
             <div class="quantity-box">
-                <input type="text" id="quantity-display" value="1" name="quantity" readonly>
+                <input type="number" id="quantity-display" value="1" name="quantity" readonly>
             </div>
             <button type="button" class="quantity-button" onclick="adjustQuantity(1)">+</button>
         </div>
 
-        <button type="submit">Place Order</button>
+        <button type="submit">Add To Cart</button>
     </form>
     <a href="{{ url_for('food_preference') }}" class="back-link">Back to Menu</a>
 </div>
