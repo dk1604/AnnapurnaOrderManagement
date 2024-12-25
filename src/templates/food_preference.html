@@ -15,9 +15,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            text-align: center;
             flex-direction: column;
+            min-height: 100vh;
         }
 
         h1 {
@@ -26,12 +25,14 @@
             font-size: 24px;
         }
 
-        p {
-            font-size: 18px;
-            margin-bottom: 30px;
+        .food-options {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
         }
 
-        button {
+        .food-button {
             background-color: #3498db;
             color: white;
             border: none;
@@ -41,28 +42,48 @@
             border-radius: 5px;
             margin: 10px;
             transition: background-color 0.3s;
-            width: 80%;  /* Make buttons full width for mobile */
-            max-width: 300px;  /* Limit the maximum width */
+            width: 80%;
+            max-width: 300px;
         }
 
-        button:hover {
+        .food-button:hover {
             background-color: #2980b9;
+        }
+
+        .cart-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2ecc71;
+            color: white;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .cart-button:hover {
+            background-color: #27ae60;
         }
 
         /* Mobile-friendly styles */
         @media (max-width: 600px) {
             h1 {
-                font-size: 22px;  /* Slightly smaller font size on mobile */
+                font-size: 22px;
             }
 
-            p {
-                font-size: 16px;  /* Adjust paragraph font size */
+            .food-button {
+                font-size: 16px;
+                width: 90%;
             }
 
-            button {
-                padding: 15px;
-                font-size: 16px;  /* Adjust font size of the buttons */
-                width: 90%;  /* Ensure buttons take almost full width on small devices */
+            .cart-button {
+                bottom: 10px;
+                right: 10px;
+                padding: 12px 22px;
             }
         }
 
@@ -73,15 +94,11 @@
             }
 
             h1 {
-                font-size: 28px;  /* Larger font size for tablets and desktops */
+                font-size: 28px;
             }
 
-            p {
-                font-size: 20px;  /* Adjust paragraph size for larger screens */
-            }
-
-            button {
-                width: 200px;  /* Set a fixed width for larger screens */
+            .food-button {
+                font-size: 15px 40px;
             }
         }
     </style>
@@ -89,24 +106,24 @@
 <body>
 <h1>Welcome to the Annapurna Order Management System</h1>
 <p>Select Your Food Preference</p>
-  <div>
-    <button onclick="window.location.href='/veg'">Veg</button>
-    <button onclick="window.location.href='/non_veg'">Non-Veg</button>
-    <button onclick="window.location.href='/desert'">Desert</button>
-    <button onclick="window.location.href='/all'">All</button>
-  </div>
-  <div class="cart">
-        <h3>Your Cart</h3>
-        {% if session['cart'] %}
-            <ul>
-                {% for item in session['cart'] %}
-                    <li>{{ item.name }} - Quantity: {{ item.quantity }} - Total: ${{ item.total }}</li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>Your cart is empty!</p>
-        {% endif %}
-    </div>
-    <button class="cart-button" onclick="location.href='/cart'">Go to Cart</button>
+<div class="food-options">
+  <button class="food-button" onclick="location.href='/veg'">Veg</button>
+  <button class="food-button" onclick="location.href='/non_veg'">Non-Veg</button>
+  <button class="food-button" onclick="location.href='/desert'">Desert</button>
+  <button class="food-button" onclick="location.href='/all'">All</button>
+</div>
+<div class="cart">
+  <h3>Your Cart</h3>
+  {% if session['cart'] %}
+  <ul>
+    {% for item in session['cart'] %}
+    <li>{{ item.name }} - Quantity: {{ item.quantity }} - Total: ${{ item.total }}</li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>Your cart is empty!</p>
+  {% endif %}
+</div>
+<button class="cart-button" onclick="location.href='/cart'">Go to Cart</button>
 </body>
 </html>
