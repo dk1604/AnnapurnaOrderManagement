@@ -140,7 +140,7 @@ def configure_routes(app):
                 if cart_item['id'] == item.id:
                     logging.error("cart item qty............%s", cart_item['quantity'])
                     cart_item['quantity'] += quantity  # Update the quantity if item is already in the cart
-                    cart_item['total'] += (item.price * quantity)  # Update the quantity if item is already in the cart
+                    cart_item['price'] += (item.price * quantity)  # Update the quantity if item is already in the cart
                     item_exists = True
                     break
 
@@ -151,7 +151,7 @@ def configure_routes(app):
                     'id': item.id,
                     'name': item.name,
                     'quantity': quantity,
-                    'total': item.price * quantity
+                    'price': item.price * quantity
                 })
             # Log the cart for debugging purposes
             logging.error("Updated cart: %s", session['cart'])
