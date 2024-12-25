@@ -115,8 +115,8 @@
     <tr>
       <td>{{ item.name }}</td>
       <td>{{ item.quantity }}</td>
-      <td>{{ item.price | currency }}</td>
-      <td>{{ item.quantity * item.price | currency }}</td>
+      <td>{{ item.price }} INR</td>
+      <td>{{ item.quantity * item.price }} INR</td>
       {% set total = total + (item.quantity * item.price) %}
     </tr>
     {% endfor %}
@@ -124,7 +124,7 @@
   </table>
 
   <div class="total">
-    Total: {{ total | currency }}
+    Total: {{ total }} INR
   </div>
 
   <form action="{{ url_for('place_order') }}" method="POST">
