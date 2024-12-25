@@ -125,7 +125,7 @@ def configure_routes(app):
         if request.method == 'POST':
             # Here you can add order functionality (e.g., save the order)
             name = request.form['name']
-            quantity = request.form['quantity']
+            quantity = int(request.form['quantity'])
             logging.error("name, quantity, item, price....%s, %s, %s, %s", name, quantity, item.name, item.price)
             logging.error("name, quantity, item, price....%s, %s, %s, %s", type(name), type(quantity), type(item.name), type(item.price))
 
@@ -140,6 +140,7 @@ def configure_routes(app):
                 if cart_item['id'] == item.id:
                     logging.error("cart item qty............%s", cart_item['quantity'])
                     cart_item['quantity'] += quantity  # Update the quantity if item is already in the cart
+                    cart_item['price'] += (item.price * quantity)  # Update the quantity if item is already in the cart
                     item_exists = True
                     break
 
@@ -149,7 +150,8 @@ def configure_routes(app):
                 session['cart'].append({
                     'id': item.id,
                     'name': item.name,
-                    'quantity': quantity
+                    'quantity': quantity,
+                    'price': item.price * quantity
                 })
             # Log the cart for debugging purposes
             logging.error("Updated cart: %s", session['cart'])
