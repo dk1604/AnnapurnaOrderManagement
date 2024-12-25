@@ -2,7 +2,7 @@ import logging
 import os
 import sys
 
-from flask import request, redirect, url_for, render_template, Flask
+from flask import request, redirect, url_for, render_template, Flask, session
 from flask.sansio.blueprints import Blueprint
 
 from src.service.Service import get_all_options, get_order_item_by_id, get_all_options_by_food_category
@@ -128,7 +128,37 @@ def configure_routes(app):
             quantity = request.form['quantity']
             logging.error("name, quantity, item....%s, %s, %s", name, quantity, item.name)
 
+            # logic to add item and quantity in cart and maintain session
+            if 'cart' not in session:
+                session['cart'] = []  # Initialize the cart if it doesn't exist
+
+            # Check if the item already exists in the cart
+            item_exists = False
+            for cart_item in session['cart']:
+                if cart_item['id'] == item.id:
+                    cart_item['quantity'] += quantity  # Update the quantity if item is already in the cart
+                    item_exists = True
+                    break
+
+            if not item_exists:
+                # If the item doesn't exist in the cart, add it
+                session['cart'].append({
+                    'id': item.id,
+                    'name': item.name,
+                    'quantity': quantity
+                })
+            # Log the cart for debugging purposes
+            logging.error("Updated cart: %s", session['cart'])
+
+            # Save session data
+            session.modified = True
+
             # You can save this to an "orders" table or send a confirmation email
             return redirect(url_for('food_preference'))
 
         return render_template('order.html', item=item)
+
+    @app.route('/cart')
+    def cart():
+        cart_items = session.get('cart', [])
+        return render_template('cart.html', cart_items=cart_items)
