@@ -112,18 +112,6 @@
   <button class="food-button" onclick="location.href='/desert'">Desert</button>
   <button class="food-button" onclick="location.href='/all'">All</button>
 </div>
-<div class="cart">
-  <h3>Your Cart</h3>
-  {% if session['cart'] %}
-  <ul>
-    {% for item in session['cart'] %}
-    <li>{{ item.name }} - Quantity: {{ item.quantity }} - Total: ${{ item.total }}</li>
-    {% endfor %}
-  </ul>
-  {% else %}
-  <p>Your cart is empty!</p>
-  {% endif %}
-</div>
-<button class="cart-button" onclick="location.href='/cart'">Go to Cart</button>
+<button class="cart-button" onclick="location.href='/checkout'">Go to Cart</button>
 </body>
 </html>
