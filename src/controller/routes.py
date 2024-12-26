@@ -2,9 +2,14 @@ import logging
 import os
 import sys
 
+import requests
+from cashfree_pg import CreateOrderRequest
+from cashfree_pg.models.customer_details import CustomerDetails
+from cashfree_pg.api_client import Cashfree
 from flask import request, redirect, url_for, render_template, Flask, session
 from flask.sansio.blueprints import Blueprint
 
+import Properties
 from src.service.Service import get_all_options, get_order_item_by_id, get_all_options_by_food_category
 
 routes_blueprint = Blueprint("routes", __name__)
@@ -169,7 +174,55 @@ def configure_routes(app):
         cart_items = session.get('cart', [])
         return render_template('cart.html', cart_items=cart_items)
 
-    @app.route('/checkout')
+    @app.route('/checkout', methods=['GET', 'POST'])
     def checkout():
         cart_items = session.get('cart', [])
+
+        # If the form is submitted, initiate payment
+        if request.method == 'POST':
+            total_amount = sum(item['quantity'] * item['price'] for item in cart_items)
+
+            x_api_version = "2023-08-01"
+
+            Cashfree.XClientId = Properties.client_id
+            Cashfree.XClientSecret = Properties.client_secret
+            Cashfree.XEnvironment = Cashfree.XSandbox
+
+            customerDetails = CustomerDetails(customer_id="123", customer_phone="9999999999")
+            createOrderRequest = CreateOrderRequest(order_amount=1, order_currency="INR", customer_details=customerDetails)
+            try:
+                order_data = {
+                    'order_amount': total_amount,
+                    'order_currency': 'INR',
+                    'order_id': 'unique_order_id',  # Unique Order ID
+                    'order_note': 'Your order from Annapurna',
+                    'customer_details': {
+                        'customer_id': 'customer_123',
+                        'customer_phone': '9999999999',
+                        'customer_email': 'customer@example.com'
+                    }
+                }
+                payment_url = create_payment_url(order_data)
+
+                if payment_url:
+                    return redirect(payment_url)
+            except Exception as e:
+                logging.error("error at CashfreeImpl %s", e)
+
         return render_template('checkout.html', cart_items=cart_items)
+
+    def create_payment_url(order_data):
+        url = 'https://api.cashfree.com/pg/orders'
+        headers = {
+            'Content-Type': 'application/json',
+            'x-client-id': Properties.client_id,
+            'x-client-secret': Properties.client_secret
+        }
+        response = requests.post(url, json=order_data, headers=headers)
+
+        if response.status_code == 200:
+            data = response.json()
+            # Check if the payment URL was generated successfully
+            if data.get('status') == 'OK':
+                return data.get('payment_link')  # Cashfree payment URL
+        return None
