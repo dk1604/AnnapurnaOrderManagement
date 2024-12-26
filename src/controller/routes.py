@@ -3,7 +3,7 @@ import os
 import sys
 
 import requests
-from flask import request, redirect, url_for, render_template, Flask, session
+from flask import request, redirect, url_for, render_template, Flask, session, jsonify
 from flask.sansio.blueprints import Blueprint
 
 import Properties
@@ -189,23 +189,30 @@ def configure_routes(app):
                         'customer_id': 'customer_123',
                         'customer_phone': '9999999999',
                         'customer_email': 'customer@example.com'
+                    },
+                    "order_meta": {
+                        "return_url": "https://www.cashfree.com/devstudio/preview/pg/web/checkout?order_id={order_id}"
                     }
                 }
-                payment_url = create_payment_url(order_data)
+                payment_session_id = create_payment_url(order_data)
 
-                if payment_url:
-                    return redirect(payment_url)
+                if payment_session_id:
+                # Return the payment session ID to the frontend
+                    return jsonify({'payment_session_id': payment_session_id})
+                else:
+                    return jsonify({'error': 'Error creating payment session'})
             except Exception as e:
                 logging.error("error at CashfreeImpl %s", e)
 
         return render_template('checkout.html', cart_items=cart_items)
 
     def create_payment_url(order_data):
-        url = 'https://api.cashfree.com/pg/orders'
+        url = 'https://sandbox.cashfree.com/pg/orders'
         headers = {
             'Content-Type': 'application/json',
-            'x-client-id': Properties.client_id,
-            'x-client-secret': Properties.client_secret
+            'x-client-id': 'TEST10399632ed8e450d9378bdc1046023699301',
+            'x-client-secret': 'cfsk_ma_test_2d451fe10497246f66b7975e20b0d40e_3cbb04a3',
+            'x-api-version': '2023/08/01'
         }
         response = requests.post(url, json=order_data, headers=headers)
         logging.error("**cashfree** response is:: %s", response.json())
@@ -214,5 +221,5 @@ def configure_routes(app):
             data = response.json()
             # Check if the payment URL was generated successfully
             if data.get('status') == 'OK':
-                return data.get('payment_link')  # Cashfree payment URL
+                return data.get('payment_session_id')  # Cashfree payment URL
         return None
