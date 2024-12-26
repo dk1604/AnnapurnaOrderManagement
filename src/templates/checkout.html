@@ -129,9 +129,52 @@
     </div>
 
     <!-- Form for POST to backend -->
-    <form method="POST" action="{{ url_for('checkout') }}">
-        <button type="submit">Proceed to Payment</button>
-    </form>
+    <div class="row">
+        <p>Click below to proceed with the payment</p>
+        <button id="renderBtn">Pay Now</button>
+    </div>
+    <script>
+        // This function will be triggered when the page is loaded and will fetch the payment session ID
+        fetch('/checkout', {
+            method: 'POST',  // Using POST to trigger payment session creation
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                // Optional: Send necessary data, like cart items, customer details, etc., if needed
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.payment_session_id) {
+                // Store the payment session ID for later use
+                window.paymentSessionId = data.payment_session_id;
+            } else {
+                alert('Error: Unable to create payment session');
+            }
+        })
+        .catch(error => {
+            console.error('Error during fetch: ', error);
+        });
+
+        // Listen for the "Pay Now" button click to initiate the payment
+        document.getElementById("renderBtn").addEventListener("click", () => {
+            if (window.paymentSessionId) {
+                const cashfree = Cashfree({
+                    mode: "sandbox",  // Use "production" in the live environment
+                });
+
+                let checkoutOptions = {
+                    paymentSessionId: window.paymentSessionId,  // Use the payment session ID from Flask backend
+                    redirectTarget: "_self",  // Open the checkout page in the same tab
+                };
+
+                cashfree.checkout(checkoutOptions);  // Trigger Cashfree checkout
+            } else {
+                alert('Payment session ID is not available.');
+            }
+        });
+    </script>
 
     <a href="{{ url_for('food_preference') }}" class="back-link">Back to Menu</a>
 
