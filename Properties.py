@@ -16,6 +16,9 @@ import os
 # database = 'canteen'
 
 # render
+client_id = os.getenv("client_id")
+client_secret = os.getenv("client_secret")
+
 db_type = os.getenv("db_type").lower()
 host = "dpg-ctk3halumphs73fe6i5g-a"
 port = "5432"
