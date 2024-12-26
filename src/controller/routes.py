@@ -3,9 +3,6 @@ import os
 import sys
 
 import requests
-from cashfree_pg import CreateOrderRequest
-from cashfree_pg.models.customer_details import CustomerDetails
-from cashfree_pg.api_client import Cashfree
 from flask import request, redirect, url_for, render_template, Flask, session
 from flask.sansio.blueprints import Blueprint
 
@@ -182,14 +179,6 @@ def configure_routes(app):
         if request.method == 'POST':
             total_amount = sum(item['quantity'] * item['price'] for item in cart_items)
 
-            x_api_version = "2023-08-01"
-
-            Cashfree.XClientId = Properties.client_id
-            Cashfree.XClientSecret = Properties.client_secret
-            Cashfree.XEnvironment = Cashfree.XSandbox
-
-            customerDetails = CustomerDetails(customer_id="123", customer_phone="9999999999")
-            createOrderRequest = CreateOrderRequest(order_amount=1, order_currency="INR", customer_details=customerDetails)
             try:
                 order_data = {
                     'order_amount': total_amount,
