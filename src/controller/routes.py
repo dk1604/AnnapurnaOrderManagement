@@ -208,6 +208,7 @@ def configure_routes(app):
             'x-client-secret': Properties.client_secret
         }
         response = requests.post(url, json=order_data, headers=headers)
+        logging.error("**cashfree** response is:: %s", response.json())
 
         if response.status_code == 200:
             data = response.json()
