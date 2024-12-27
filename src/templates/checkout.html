@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout</title>
+    <!-- Include the Cashfree Payment Gateway SDK -->
+    <script src="https://checkout-static.cashfree.com/checkout/checkout.js"></script>
     <style>
         /* General styles */
         body {
@@ -146,7 +148,10 @@
                     // Send necessary data, like cart items, customer details, etc., if needed
                 })
             })
-            .then(response => response.json())
+            .then(response => {
+                console.log("Raw Response:", response);
+                return response.json())
+            }
             .then(data => {
                 console.log("Payment Session ID received:", data);
                 if (data.payment_session_id) {
