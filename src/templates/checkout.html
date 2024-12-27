@@ -148,8 +148,10 @@
             })
             .then(response => response.json())
             .then(data => {
+                console.log("Payment Session ID received:", data);
                 if (data.payment_session_id) {
                     // Store the payment session ID for later use
+                    console.log("Payment Session ID received:", data.payment_session_id);
                     window.paymentSessionId = data.payment_session_id;
 
                     // Now trigger Cashfree checkout
