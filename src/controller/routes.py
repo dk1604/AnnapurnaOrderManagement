@@ -229,6 +229,6 @@ def configure_routes(app):
             logging.error("payment session id data 2 %s", data.get('payment_session_id'))
             # Check if the payment URL was generated successfully
             if data.get('status') == 'OK':
-                
                 return data.get('payment_session_id')
-        return None
+            else:
+                return None
