@@ -241,9 +241,9 @@ def configure_routes(app):
 
         if order_id:
             logging.error("order successfully processed and order token generated %s", order_token)
-            return render_template('success.html', order_id=order_id, payment_token=order_token)
+            return render_template('success.html', order_id=order_id, order_token=order_token)
         else:
-            logging.error("no order_id found. Please place your order again. Routing to main menu again. sorry for the inconvenience") 
+            logging.error("no order_id found. Please place your order again. Routing to main menu again. sorry for the inconvenience")
             return redirect(url_for('food_preference'))  # Redirect to checkout if no order_id found
 
     @app.route('/payment/failure', methods=['GET'])
