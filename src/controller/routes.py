@@ -225,8 +225,10 @@ def configure_routes(app):
 
         if response.status_code == 200:
             data = response.json()
+            logging.error("payment session id data 1 %s", data)
+            logging.error("payment session id data 2 %s", data.get('payment_session_id'))
             # Check if the payment URL was generated successfully
             if data.get('status') == 'OK':
-                logging.error("payment session id %s", data.get('payment_session_id'))
+                
                 return data.get('payment_session_id')
         return None
