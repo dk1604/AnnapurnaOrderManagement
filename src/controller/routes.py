@@ -1,6 +1,8 @@
 import logging
 import os
+import random
 import sys
+import time
 
 import requests
 from flask import request, redirect, url_for, render_template, Flask, session, jsonify
@@ -178,15 +180,19 @@ def configure_routes(app):
         # If the form is submitted, initiate payment
         if request.method == 'POST':
             total_amount = sum(item['quantity'] * item['price'] for item in cart_items)
+            customer_name = (item['name'] for item in cart_items)
+            timestamp = int(time.time())
+            random_number = random.randint(1000, 9999)
+            unique_order_id = f"ORD{timestamp}{random_number}"
 
             try:
                 order_data = {
                     'order_amount': total_amount,
                     'order_currency': 'INR',
-                    'order_id': 'unique_order_id',  # Unique Order ID
+                    'order_id': unique_order_id,  # Unique Order ID
                     'order_note': 'Your order from Annapurna',
                     'customer_details': {
-                        'customer_id': 'customer_123',
+                        'customer_id': customer_name,
                         'customer_phone': '9999999999',
                         'customer_email': 'customer@example.com'
                     },
@@ -210,9 +216,9 @@ def configure_routes(app):
         url = 'https://sandbox.cashfree.com/pg/orders'
         headers = {
             'Content-Type': 'application/json',
-            'x-client-id': 'TEST10399632ed8e450d9378bdc1046023699301',
-            'x-client-secret': 'cfsk_ma_test_2d451fe10497246f66b7975e20b0d40e_3cbb04a3',
-            'x-api-version': '2022-09-01'
+            'x-client-id': Properties.client_id,
+            'x-client-secret': Properties.client_secret,
+            'x-api-version': '2023/08/01'
         }
         response = requests.post(url, json=order_data, headers=headers)
         logging.error("**cashfree** response is:: %s", response.json())
@@ -221,5 +227,6 @@ def configure_routes(app):
             data = response.json()
             # Check if the payment URL was generated successfully
             if data.get('status') == 'OK':
-                return data.get('payment_session_id')  # Cashfree payment URL
+                logging.error("payment session id %s", data.get('payment_session_id'))
+                return data.get('payment_session_id')
         return None
