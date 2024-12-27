@@ -197,7 +197,8 @@ def configure_routes(app):
                         'customer_email': 'customer@example.com'
                     },
                     "order_meta": {
-                        "return_url": "https://www.cashfree.com/devstudio/preview/pg/web/checkout?order_id={order_id}"
+                        #"return_url": "https://www.cashfree.com/devstudio/preview/pg/web/checkout?order_id={order_id}"
+                        "return_url": f"https://annapurnaordermanagement.onrender.com/payment/success?order_id={unique_order_id}"
                     }
                 }
                 payment_session_id = create_payment_url(order_data)
@@ -232,3 +233,20 @@ def configure_routes(app):
                 return data.get('payment_session_id')
             else:
                 return None
+
+    @app.route('/payment/success', methods=['GET'])
+    def payment_success():
+        order_id = request.args.get('order_id')
+        order_token = "Token_123"  # Example of another parameter from Cashfree
+
+        if order_id:
+            logging.error("order successfully processed and order token generated %s", order_token)
+            return render_template('success.html', order_id=order_id, payment_token=order_token)
+        else:
+            logging.error("no order_id found. Please place your order again. Routing to main menu again. sorry for the inconvenience") 
+            return redirect(url_for('food_preference'))  # Redirect to checkout if no order_id found
+
+    @app.route('/payment/failure', methods=['GET'])
+    def payment_failure():
+        # This could be the page to handle any failed payment cases.
+        return render_template('failure.html', message="Payment failed. Please try again.")
