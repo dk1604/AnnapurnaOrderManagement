@@ -218,7 +218,7 @@ def configure_routes(app):
             'Content-Type': 'application/json',
             'x-client-id': Properties.client_id,
             'x-client-secret': Properties.client_secret,
-            'x-api-version': '2023/08/01'
+            'x-api-version': '2023-08-01'
         }
         response = requests.post(url, json=order_data, headers=headers)
         logging.error("**cashfree** response is:: %s", response.json())
