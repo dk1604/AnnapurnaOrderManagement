@@ -84,10 +84,9 @@ def configure_routes(app):
             logging.error("menu_items........", menu_items)
             return render_template('index.html', menu_items=menu_items)
         except Exception as e:
-            logging.error("exception at getting index......%s", str(e)) \
- \
-            @ app.route('/desert')
+            logging.error("exception at getting index......%s", str(e))
 
+    @app.route('/desert')
     def desert():
         logging.error("inside desert menu")
         try:
