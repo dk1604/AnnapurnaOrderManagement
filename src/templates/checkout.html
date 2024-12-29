@@ -95,7 +95,7 @@
         }
 
 
-    
+
     </style>
 </head>
 <body>
@@ -103,7 +103,6 @@
 <div class="container">
     <h1>Cart Details</h1>
     {% if session['cart'] %}
-    {% set cart_total = 0 %}
     <table>
         <thead>
         <tr>
@@ -120,15 +119,14 @@
             <td>{{ item.quantity }}</td>
             <td>{{ item.price }} INR</td>
             <td>{{ item.quantity * item.price }} INR</td>
-            {% set cart_total = cart_total + (item.quantity * item.price) %}
         </tr>
         {% endfor %}
         </tbody>
     </table>
-    {{ cart_total }}
+    {{ session['cart_total'] }}
 
     <div class="cart-total">
-        Cart Total: {{ cart_total }} INR
+        Cart Total: session['cart_total'] INR
     </div>
 
     <!-- Form for POST to backend -->
@@ -178,7 +176,7 @@
                 console.error('Error during fetch: ', error);
             });
         });
-    
+
     </script>
 
     <a href="{{ url_for('food_preference') }}" class="back-link">Back to Menu</a>
