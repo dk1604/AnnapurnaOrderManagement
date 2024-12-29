@@ -122,7 +122,7 @@
             <td>{{ item.quantity * item.price }} INR</td>
             {% set cart_total = cart_total + (item.quantity * item.price) %}
         </tr>
-        {% end-for %}
+        {% endfor %}
         </tbody>
     </table>
     {{ cart_total }}
