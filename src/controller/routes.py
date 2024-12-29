@@ -9,6 +9,7 @@ from flask import request, redirect, url_for, render_template, Flask, session, j
 from flask.sansio.blueprints import Blueprint
 
 import Properties
+from src.service.PaymentService import get_cashfree_payment_session
 from src.service.Service import get_all_options, get_order_item_by_id, get_all_options_by_food_category
 
 routes_blueprint = Blueprint("routes", __name__)
@@ -83,10 +84,10 @@ def configure_routes(app):
             logging.error("menu_items........", menu_items)
             return render_template('index.html', menu_items=menu_items)
         except Exception as e:
-            logging.error("exception at getting index......%s", str(e))\
+            logging.error("exception at getting index......%s", str(e)) \
+ \
+            @ app.route('/desert')
 
-
-    @app.route('/desert')
     def desert():
         logging.error("inside desert menu")
         try:
@@ -131,7 +132,8 @@ def configure_routes(app):
             name = request.form['name']
             quantity = int(request.form['quantity'])
             logging.error("name, quantity, item, price....%s, %s, %s, %s", name, quantity, item.name, item.price)
-            logging.error("name, quantity, item, price....%s, %s, %s, %s", type(name), type(quantity), type(item.name), type(item.price))
+            logging.error("name, quantity, item, price....%s, %s, %s, %s", type(name), type(quantity), type(item.name),
+                          type(item.price))
 
             # logic to add item and quantity in cart and maintain session
             if 'cart' not in session:
@@ -194,19 +196,18 @@ def configure_routes(app):
                     'order_id': unique_order_id,  # Unique Order ID
                     'order_note': 'Your order from Annapurna',
                     'customer_details': {
-                        'customer_id': 'Test123',
+                        'customer_id': customer_name,
                         'customer_phone': '9999999999',
                         'customer_email': 'customer@example.com'
                     },
                     "order_meta": {
-                        #"return_url": "https://www.cashfree.com/devstudio/preview/pg/web/checkout?order_id={order_id}"
+                        # "return_url": "https://www.cashfree.com/devstudio/preview/pg/web/checkout?order_id={order_id}"
                         "return_url": f"https://annapurnaordermanagement.onrender.com/payment/success?order_id={unique_order_id}"
                     }
                 }
-                payment_session_id = create_payment_url(order_data)
+                payment_session_id = get_cashfree_payment_session(order_data)
 
                 if payment_session_id:
-                # Return the payment session ID to the frontend
                     return jsonify({'payment_session_id': payment_session_id})
                 else:
                     return jsonify({'error': 'Error creating payment session'})
@@ -214,27 +215,6 @@ def configure_routes(app):
                 logging.error("error at CashfreeImpl %s", e)
 
         return render_template('checkout.html', cart_items=cart_items, cart_total=cart_total)
-
-    def create_payment_url(order_data):
-        url = 'https://sandbox.cashfree.com/pg/orders'
-        headers = {
-            'Content-Type': 'application/json',
-            'x-client-id': Properties.client_id,
-            'x-client-secret': Properties.client_secret,
-            'x-api-version': '2023-08-01'
-        }
-        response = requests.post(url, json=order_data, headers=headers)
-        logging.error("**cashfree** response is:: %s", response.json())
-
-        if response.status_code == 200:
-            data = response.json()
-            logging.error("payment session id data 1 %s", data)
-            logging.error("payment session id data 2 %s", data.get('payment_session_id'))
-            # Check if the payment URL was generated successfully
-            if data.get('order_status') == 'ACTIVE':
-                return data.get('payment_session_id')
-            else:
-                return None
 
     @app.route('/payment/success', methods=['GET'])
     def payment_success():
@@ -245,10 +225,12 @@ def configure_routes(app):
             logging.error("order successfully processed and order token generated %s", order_token)
             return render_template('success.html', order_id=order_id, order_token=order_token)
         else:
-            logging.error("no order_id found. Please place your order again. Routing to main menu again. sorry for the inconvenience")
-            return redirect(url_for('food_preference'))  # Redirect to checkout if no order_id found
+            logging.error("no order_id found. Please place your order again. "
+                          "Routing to main menu again. sorry for the inconvenience")
+            return redirect(url_for('food_preference'))
 
     @app.route('/payment/failure', methods=['GET'])
     def payment_failure():
         # This could be the page to handle any failed payment cases.
-        return render_template('failure.html', message="Payment failed. Please try again.")
+        order_id = request.args.get('order_id')
+        return render_template('failure.html', order_id=order_id, message="Payment failed. Please try again.")
