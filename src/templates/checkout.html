@@ -103,31 +103,31 @@
     <h1>Cart Details</h1>
     {% set cart_total = 0 %}
     {% if session['cart'] %}
-    <table>
-        <thead>
-        <tr>
-            <th>Item</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Total</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for item in session['cart'] %}
-        <tr>
-            <td>{{ item.name }}</td>
-            <td>{{ item.quantity }}</td>
-            <td>{{ item.price }} INR</td>
-            <td>{{ item.quantity * item.price }} INR</td>
-            {% set cart_total = cart_total + (item.quantity * item.price) %}
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <table>
+            <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in session['cart'] %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.price }} INR</td>
+                <td>{{ item.quantity * item.price }} INR</td>
+                {% set cart_total = cart_total + (item.quantity * item.price) %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    <div class="cart-total">
-        Cart Total: {{ cart_total }} INR
-    </div>
+        <div class="cart-total">
+            Cart Total: {{ cart_total }} INR
+        </div>
 
     <!-- Form for POST to backend -->
     <div class="row">
