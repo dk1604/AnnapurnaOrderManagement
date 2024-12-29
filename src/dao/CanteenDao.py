@@ -20,7 +20,8 @@ def fetch_all(session):
         logging.error("Fetched all records.")
 
         response_list = [
-            menu_table_response(id=row.id, name=row.name, description=row.description, price=row.price) for row in records
+            #menu_table_response(id=row.id, name=row.name, description=row.description, price=row.price) for row in records
+            menu_table_response(id=row.id, name=row.name, price=row.price) for row in records
         ]
         logging.error("Fetched response_list_db %s", response_list)
         return response_list
@@ -52,7 +53,8 @@ def fetch_one(session, item_id):
             logging.error('no record found for: ',item_id)
             raise ValueError("Error: no record found for")
         else:
-            response = menu_table_response(id=record.id, name=record.name, description=record.description, price=record.price)
+            #response = menu_table_response(id=record.id, name=record.name, description=record.description, price=record.price)
+            response = menu_table_response(id=record.id, name=record.name, price=record.price)
             return response
     except Exception as err:
         session.rollback()
