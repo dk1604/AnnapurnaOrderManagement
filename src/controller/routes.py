@@ -168,18 +168,20 @@ def configure_routes(app):
 
         return render_template('order.html', item=item)
 
-    @app.route('/cart')
-    def cart():
-        cart_items = session.get('cart', [])
-        return render_template('cart.html', cart_items=cart_items)
+    # @app.route('/cart')
+    # def cart():
+    #     cart_items = session.get('cart', [])
+    #     total_amount = sum(item['quantity'] * item['price'] for item in cart_items)
+    #     return render_template('cart.html', cart_items=cart_items)
 
     @app.route('/checkout', methods=['GET', 'POST'])
     def checkout():
         cart_items = session.get('cart', [])
+        cart_total = sum(item['quantity'] * item['price'] for item in cart_items)
 
         # If the form is submitted, initiate payment
         if request.method == 'POST':
-            total_amount = sum(item['quantity'] * item['price'] for item in cart_items)
+
             customer_name = (item['name'] for item in cart_items)
             timestamp = int(time.time())
             random_number = random.randint(1000, 9999)
@@ -187,7 +189,7 @@ def configure_routes(app):
 
             try:
                 order_data = {
-                    'order_amount': total_amount,
+                    'order_amount': cart_total,
                     'order_currency': 'INR',
                     'order_id': unique_order_id,  # Unique Order ID
                     'order_note': 'Your order from Annapurna',
@@ -211,7 +213,7 @@ def configure_routes(app):
             except Exception as e:
                 logging.error("error at CashfreeImpl %s", e)
 
-        return render_template('checkout.html', cart_items=cart_items)
+        return render_template('checkout.html', cart_items=cart_items, cart_total=cart_total)
 
     def create_payment_url(order_data):
         url = 'https://sandbox.cashfree.com/pg/orders'
