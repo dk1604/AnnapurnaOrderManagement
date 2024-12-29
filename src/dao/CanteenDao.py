@@ -35,7 +35,8 @@ def fetch_all_by_food_category(session, food_category):
         logging.error("Fetched all records for food category: ", food_category)
 
         response_list = [
-            menu_table_response(id=row.id, name=row.name, description=row.description, price=row.price) for row in records
+            #menu_table_response(id=row.id, name=row.name, description=row.description, price=row.price) for row in records
+            menu_table_response(id=row.id, name=row.name, price=row.price) for row in records
         ]
         logging.error("Fetched response_list_db %s", response_list)
         return response_list
