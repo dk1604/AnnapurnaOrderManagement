@@ -103,6 +103,7 @@
     <h1>Checkout</h1>
 
     {% if session['cart'] %}
+    {% set total = 0 %}
     <table>
         <thead>
         <tr>
@@ -113,7 +114,6 @@
         </tr>
         </thead>
         <tbody>
-        {% set total = 0 %}
         {% for item in session['cart'] %}
         <tr>
             <td>{{ item.name }}</td>
