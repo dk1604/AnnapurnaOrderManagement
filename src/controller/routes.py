@@ -195,7 +195,7 @@ def configure_routes(app):
                     'order_id': unique_order_id,  # Unique Order ID
                     'order_note': 'Your order from Annapurna',
                     'customer_details': {
-                        'customer_id': customer_name,
+                        'customer_id': "Test Customer",
                         'customer_phone': '9999999999',
                         'customer_email': 'customer@example.com'
                     },
