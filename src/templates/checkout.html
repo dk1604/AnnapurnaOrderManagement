@@ -60,7 +60,7 @@
             background-color: #f9f9f9;
         }
 
-        .total {
+        .cart-total {
             font-size: 20px;
             font-weight: bold;
             margin-top: 20px;
@@ -100,10 +100,9 @@
 <body>
 
 <div class="container">
-    <h1>Checkout</h1>
-
+    <h1>Cart Details</h1>
+    {% set cart_total = 0 %}
     {% if session['cart'] %}
-    {% set total = 0 %}
     <table>
         <thead>
         <tr>
@@ -120,19 +119,18 @@
             <td>{{ item.quantity }}</td>
             <td>{{ item.price }} INR</td>
             <td>{{ item.quantity * item.price }} INR</td>
-            {% set total = total + (item.quantity * item.price) %}
+            {% set cart_total = cart_total + (item.quantity * item.price) %}
         </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <div class="total">
-        Total: {{ total }} INR
+    <div class="cart-total">
+        Cart Total: {{ cart_total }} INR
     </div>
 
     <!-- Form for POST to backend -->
     <div class="row">
-        <p>Click below to proceed with the payment</p>
         <button id="renderBtn">Pay Now</button>
     </div>
     <script>
