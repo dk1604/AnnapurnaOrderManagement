@@ -14,6 +14,8 @@ class menu(Base):
     __tablename__ = "menu"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(VARCHAR(250))
+    name = Column(VARCHAR(250), unique=True, nullable=False)
     description = Column(VARCHAR(250))
     price = Column(Integer)
+    food_category = Column(VARCHAR(100))
+
