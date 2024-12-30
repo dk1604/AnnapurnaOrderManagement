@@ -7,3 +7,4 @@ properties~=0.6.1
 pydantic==1.10.5
 cashfree_pg==4.3.6
 requests~=2.32.3
+jsonschema~=4.23.0
