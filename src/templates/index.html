@@ -6,109 +6,107 @@
     <title>Restaurant Menu</title>
     <style>
         /* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f9;
-}
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
 
-h1 {
-    text-align: center;
-    margin-top: 50px;
-    font-size: 24px; /* Adjust font size */
-}
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 24px;
+        }
 
-ul {
-    list-style: none;
-    padding: 0;
-    text-align: center;
-}
+        table {
+            width: 80%; /* Table takes up 80% of the page width */
+            margin: 0 auto; /* Center the table */
+            border-collapse: collapse; /* Remove spacing between table cells */
+        }
 
-li {
-    margin: 10px 0; /* Reduced space between list items */
-}
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #ddd; /* Border for table cells */
+        }
 
-a {
-    display: inline-block;
-    margin-top: 5px;
-    padding: 10px 20px;
-    background-color: #008CBA;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-}
+        th {
+            background-color: #f2f2f2; /* Light gray background for table headers */
+            font-weight: bold;
+        }
 
-a:hover {
-    background-color: #005f75;
-}
+        td {
+            background-color: #fff; /* White background for table data */
+        }
 
-/* Styling for name and price */
-.name, .price {
-    margin: 0;
-    padding: 0;
-    display: inline-block; /* Align name and price on the same line */
-    font-size: 18px; /* Adjust font size */
-}
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #008CBA;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
 
-.price {
-    margin-left: 10px; /* Add space between name and price */
-    color: #008CBA; /* Style price differently (optional) */
-}
+        a:hover {
+            background-color: #005f75;
+        }
 
-/* Media Queries for Mobile Responsiveness */
-@media (max-width: 768px) {
-    h1 {
-        font-size: 20px; /* Adjust font size on smaller screens */
-    }
+        /* Media Queries for Mobile Responsiveness */
+        @media (max-width: 768px) {
+            table {
+                width: 90%; /* Table takes up 90% on smaller screens */
+            }
 
-    ul {
-        padding: 0 10px; /* Add some padding on the sides for smaller screens */
-    }
+            th, td {
+                font-size: 14px; /* Smaller font size for smaller screens */
+                padding: 10px; /* Reduce padding on smaller screens */
+            }
 
-    li {
-        margin: 10px 0;
-        font-size: 16px; /* Adjust font size for mobile */
-    }
+            h1 {
+                font-size: 20px;
+            }
+        }
 
-    a {
-        padding: 12px 25px; /* Increase button padding for easier tapping */
-        font-size: 16px; /* Adjust font size for mobile */
-    }
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 18px; /* Further reduce font size for very small screens */
+            }
 
-    .name, .price {
-        font-size: 16px; /* Adjust font size for mobile */
-        margin-left: 5px; /* Adjust space between name and price */
-    }
-}
+            th, td {
+                font-size: 12px; /* Smaller font size on very small screens */
+            }
 
-@media (max-width: 480px) {
-    h1 {
-        font-size: 18px; /* Further reduce font size for very small screens */
-    }
-
-    li {
-        font-size: 14px; /* Adjust font size for even smaller screens */
-    }
-
-    a {
-        width: 100%; /* Make the button full-width on small screens */
-        text-align: center; /* Center the text in the button */
-    }
-}
+            a {
+                width: 100%; /* Make the button full-width on small screens */
+                text-align: center; /* Center the button text */
+                padding: 12px 0; /* Adjust padding for mobile buttons */
+            }
+        }
     </style>
-<!--    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">-->
 </head>
 <body>
 <h1>Restaurant Menu</h1>
-<ul>
+
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Order Now</th>
+    </tr>
+    </thead>
+    <tbody>
     {% for item in menu_items %}
-    <li>
-        <h3 class="name">{{ item.name }}</h3>
-        <p class="price">{{ item.price }}</p>
-        <a href="{{ url_for('order', item_id=item.id) }}">Order Now</a>
-    </li>
+    <tr>
+        <td>{{ item.name }}</td>
+        <td>{{ item.price }}</td>
+        <td><a href="{{ url_for('order', item_id=item.id) }}">Order Now</a></td>
+    </tr>
     {% endfor %}
-</ul>
+    </tbody>
+</table>
+
 </body>
 </html>
