@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Management</title>
     <style>
+        /* General Styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -17,24 +18,26 @@
             flex-direction: column;
             min-height: 100vh;
             box-sizing: border-box;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
         }
-
+        
         h1 {
             color: #2c3e50;
             margin-bottom: 20px;
             font-size: 2rem; /* Improved readability */
             font-weight: 600;
         }
-
-        /* Food Options Section (Updated for side-by-side buttons) */
+        
+        /* Food Options Section (Side-by-Side Buttons) */
         .food-options {
             display: flex;
             flex-direction: row; /* Change to row for side-by-side buttons */
             justify-content: center; /* Center the buttons horizontally */
             margin-top: 20px;
             gap: 15px; /* Adds space between the buttons */
+            flex-wrap: wrap; /* Allows buttons to wrap on small screens */
         }
-
+        
         /* Button Styles */
         .food-button {
             background-color: #3498db;
@@ -47,17 +50,20 @@
             transition: background-color 0.3s ease, transform 0.2s ease;
             width: 100%; /* Make buttons responsive to the container */
             max-width: 300px; /* Limit the maximum width of each button */
+            box-sizing: border-box;
+            min-height: 60px; /* Make buttons taller for better touch targets */
         }
-
+        
+        /* Button Hover and Active States */
         .food-button:hover {
             background-color: #2980b9;
             transform: translateY(-2px); /* Small lift effect */
         }
-
+        
         .food-button:active {
             transform: translateY(1px); /* Small push effect */
         }
-
+        
         /* Cart Button Styles */
         .cart-button {
             position: fixed;
@@ -72,49 +78,70 @@
             cursor: pointer;
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            min-width: 60px;
+            min-height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-
+        
         .cart-button:hover {
             background-color: #27ae60;
             box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3); /* Slightly larger shadow on hover */
         }
-
+        
         .cart-button:active {
             background-color: #1e8449; /* Darker green when clicked */
         }
-
-        /* Mobile-friendly Styles */
+        
+        /* Mobile-Friendly Styles */
         @media (max-width: 600px) {
-            h1 {
-                font-size: 1.8rem; /* Smaller heading font size */
+            body {
+                padding: 10px; /* Reduce padding for small devices */
             }
-
+        
+            h1 {
+                font-size: 1.8rem; /* Slightly smaller font for smaller screens */
+                text-align: center;
+            }
+        
             .food-button {
                 font-size: 1rem;
-                width: 90%; /* More width for mobile */
+                width: 100%; /* Buttons will take full width on mobile */
+                max-width: none; /* Remove max-width for better responsiveness */
+                padding: 14px 28px; /* Reduced padding for smaller screens */
             }
-
+        
             .cart-button {
                 bottom: 10px;
                 right: 10px;
                 padding: 12px 28px; /* Adjust padding for mobile */
                 font-size: 1rem;
+                min-width: 50px; /* Smaller size on mobile */
+                min-height: 50px;
             }
         }
-
-        /* Styles for Tablets and Larger Screens */
+        
+        /* Tablet and Larger Screens */
         @media (min-width: 601px) {
             body {
                 padding: 20px;
             }
-
+        
             h1 {
-                font-size: 2.2rem; /* Slightly larger font for tablets and desktop */
+                font-size: 2.2rem; /* Larger font for tablets and desktop */
             }
-
+        
             .food-button {
-                font-size: 1rem;
+                font-size: 1.1rem;
                 padding: 16px 36px; /* Adjusted padding */
+                max-width: 300px; /* Keep max-width on larger screens */
+            }
+        
+            .cart-button {
+                bottom: 20px;
+                right: 20px;
+                padding: 16px 40px;
             }
         }
     </style>
