@@ -7,6 +7,7 @@ from alembic import command
 from alembic.config import Config
 from flask import Flask
 
+from admin.src.controller.admin_routes import configure_admin_routes
 from src.controller.routes import configure_routes
 from src.database.PSQLAdapterImpl import PSQLAdapterImpl
 
@@ -17,6 +18,7 @@ def handle_exception(exc_type, exc_value, exc_tb):
     else:
         # Custom behavior for uncaught exceptions (e.g., log it without printing the full stack trace)
         print(f"Handled exception: {exc_value}")
+
 
 sys.excepthook = handle_exception
 
@@ -29,6 +31,8 @@ logging.basicConfig(level=logging.INFO)
 app.secret_key = secrets.token_hex(16)
 
 configure_routes(app)
+configure_admin_routes(app)
+
 
 def run_db_migrations():
     logging.info("Running Alembic migrations")
