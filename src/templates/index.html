@@ -22,21 +22,13 @@
         table {
             width: 80%; /* Table takes up 80% of the page width */
             margin: 0 auto; /* Center the table */
-            border-collapse: collapse; /* Remove spacing between table cells */
-        }
-
-        th, td {
-            padding: 15px;
-            text-align: center;
-            border: 1px solid #ddd; /* Border for table cells */
-        }
-
-        th {
-            background-color: #f2f2f2; /* Light gray background for table headers */
-            font-weight: bold;
+            border-collapse: collapse; /* Ensures there’s no space between table cells */
         }
 
         td {
+            padding: 15px;
+            text-align: center;
+            border: none; /* Remove table borders */
             background-color: #fff; /* White background for table data */
         }
 
@@ -59,7 +51,7 @@
                 width: 90%; /* Table takes up 90% on smaller screens */
             }
 
-            th, td {
+            td {
                 font-size: 14px; /* Smaller font size for smaller screens */
                 padding: 10px; /* Reduce padding on smaller screens */
             }
@@ -74,7 +66,7 @@
                 font-size: 18px; /* Further reduce font size for very small screens */
             }
 
-            th, td {
+            td {
                 font-size: 12px; /* Smaller font size on very small screens */
             }
 
@@ -90,13 +82,6 @@
 <h1>Restaurant Menu</h1>
 
 <table>
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Order Now</th>
-    </tr>
-    </thead>
     <tbody>
     {% for item in menu_items %}
     <tr>
