@@ -86,6 +86,23 @@ def configure_routes(app):
         except Exception as e:
             logging.error("exception at getting index......%s", str(e))
 
+    # Route for Non-Veg
+    @app.route('/chinese')
+    def chinese():
+        logging.error("inside chinese menu")
+        try:
+            menu_items = get_all_options_by_food_category("chinese")
+
+            if not menu_items:  # If the list is empty
+                logging.error("menu items are none")
+                return render_template('index.html', menu_items=None)  # Pass `None` or empty list
+
+            # If the menu is not empty, render the template with data
+            logging.error("menu_items........", menu_items)
+            return render_template('index.html', menu_items=menu_items)
+        except Exception as e:
+            logging.error("exception at getting index......%s", str(e))
+
     @app.route('/desert')
     def desert():
         logging.error("inside desert menu")
