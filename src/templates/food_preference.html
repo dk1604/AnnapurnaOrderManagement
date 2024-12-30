@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Management</title>
-  <style>
-        /* General styles */
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Management</title>
+    <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -17,88 +16,105 @@
             align-items: center;
             flex-direction: column;
             min-height: 100vh;
+            box-sizing: border-box;
         }
 
         h1 {
             color: #2c3e50;
             margin-bottom: 20px;
-            font-size: 24px;
+            font-size: 2rem; /* Improved readability */
+            font-weight: 600;
         }
 
+        /* Food Options Section (Updated for side-by-side buttons) */
         .food-options {
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            flex-direction: row; /* Change to row for side-by-side buttons */
+            justify-content: center; /* Center the buttons horizontally */
             margin-top: 20px;
+            gap: 15px; /* Adds space between the buttons */
         }
 
+        /* Button Styles */
         .food-button {
             background-color: #3498db;
             color: white;
             border: none;
-            padding: 15px 30px;
-            font-size: 18px;
+            padding: 16px 32px; /* Added more space for better touch target */
+            font-size: 1.125rem; /* Slightly larger text */
             cursor: pointer;
-            border-radius: 5px;
-            margin: 10px;
-            transition: background-color 0.3s;
-            width: 80%;
-            max-width: 300px;
+            border-radius: 8px; /* Rounded corners */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: 100%; /* Make buttons responsive to the container */
+            max-width: 300px; /* Limit the maximum width of each button */
         }
 
         .food-button:hover {
             background-color: #2980b9;
+            transform: translateY(-2px); /* Small lift effect */
         }
 
+        .food-button:active {
+            transform: translateY(1px); /* Small push effect */
+        }
+
+        /* Cart Button Styles */
         .cart-button {
             position: fixed;
             bottom: 20px;
             right: 20px;
             background-color: #2ecc71;
             color: white;
-            padding: 15px 40px;
-            font-size: 18px;
+            padding: 16px 40px;
+            font-size: 1.125rem;
             border-radius: 50%;
             border: none;
             cursor: pointer;
-            transition: background-color 0.3s;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         .cart-button:hover {
             background-color: #27ae60;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3); /* Slightly larger shadow on hover */
         }
 
-        /* Mobile-friendly styles */
+        .cart-button:active {
+            background-color: #1e8449; /* Darker green when clicked */
+        }
+
+        /* Mobile-friendly Styles */
         @media (max-width: 600px) {
             h1 {
-                font-size: 22px;
+                font-size: 1.8rem; /* Smaller heading font size */
             }
 
             .food-button {
-                font-size: 16px;
-                width: 90%;
+                font-size: 1rem;
+                width: 90%; /* More width for mobile */
             }
 
             .cart-button {
                 bottom: 10px;
                 right: 10px;
-                padding: 12px 22px;
+                padding: 12px 28px; /* Adjust padding for mobile */
+                font-size: 1rem;
             }
         }
 
-        /* Styles for tablets and larger screens */
+        /* Styles for Tablets and Larger Screens */
         @media (min-width: 601px) {
             body {
                 padding: 20px;
             }
 
             h1 {
-                font-size: 28px;
+                font-size: 2.2rem; /* Slightly larger font for tablets and desktop */
             }
 
             .food-button {
-                font-size: 15px 40px;
+                font-size: 1rem;
+                padding: 16px 36px; /* Adjusted padding */
             }
         }
     </style>
@@ -107,11 +123,11 @@
 <h1>Welcome to the Annapurna Order Management System</h1>
 <p>Select Your Food Preference</p>
 <div class="food-options">
-  <button class="food-button" onclick="location.href='/veg'">Veg</button>
-  <button class="food-button" onclick="location.href='/non_veg'">Non-Veg</button>
-  <button class="food-button" onclick="location.href='/chinese'">Chinese</button>
-  <button class="food-button" onclick="location.href='/desert'">Desert</button>
-  <button class="food-button" onclick="location.href='/all'">All</button>
+    <button class="food-button" onclick="location.href='/veg'">Veg</button>
+    <button class="food-button" onclick="location.href='/non_veg'">Non-Veg</button>
+    <button class="food-button" onclick="location.href='/chinese'">Chinese</button>
+    <button class="food-button" onclick="location.href='/desert'">Desert</button>
+    <button class="food-button" onclick="location.href='/all'">All</button>
 </div>
 <button class="cart-button" onclick="location.href='/checkout'">Go to Cart</button>
 </body>
