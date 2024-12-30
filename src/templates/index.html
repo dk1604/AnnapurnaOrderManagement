@@ -4,16 +4,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant Menu</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 24px; /* Adjust font size */
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
+
+li {
+    margin: 10px 0; /* Reduced space between list items */
+}
+
+a {
+    display: inline-block;
+    margin-top: 5px;
+    padding: 10px 20px;
+    background-color: #008CBA;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+a:hover {
+    background-color: #005f75;
+}
+
+/* Styling for name and price */
+.name, .price {
+    margin: 0;
+    padding: 0;
+    display: inline-block; /* Align name and price on the same line */
+    font-size: 18px; /* Adjust font size */
+}
+
+.price {
+    margin-left: 10px; /* Add space between name and price */
+    color: #008CBA; /* Style price differently (optional) */
+}
+
+/* Media Queries for Mobile Responsiveness */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 20px; /* Adjust font size on smaller screens */
+    }
+
+    ul {
+        padding: 0 10px; /* Add some padding on the sides for smaller screens */
+    }
+
+    li {
+        margin: 10px 0;
+        font-size: 16px; /* Adjust font size for mobile */
+    }
+
+    a {
+        padding: 12px 25px; /* Increase button padding for easier tapping */
+        font-size: 16px; /* Adjust font size for mobile */
+    }
+
+    .name, .price {
+        font-size: 16px; /* Adjust font size for mobile */
+        margin-left: 5px; /* Adjust space between name and price */
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 18px; /* Further reduce font size for very small screens */
+    }
+
+    li {
+        font-size: 14px; /* Adjust font size for even smaller screens */
+    }
+
+    a {
+        width: 100%; /* Make the button full-width on small screens */
+        text-align: center; /* Center the text in the button */
+    }
+}
+    </style>
+<!--    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">-->
 </head>
 <body>
 <h1>Restaurant Menu</h1>
 <ul>
     {% for item in menu_items %}
     <li>
-        <h3>{{ item.name }}</h3>
-        <p>{{ item.description }}</p>
-        <p>{{ item.price }}</p>
+        <h3 class="name">{{ item.name }}</h3>
+        <p class="price">{{ item.price }}</p>
         <a href="{{ url_for('order', item_id=item.id) }}">Order Now</a>
     </li>
     {% endfor %}
