@@ -63,11 +63,14 @@ def configure_routes(app):
                 logging.error("menu items are none")
                 return render_template('index.html', menu_items=None)  # Pass `None` or empty list
 
+            # Retrieve cart quantities from the session
+            cart = session.get('cart', [])
+            cart_quantities = {item['id']: item['quantity'] for item in cart}
             # If the menu is not empty, render the template with data
-            logging.error("menu_items........", menu_items)
-            return render_template('index.html', menu_items=menu_items)
+            logging.error("menu_items........%s", menu_items)
+            return render_template('index.html', menu_items=menu_items, cart_quantities=cart_quantities)
         except Exception as e:
-            logging.error("exception at getting index......%s", str(e))
+            logging.error("exception at getting veg......%s", str(e))
 
     # Route for Non-Veg
     @app.route('/non_veg')
@@ -80,11 +83,14 @@ def configure_routes(app):
                 logging.error("menu items are none")
                 return render_template('index.html', menu_items=None)  # Pass `None` or empty list
 
+            # Retrieve cart quantities from the session
+            cart = session.get('cart', [])
+            cart_quantities = {item['id']: item['quantity'] for item in cart}
             # If the menu is not empty, render the template with data
             logging.error("menu_items........", menu_items)
-            return render_template('index.html', menu_items=menu_items)
+            return render_template('index.html', menu_items=menu_items, cart_quantities=cart_quantities)
         except Exception as e:
-            logging.error("exception at getting index......%s", str(e))
+            logging.error("exception at getting non_veg......%s", str(e))
 
     # Route for Non-Veg
     @app.route('/chinese')
@@ -97,11 +103,14 @@ def configure_routes(app):
                 logging.error("menu items are none")
                 return render_template('index.html', menu_items=None)  # Pass `None` or empty list
 
+            # Retrieve cart quantities from the session
+            cart = session.get('cart', [])
+            cart_quantities = {item['id']: item['quantity'] for item in cart}
             # If the menu is not empty, render the template with data
             logging.error("menu_items........", menu_items)
-            return render_template('index.html', menu_items=menu_items)
+            return render_template('index.html', menu_items=menu_items, cart_quantities=cart_quantities)
         except Exception as e:
-            logging.error("exception at getting index......%s", str(e))
+            logging.error("exception at getting chinese......%s", str(e))
 
     @app.route('/desert')
     def desert():
@@ -113,11 +122,14 @@ def configure_routes(app):
                 logging.error("menu items are none")
                 return render_template('index.html', menu_items=None)  # Pass `None` or empty list
 
+            # Retrieve cart quantities from the session
+            cart = session.get('cart', [])
+            cart_quantities = {item['id']: item['quantity'] for item in cart}
             # If the menu is not empty, render the template with data
             logging.error("menu_items........", menu_items)
-            return render_template('index.html', menu_items=menu_items)
+            return render_template('index.html', menu_items=menu_items, cart_quantities=cart_quantities)
         except Exception as e:
-            logging.error("exception at getting index......%s", str(e))
+            logging.error("exception at getting desert......%s", str(e))
 
     # Route for All options
     @app.route('/all')
@@ -131,60 +143,130 @@ def configure_routes(app):
                 logging.error("menu items are none")
                 return render_template('index.html', menu_items=None)  # Pass `None` or empty list
 
+            # Retrieve cart quantities from the session
+            cart = session.get('cart', [])
+            cart_quantities = {item['id']: item['quantity'] for item in cart}
             # If the menu is not empty, render the template with data
             logging.error("menu_items........", menu_items)
-            return render_template('index.html', menu_items=menu_items)
+            return render_template('index.html', menu_items=menu_items, cart_quantities=cart_quantities)
         except Exception as e:
-            logging.error("exception at getting index......%s", str(e))
+            logging.error("exception at getting all......%s", str(e))
 
     # Order route
-    @app.route('/order/<int:item_id>', methods=['GET', 'POST'])
-    def order(item_id):
-        item = get_order_item_by_id(item_id)
-        logging.error("item............%s", item)
+    # @app.route('/order/<int:item_id>', methods=['GET', 'POST'])
+    # def order(item_id):
+    #     item = get_order_item_by_id(item_id)
+    #     logging.error("item............%s", item)
+    #
+    #     if request.method == 'POST':
+    #         # Here you can add order functionality (e.g., save the order)
+    #         name = request.form['name']
+    #         quantity = int(request.form['quantity'])
+    #         logging.error("name, quantity, item, price....%s, %s, %s, %s", name, quantity, item.name, item.price)
+    #         logging.error("name, quantity, item, price....%s, %s, %s, %s", type(name), type(quantity), type(item.name),
+    #                       type(item.price))
+    #
+    #         # logic to add item and quantity in cart and maintain session
+    #         if 'cart' not in session:
+    #             session['cart'] = []  # Initialize the cart if it doesn't exist
+    #
+    #         # Check if the item already exists in the cart
+    #         item_exists = False
+    #         for cart_item in session['cart']:
+    #             logging.error("cart item exist............%s", cart_item)
+    #             if cart_item['id'] == item.id:
+    #                 logging.error("cart item qty............%s", cart_item['quantity'])
+    #                 cart_item['quantity'] += quantity  # Update the quantity if item is already in the cart
+    #                 # cart_item['price'] += item.price  # Update the quantity if item is already in the cart
+    #                 item_exists = True
+    #                 break
+    #
+    #         if not item_exists:
+    #             logging.error("cart item not exist............")
+    #             # If the item doesn't exist in the cart, add it
+    #             session['cart'].append({
+    #                 'id': item.id,
+    #                 'name': item.name,
+    #                 'quantity': quantity,
+    #                 'price': item.price
+    #             })
+    #         # Log the cart for debugging purposes
+    #         logging.error("Updated cart: %s", session['cart'])
+    #
+    #         # Save session data
+    #         session.modified = True
+    #
+    #         # You can save this to an "orders" table or send a confirmation email
+    #         return redirect(url_for('food_preference'))
+    #
+    #     return render_template('order.html', item=item)
 
+    @app.route('/order', methods=['GET', 'POST'])
+    def order():
+        logging.error("inside order route....")
         if request.method == 'POST':
-            # Here you can add order functionality (e.g., save the order)
-            name = request.form['name']
-            quantity = int(request.form['quantity'])
-            logging.error("name, quantity, item, price....%s, %s, %s, %s", name, quantity, item.name, item.price)
-            logging.error("name, quantity, item, price....%s, %s, %s, %s", type(name), type(quantity), type(item.name),
-                          type(item.price))
+            logging.error("inside order route POST....%s", request.form)
+            # Get all item_id and quantity query parameters
+            item_ids = request.form.getlist('item_id')
+            quantities = request.form.getlist('quantity')
+            logging.error("item_ids............%s", item_ids)
+            logging.error("quantities............%s", quantities)
 
-            # logic to add item and quantity in cart and maintain session
+            if len(item_ids) != len(quantities):
+                return "Mismatch between item_ids and quantities", 400
+
+            # Ensure item_ids and quantities are valid
+            item_data = []
+            for item_id, quantity in zip(item_ids, quantities):
+                try:
+                    item_id = int(item_id)
+                    quantity = int(quantity)
+                    if quantity < 1:
+                        raise ValueError("Quantity must be greater than 0")
+
+                    item = get_order_item_by_id(item_id)
+                    if item is None:
+                        return f"Item with ID {item_id} not found", 404
+
+                    logging.error("item_data..........%s", item_data)
+                    item_data.append({'id': item.id, 'name': item.name, 'quantity': quantity, 'price': item.price})
+                except ValueError as e:
+                    return f"Invalid input: {e}", 400
+
+            # Add items to the cart
             if 'cart' not in session:
-                session['cart'] = []  # Initialize the cart if it doesn't exist
+                session['cart'] = []
 
-            # Check if the item already exists in the cart
-            item_exists = False
-            for cart_item in session['cart']:
-                logging.error("cart item exist............%s", cart_item)
-                if cart_item['id'] == item.id:
-                    logging.error("cart item qty............%s", cart_item['quantity'])
-                    cart_item['quantity'] += quantity  # Update the quantity if item is already in the cart
-                    # cart_item['price'] += item.price  # Update the quantity if item is already in the cart
-                    item_exists = True
-                    break
+            for item in item_data:
+                item_exists = False
+                for cart_item in session['cart']:
+                    if cart_item['id'] == item['id']:
+                        logging.error("cart_item['quantity'].............%s", cart_item['quantity'])
+                        cart_item['quantity'] = 0
+                        logging.error("reset cart_item['quantity'].............%s", cart_item['quantity'])
+                        logging.error("item['quantity'].............%s", item['quantity'])
+                        cart_item['quantity'] += item['quantity']
+                        item_exists = True
+                        break
 
-            if not item_exists:
-                logging.error("cart item not exist............")
-                # If the item doesn't exist in the cart, add it
-                session['cart'].append({
-                    'id': item.id,
-                    'name': item.name,
-                    'quantity': quantity,
-                    'price': item.price
-                })
-            # Log the cart for debugging purposes
+                if not item_exists:
+                    logging.error("item not exist %s", item)
+                    session['cart'].append(item)
+
+            # Log the updated cart
             logging.error("Updated cart: %s", session['cart'])
 
             # Save session data
             session.modified = True
 
-            # You can save this to an "orders" table or send a confirmation email
+            # Redirect to the next page (e.g., food preference or cart summary)
             return redirect(url_for('food_preference'))
 
-        return render_template('order.html', item=item)
+        # Handle GET request to display the menu
+        # Retrieve cart quantities from session
+        cart = session.get('cart', [])
+        cart_quantities = {item['item_id']: item['quantity'] for item in cart}
+        return redirect(url_for('food_preference'))
 
     # @app.route('/cart')
     # def cart():
@@ -214,6 +296,7 @@ def configure_routes(app):
 
         # If the form is submitted, initiate payment
         if request.method == 'POST':
+            logging.error("inside checkout route of POST....")
 
             customer_name = (item['name'] for item in cart_items)
             timestamp = int(time.time())
@@ -255,8 +338,16 @@ def configure_routes(app):
         if order_id:
             logging.error("order successfully processed and order token generated %s", order_token)
 
+            cart_items = session.get('cart', [])
+            cart_total = sum(item['quantity'] * item['price'] for item in cart_items)
+
+            logging.error("ORDER SUCCESS ***** cart_items %s", cart_items)
+            logging.error("ORDER SUCCESS ***** cart_total %s", cart_total)
+            logging.error("ORDER SUCCESS ***** order_token %s", order_token)
+
             # Clear cart session after successful payment
             session.pop('cart', None)
+            session.pop('cart_timestamp', None)
 
             return render_template('success.html', order_id=order_id, order_token=order_token)
         else:
