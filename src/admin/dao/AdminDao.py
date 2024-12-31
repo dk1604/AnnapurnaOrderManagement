@@ -1,6 +1,6 @@
 import logging
 
-from admin.src.models.AdminModel import CanteenMenu
+from src.admin.models.AdminModel import CanteenMenu
 
 
 def save_dao(session, event):
