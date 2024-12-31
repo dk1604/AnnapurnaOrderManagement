@@ -239,6 +239,10 @@ def configure_routes(app):
 
         if order_id:
             logging.error("order successfully processed and order token generated %s", order_token)
+
+            # Clear cart session after successful payment
+            session.pop('cart', None)
+
             return render_template('success.html', order_id=order_id, order_token=order_token)
         else:
             logging.error("no order_id found. Please place your order again. "
