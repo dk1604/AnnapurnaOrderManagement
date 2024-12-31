@@ -7,8 +7,8 @@ from http import HTTPStatus
 from flask import Flask, request, Response
 from flask.sansio.blueprints import Blueprint
 
-from admin.src.models.AdminModel import CanteenMenu
-from admin.src.service.AdminService import save_service
+from src.admin.src.models.AdminModel import CanteenMenu
+from src.admin.src.service.AdminService import save_service
 
 admin_routes_blueprint = Blueprint("admin_routes", __name__)
 logging.basicConfig(level=logging.INFO)
