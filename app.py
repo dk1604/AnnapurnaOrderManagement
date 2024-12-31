@@ -10,6 +10,8 @@ from flask import Flask
 # from admin.src.controller.admin_routes import configure_admin_routes
 from src.controller.routes import configure_routes
 from src.database.PSQLAdapterImpl import PSQLAdapterImpl
+logging.error("path....%s", sys.path)
+logging.error("Current working directory: %s", os.getcwd())
 
 
 def handle_exception(exc_type, exc_value, exc_tb):
