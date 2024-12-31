@@ -149,13 +149,29 @@
 <body>
 <h1>Welcome to the Annapurna Order Management System</h1>
 <p>Select Your Food Preference</p>
-<div class="food-options">
-    <button class="food-button" onclick="location.href='/veg'">Veg</button>
-    <button class="food-button" onclick="location.href='/non_veg'">Non-Veg</button>
-    <button class="food-button" onclick="location.href='/chinese'">Chinese</button>
-    <button class="food-button" onclick="location.href='/desert'">Desert</button>
-    <button class="food-button" onclick="location.href='/all'">All</button>
-</div>
+
+<!-- Form for food options -->
+<form method="POST" action="/food_type">
+    <div class="food-options">
+        <!-- Veg button -->
+        <button type="submit" name="foodType" value="veg" class="food-button">Veg</button>
+
+        <!-- Non-Veg button -->
+        <button type="submit" name="foodType" value="non_veg" class="food-button">Non-Veg</button>
+
+        <!-- Chinese button -->
+        <button type="submit" name="foodType" value="chinese" class="food-button">Chinese</button>
+
+        <!-- Desert button -->
+        <button type="submit" name="foodType" value="desert" class="food-button">Desert</button>
+
+        <!-- All button -->
+        <button type="submit" name="foodType" value="all" class="food-button">All</button>
+    </div>
+</form>
+
+<!-- Cart Button -->
 <button class="cart-button" onclick="location.href='/checkout'">Go to Cart</button>
+
 </body>
 </html>
