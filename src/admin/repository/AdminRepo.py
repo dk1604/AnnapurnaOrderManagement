@@ -1,7 +1,7 @@
 import logging
 import sys
 
-from admin.src.dao.AdminDao import save_dao
+from src.admin.dao.AdminDao import save_dao
 from src.database.DbModels import menu
 from src.database.PSQLAdapterImpl import SessionFactory
 
