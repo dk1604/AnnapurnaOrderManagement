@@ -7,7 +7,7 @@ from alembic import command
 from alembic.config import Config
 from flask import Flask
 
-# from admin.src.controller.admin_routes import configure_admin_routes
+from src.admin.controller.admin_routes import configure_admin_routes
 from src.controller.routes import configure_routes
 from src.database.PSQLAdapterImpl import PSQLAdapterImpl
 logging.error("path....%s", sys.path)
@@ -33,7 +33,7 @@ logging.basicConfig(level=logging.INFO)
 app.secret_key = secrets.token_hex(16)
 
 configure_routes(app)
-# configure_admin_routes(app)
+configure_admin_routes(app)
 
 
 def run_db_migrations():
