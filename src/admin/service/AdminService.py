@@ -1,4 +1,4 @@
-from admin.src.repository.AdminRepo import save_repo
+from src.admin.repository.AdminRepo import save_repo
 
 
 def save_service(data):
