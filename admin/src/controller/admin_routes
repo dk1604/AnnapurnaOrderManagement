@@ -4,7 +4,8 @@ import os
 import sys
 from http import HTTPStatus
 
-from flask import Flask, Blueprint, request, Response
+from flask import Flask, request, Response
+from flask.sansio.blueprints import Blueprint
 
 from admin.src.models.AdminModel import CanteenMenu
 from admin.src.service.AdminService import save_service
