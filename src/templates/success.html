@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -61,7 +61,9 @@
 
   <div class="token">
     Order ID: <strong>{{ order_id }}</strong></br>
-    Order Token: <strong>{{ order_token }}</strong>
+    Order Token: <strong>{{ order_token }}</strong></br>
+    User Name: <strong>{{ user_name }}</strong></br>
+    User Phone: <strong>{{ user_phone }}</strong></br>
   </div>
 
   <a href="{{ url_for('food_preference') }}" class="back-link">Back to Home</a>
