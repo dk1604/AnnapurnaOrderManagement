@@ -125,9 +125,6 @@ def configure_routes(app):
     @app.route('/checkout', methods=['GET', 'POST'])
     def checkout():
         # Initialize the cart if it's not already in the session
-        unique_order_id = ""
-        user_name = ""
-        user_phone = ""
         if 'cart' not in session:
             session['cart'] = []
             session['cart_timestamp'] = time.time()  # Store the timestamp of cart creation
@@ -145,13 +142,14 @@ def configure_routes(app):
         cart_items = session.get('cart', [])
         cart_total = sum(item['quantity'] * item['price'] for item in cart_items)
 
+        timestamp = int(time.time())
+        random_number = random.randint(1000, 9999)
+        unique_order_id = f"ORD{timestamp}{random_number}"
+
         # If the form is submitted, initiate payment
         if request.method == 'POST':
             logging.error("inside checkout route of POST....")
 
-            timestamp = int(time.time())
-            random_number = random.randint(1000, 9999)
-            unique_order_id = f"ORD{timestamp}{random_number}"
             data = request.get_json()
             user_name = data.get('user_name')
             user_phone = data.get('user_phone')
@@ -167,8 +165,8 @@ def configure_routes(app):
                 'order_id': unique_order_id,  # Unique Order ID
                 'order_note': 'Your order from Annapurna',
                 'customer_details': {
-                    'customer_id': user_name,
-                    'customer_phone': user_phone,
+                    'customer_id': session.get("user_name"),
+                    'customer_phone': session.get("user_name"),
                     'customer_email': 'customer@example.com'
                 },
                 "order_meta": {
