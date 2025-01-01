@@ -211,7 +211,7 @@ def configure_routes(app):
             # session.pop('user_name', None)
             # session.pop('user_phone', None)
 
-            return render_template('success.html', order_id=order_id, order_token=order_token)
+            return render_template('success.html', order_id=order_id, order_token=order_token, user_name=user_name, user_phone=user_phone)
         else:
             logging.error("no order_id found. Please place your order again. "
                           "Routing to main menu again. sorry for the inconvenience")
