@@ -134,7 +134,7 @@ def configure_routes(app):
         current_time = time.time()
         cart_timestamp = session.get('cart_timestamp')
 
-        if cart_timestamp and current_time - cart_timestamp > Properties.time_to_nullify_session:  # 300 seconds = 5 minutes
+        if cart_timestamp and current_time - cart_timestamp > int(Properties.time_to_nullify_session):  # 300 seconds = 5 minutes
             logging.error("Cart session expired.")
             session.pop('cart', None)  # Clear the cart
             session.pop('cart_timestamp', None)  # Clear the timestamp
