@@ -139,6 +139,9 @@
 </div>
 
 <script>
+    var currentCart = {{ session.get('cart', []) | tojson }};
+    console.log(currentCart);
+
     // Function to adjust the quantity
     function adjustQuantity(itemId, change) {
         var quantityDisplay = document.getElementById('quantity-' + itemId);
@@ -162,17 +165,24 @@
     function submitOrder() {
         var items = [];
         var quantityInputs = document.querySelectorAll('input[type="number"]'); // All quantity input fields
-        console.log('quantityInputs...', quantityInputs)
 
         quantityInputs.forEach(function(input) {
             var itemId = input.id.split('-')[1];  // Extract item ID from the input field ID
             var quantity = parseInt(input.value);
 
-            // Only add items to the cart if the quantity is greater than 0
-            if (quantity > 0) {
+            var existingItem = currentCart.find(item => item.id == itemId);
+
+            if (existingItem) {
                 items.push({ itemId: itemId, quantity: quantity });
+            } else {
+                // Add the item if it's not in the cart
+                console.log('Item added to the cart');
+                if (quantity > 0) {
+                    items.push({ itemId: itemId, quantity: quantity });
+                }
             }
         });
+
 
         if (items.length > 0) {
             // Create a form dynamically
