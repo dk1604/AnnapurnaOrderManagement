@@ -125,7 +125,9 @@ def configure_routes(app):
     @app.route('/checkout', methods=['GET', 'POST'])
     def checkout():
         # Initialize the cart if it's not already in the session
-        global unique_order_id, user_name, user_phone
+        unique_order_id = ""
+        user_name = ""
+        user_phone = ""
         if 'cart' not in session:
             session['cart'] = []
             session['cart_timestamp'] = time.time()  # Store the timestamp of cart creation
