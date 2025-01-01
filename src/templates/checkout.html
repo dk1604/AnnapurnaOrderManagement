@@ -93,6 +93,24 @@
         .back-link:hover {
             text-decoration: underline;
         }
+
+        /* Form styling */
+        .user-details {
+            margin-top: 20px;
+        }
+
+        .user-details label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .user-details input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -125,6 +143,15 @@
         Cart Total: {{ cart_total }} INR
     </div>
 
+    <!-- User Details Form -->
+    <div class="user-details">
+        <label for="user_name">Name</label>
+        <input type="text" id="user_name" placeholder="Enter your name" required>
+
+        <label for="user_phone">Phone Number</label>
+        <input type="text" id="user_phone" placeholder="Enter your phone number" required>
+    </div>
+
     <!-- Form for POST to backend -->
     <div class="row">
         <button id="renderBtn">Pay Now</button>
@@ -132,6 +159,16 @@
     <script>
         // Listen for the "Pay Now" button click to create payment session
         document.getElementById("renderBtn").addEventListener("click", () => {
+            // Get user details from form
+            const userName = document.getElementById('user_name').value;
+            const userPhone = document.getElementById('user_phone').value;
+
+            // Validate user details
+            if (!userName || !userPhone) {
+                alert('Please enter both your name and phone number');
+                return;
+            }
+
             // Send a request to the backend to create a payment session
             fetch('/checkout', {
                 method: 'POST',  // Using POST to trigger payment session creation
@@ -139,18 +176,17 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    // Send necessary data, like cart items, customer details, etc., if needed
+                    user_name: userName,
+                    user_phone: userPhone
                 })
             })
             .then(response => {
-                console.log("Raw Response:", response);
-                return response.json()
+                return response.json();
             })
             .then(data => {
                 console.log("Payment Session ID received:", data);
                 if (data.payment_session_id) {
                     // Store the payment session ID for later use
-                    console.log("Payment Session ID received:", data.payment_session_id);
                     window.paymentSessionId = data.payment_session_id;
 
                     // Now trigger Cashfree checkout
@@ -172,7 +208,6 @@
                 console.error('Error during fetch: ', error);
             });
         });
-
     </script>
 
     <a href="{{ url_for('food_preference') }}" class="back-link">Back to Menu</a>
