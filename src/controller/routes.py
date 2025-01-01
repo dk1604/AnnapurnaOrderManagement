@@ -210,8 +210,8 @@ def configure_routes(app):
             # Clear cart session after successful payment
             session.pop('cart', None)
             session.pop('cart_timestamp', None)
-            # session.pop('user_name', None)
-            # session.pop('user_phone', None)
+            session.pop('user_name', None)
+            session.pop('user_phone', None)
 
             return render_template('success.html', order_id=order_id, order_token=order_token, user_name=user_name, user_phone=user_phone)
         else:
