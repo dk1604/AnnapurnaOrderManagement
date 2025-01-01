@@ -7,6 +7,7 @@ x_api_version = "2023-08-01"
 
 
 def get_cashfree_payment_session(order_data):
+    logging.error("customer data .............%s", order_data)
     url = 'https://sandbox.cashfree.com/pg/orders'
     headers = {
         'Content-Type': 'application/json',
