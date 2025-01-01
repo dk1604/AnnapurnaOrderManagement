@@ -77,12 +77,6 @@ def configure_routes(app):
                 try:
                     item_id = int(item_id)
                     quantity = int(quantity)
-                    # if (quantity < 1) & len(quantities) < 0:
-                    #     raise ValueError("Quantity must be greater than 0")
-                    # elif (quantity == 0):
-                    #     logging.error("item_data with 0 ........%s", type(item_data))
-                    #     item_data
-
                     item = get_order_item_by_id(item_id)
                     if item is None:
                         return f"Item with ID {item_id} not found", 404
@@ -131,6 +125,7 @@ def configure_routes(app):
     @app.route('/checkout', methods=['GET', 'POST'])
     def checkout():
         # Initialize the cart if it's not already in the session
+        global unique_order_id, user_name, user_phone
         if 'cart' not in session:
             session['cart'] = []
             session['cart_timestamp'] = time.time()  # Store the timestamp of cart creation
@@ -155,39 +150,52 @@ def configure_routes(app):
             timestamp = int(time.time())
             random_number = random.randint(1000, 9999)
             unique_order_id = f"ORD{timestamp}{random_number}"
+            data = request.get_json()
+            user_name = data.get('user_name')
+            user_phone = data.get('user_phone')
+            if user_name and user_phone:
+                session['user_name'] = user_name
+                session['user_phone'] = user_phone
+                session['order_token'] = unique_order_id
 
-            try:
-                order_data = {
-                    'order_amount': cart_total,
-                    'order_currency': Constants.CURRENCY,
-                    'order_id': unique_order_id,  # Unique Order ID
-                    'order_note': 'Your order from Annapurna',
-                    'customer_details': {
-                        'customer_id': "Customer_123",
-                        'customer_phone': '9999999999',
-                        'customer_email': 'customer@example.com'
-                    },
-                    "order_meta": {
-                        "return_url": f"{Properties.base_url}/payment/success?order_id={unique_order_id}"
-                    }
+        try:
+            order_data = {
+                'order_amount': cart_total,
+                'order_currency': Constants.CURRENCY,
+                'order_id': unique_order_id,  # Unique Order ID
+                'order_note': 'Your order from Annapurna',
+                'customer_details': {
+                    'customer_id': user_name,
+                    'customer_phone': user_phone,
+                    'customer_email': 'customer@example.com'
+                },
+                "order_meta": {
+                    "return_url": f"{Properties.base_url}/payment/success?order_id={unique_order_id}"
                 }
-                payment_session_id = get_cashfree_payment_session(order_data)
+            }
+            payment_session_id = get_cashfree_payment_session(order_data)
 
-                if payment_session_id:
-                    return jsonify({'payment_session_id': payment_session_id})
-                else:
-                    return jsonify({'error': 'Error creating payment session'})
-            except Exception as e:
-                logging.error("error at CashfreeImpl %s", e)
+            if payment_session_id:
+                return jsonify({'payment_session_id': payment_session_id})
+            else:
+                return jsonify({'error': 'Error creating payment session'})
+        except Exception as e:
+            logging.error("error at CashfreeImpl %s", e)
 
         return render_template('checkout.html', cart_items=cart_items, cart_total=cart_total)
 
     @app.route('/payment/success', methods=['GET'])
     def payment_success():
+        logging.error("==============Inside payment success====================")
         order_id = request.args.get('order_id')
-        order_token = "Token_123"  # Example of another parameter from Cashfree
 
         if order_id:
+            order_token = session.get('order_token')  # Example of another parameter from Cashfree
+            logging.error("session order token post payment success %s", order_token)
+            user_name = session.get('user_name')
+            user_phone = session.get('user_phone')
+            logging.error("session user_name post payment success %s", user_name)
+            logging.error("session user_phone post payment success %s", user_phone)
             logging.error("order successfully processed and order token generated %s", order_token)
 
             cart_items = session.get('cart', [])
@@ -200,6 +208,8 @@ def configure_routes(app):
             # Clear cart session after successful payment
             session.pop('cart', None)
             session.pop('cart_timestamp', None)
+            # session.pop('user_name', None)
+            # session.pop('user_phone', None)
 
             return render_template('success.html', order_id=order_id, order_token=order_token)
         else:
