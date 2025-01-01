@@ -159,13 +159,14 @@ def configure_routes(app):
                 session['order_token'] = unique_order_id
 
             try:
+                customer_id = f"{user_name.replace(' ', '_')}_{random_number}"
                 order_data = {
                     'order_amount': cart_total,
                     'order_currency': Constants.CURRENCY,
                     'order_id': unique_order_id,  # Unique Order ID
                     'order_note': 'Your order from Annapurna',
                     'customer_details': {
-                        'customer_id': f"{user_name}-{random_number}",
+                        'customer_id': customer_id,
                         'customer_name': user_name,
                         'customer_phone': user_phone,
                         'customer_email': 'customer@example.com'
