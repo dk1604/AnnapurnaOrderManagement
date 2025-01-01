@@ -144,12 +144,12 @@ def configure_routes(app):
 
         timestamp = int(time.time())
         random_number = random.randint(1000, 9999)
-        unique_order_id = f"ORD{timestamp}{random_number}"
 
         # If the form is submitted, initiate payment
         if request.method == 'POST':
             logging.error("inside checkout route of POST....")
 
+            unique_order_id = f"ORD{timestamp}{random_number}"
             data = request.get_json()
             user_name = data.get('user_name')
             user_phone = data.get('user_phone')
@@ -158,29 +158,29 @@ def configure_routes(app):
                 session['user_phone'] = user_phone
                 session['order_token'] = unique_order_id
 
-        try:
-            order_data = {
-                'order_amount': cart_total,
-                'order_currency': Constants.CURRENCY,
-                'order_id': unique_order_id,  # Unique Order ID
-                'order_note': 'Your order from Annapurna',
-                'customer_details': {
-                    'customer_id': session.get("user_name"),
-                    'customer_phone': session.get("user_name"),
-                    'customer_email': 'customer@example.com'
-                },
-                "order_meta": {
-                    "return_url": f"{Properties.base_url}/payment/success?order_id={unique_order_id}"
+            try:
+                order_data = {
+                    'order_amount': cart_total,
+                    'order_currency': Constants.CURRENCY,
+                    'order_id': unique_order_id,  # Unique Order ID
+                    'order_note': 'Your order from Annapurna',
+                    'customer_details': {
+                        'customer_id': user_name,
+                        'customer_phone': user_phone,
+                        'customer_email': 'customer@example.com'
+                    },
+                    "order_meta": {
+                        "return_url": f"{Properties.base_url}/payment/success?order_id={unique_order_id}"
+                    }
                 }
-            }
-            payment_session_id = get_cashfree_payment_session(order_data)
+                payment_session_id = get_cashfree_payment_session(order_data)
 
-            if payment_session_id:
-                return jsonify({'payment_session_id': payment_session_id})
-            else:
-                return jsonify({'error': 'Error creating payment session'})
-        except Exception as e:
-            logging.error("error at CashfreeImpl %s", e)
+                if payment_session_id:
+                    return jsonify({'payment_session_id': payment_session_id})
+                else:
+                    return jsonify({'error': 'Error creating payment session'})
+            except Exception as e:
+                logging.error("error at CashfreeImpl %s", e)
 
         return render_template('checkout.html', cart_items=cart_items, cart_total=cart_total)
 
