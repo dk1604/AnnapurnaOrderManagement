@@ -4,13 +4,13 @@ import random
 import sys
 import time
 
-import requests
 from flask import request, redirect, url_for, render_template, Flask, session, jsonify
 from flask.sansio.blueprints import Blueprint
 
 import Properties
+import Constants
 from src.service.PaymentService import get_cashfree_payment_session
-from src.service.Service import get_all_options, get_order_item_by_id, get_all_options_by_food_category
+from src.service.Service import get_order_item_by_id, get_all_options_by_food_category
 
 routes_blueprint = Blueprint("routes", __name__)
 logging.basicConfig(level=logging.INFO)
@@ -52,7 +52,7 @@ def configure_routes(app):
             cart = session.get('cart', [])
             cart_quantities = {item['id']: item['quantity'] for item in cart}
             # If the menu is not empty, render the template with data
-            logging.error("menu_items........", menu_items)
+            logging.error("menu_items........%s", menu_items)
             return render_template('index.html', menu_items=menu_items, cart_quantities=cart_quantities)
         except Exception as e:
             logging.error("exception at getting desert......%s", str(e))
@@ -77,8 +77,11 @@ def configure_routes(app):
                 try:
                     item_id = int(item_id)
                     quantity = int(quantity)
-                    if quantity < 1:
-                        raise ValueError("Quantity must be greater than 0")
+                    # if (quantity < 1) & len(quantities) < 0:
+                    #     raise ValueError("Quantity must be greater than 0")
+                    # elif (quantity == 0):
+                    #     logging.error("item_data with 0 ........%s", type(item_data))
+                    #     item_data
 
                     item = get_order_item_by_id(item_id)
                     if item is None:
@@ -96,12 +99,13 @@ def configure_routes(app):
             for item in item_data:
                 item_exists = False
                 for cart_item in session['cart']:
+                    logging.error("item exist %s", item)
                     if cart_item['id'] == item['id']:
-                        logging.error("cart_item['quantity'].............%s", cart_item['quantity'])
                         cart_item['quantity'] = 0
-                        logging.error("reset cart_item['quantity'].............%s", cart_item['quantity'])
-                        logging.error("item['quantity'].............%s", item['quantity'])
                         cart_item['quantity'] += item['quantity']
+                        logging.error("final cart_item['quantity'].............%s", cart_item['quantity'])
+                        if cart_item['quantity'] == 0:
+                            session['cart'].remove(item)
                         item_exists = True
                         break
 
@@ -148,7 +152,6 @@ def configure_routes(app):
         if request.method == 'POST':
             logging.error("inside checkout route of POST....")
 
-            customer_name = (item['name'] for item in cart_items)
             timestamp = int(time.time())
             random_number = random.randint(1000, 9999)
             unique_order_id = f"ORD{timestamp}{random_number}"
@@ -156,7 +159,7 @@ def configure_routes(app):
             try:
                 order_data = {
                     'order_amount': cart_total,
-                    'order_currency': 'INR',
+                    'order_currency': Constants.CURRENCY,
                     'order_id': unique_order_id,  # Unique Order ID
                     'order_note': 'Your order from Annapurna',
                     'customer_details': {
@@ -165,8 +168,7 @@ def configure_routes(app):
                         'customer_email': 'customer@example.com'
                     },
                     "order_meta": {
-                        # "return_url": "https://www.cashfree.com/devstudio/preview/pg/web/checkout?order_id={order_id}"
-                        "return_url": f"https://annapurnaordermanagement.onrender.com/payment/success?order_id={unique_order_id}"
+                        "return_url": f"{Properties.base_url}/payment/success?order_id={unique_order_id}"
                     }
                 }
                 payment_session_id = get_cashfree_payment_session(order_data)
