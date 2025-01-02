@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant Menu</title>
     <style>
-        /* General Styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -19,17 +18,18 @@
         h1 {
             text-align: center;
             margin-top: 50px;
-            font-size: 24px;
+            font-size: 2rem; /* Relative size */
         }
 
         table {
-            width: 80%;
+            width: 90%; /* Adjusted to allow better scaling */
             margin: 0 auto;
             border-collapse: collapse;
+            max-width: 100%; /* Ensures table doesn't exceed screen size */
         }
 
         td {
-            padding: 15px;
+            padding: 1rem; /* Increased for better touch support */
             text-align: center;
             border: none;
             background-color: #fff;
@@ -39,14 +39,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            gap: 0; /* Removes any gap between quantity elements */
         }
 
         .quantity-button {
             background-color: #3498db;
             color: white;
             border: none;
-            padding: 10px 15px;
-            font-size: 18px;
+            padding: 0.8rem 1rem;
+            font-size: 1.1rem; /* Relative size */
             cursor: pointer;
             border-radius: 5px;
         }
@@ -59,20 +60,23 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 100px;
-            height: 40px;
+            width: 60px;
+            height: 30px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 18px;
+            font-size: 1rem; /* Relative size */
+            padding: 0; /* Ensures no padding causes gaps */
         }
 
         .quantity-box input {
             border: none;
             text-align: center;
-            width: 50px;
-            font-size: 18px;
+            width: 100%; /* Make input take full width of its container */
+            font-size: 1rem;
             height: 100%;
             outline: none;
+            padding: 0; /* Remove padding to avoid extra space */
+            margin: 0; /* Ensure no margin causing a gap */
         }
 
         /* Full-Width Fixed Grid at Bottom */
@@ -81,7 +85,7 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 70px;
+            height: 80px;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
@@ -91,11 +95,11 @@
         }
 
         .grid-button {
-            padding: 15px 30px;
+            padding: 1rem 1.5rem;
             background-color: #3498db;
             color: white;
             border: none;
-            font-size: 16px;
+            font-size: 1.1rem;
             cursor: pointer;
             border-radius: 5px;
             transition: background-color 0.3s;
@@ -105,6 +109,69 @@
 
         .grid-button:hover {
             background-color: #2980b9;
+        }
+
+        /* Media Queries for responsiveness */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+                margin-top: 30px;
+            }
+
+            table {
+                width: 95%;
+            }
+
+            .quantity-box {
+                width: 50px;
+                height: 35px;
+            }
+
+            .quantity-button {
+                padding: 0.7rem 0.8rem;
+                font-size: 1rem;
+            }
+
+            .grid-button {
+                padding: 1rem 1.2rem;
+                font-size: 1rem;
+            }
+
+            .fixed-grid {
+                grid-template-columns: 1fr; /* Stack buttons vertically */
+                height: 100px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.2rem;
+                margin-top: 20px;
+            }
+
+            table {
+                width: 100%;
+                font-size: 0.9rem; /* Smaller text for smaller screens */
+            }
+
+            .quantity-button {
+                padding: 0.6rem 0.7rem;
+                font-size: 0.9rem;
+            }
+
+            .quantity-box {
+                width: 40px;
+                height: 30px;
+            }
+
+            .grid-button {
+                padding: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .fixed-grid {
+                height: 120px; /* Ensure buttons still fit well */
+            }
         }
     </style>
 </head>
