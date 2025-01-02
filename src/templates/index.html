@@ -28,6 +28,7 @@ table {
     border-collapse: collapse;
     max-width: 100%;
     margin-bottom: 80px; /* Prevent content from hiding behind fixed grid */
+    flex-grow: 1; /* Ensures the table takes up the available space */
 }
 
 td {
@@ -98,9 +99,8 @@ td {
 .fixed-grid {
     position: fixed;
     bottom: 0;
-    left: 50%;
-    width: 80%;
-    transform: translateX(-50%);
+    left: 0;
+    width: 100%; /* Ensures it spans the entire width */
     height: 60px;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -211,7 +211,6 @@ td {
         gap: 10px;
     }
 }
-
     </style>
 </head>
 <body>
