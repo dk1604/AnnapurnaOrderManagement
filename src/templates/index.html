@@ -15,20 +15,20 @@
             height: 100vh;
             overflow: hidden;
         }
-
+        
         h1 {
             text-align: center;
             margin-top: 20px;
             font-size: 1.5rem;
         }
-
+        
         table {
             width: 90%; /* Adjusts to 90% of the screen width */
             margin: 20px auto;
             border-collapse: collapse;
             max-width: 100%; /* Ensures table doesn't overflow */
         }
-
+        
         td {
             padding: 0.5rem;
             text-align: center;
@@ -37,14 +37,14 @@
             font-size: 0.9rem;
             max-width: 300px; /* Ensure columns stay within 300px width */
         }
-
+        
         .quantity-container {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 5px;
         }
-
+        
         .quantity-button {
             background-color: #3498db;
             color: white;
@@ -56,11 +56,11 @@
             transition: background-color 0.3s;
             width: 35px; /* Fixed width for the button */
         }
-
+        
         .quantity-button:hover {
             background-color: #2980b9;
         }
-
+        
         .quantity-box {
             display: flex;
             justify-content: center;
@@ -71,7 +71,7 @@
             border-radius: 5px;
             background-color: #fff;
         }
-
+        
         .quantity-box input {
             border: none;
             text-align: center;
@@ -82,7 +82,7 @@
             padding: 0;
             margin: 0;
         }
-
+        
         /* Full-Width Fixed Grid at Bottom */
         .fixed-grid {
             position: fixed;
@@ -92,7 +92,7 @@
             transform: translateX(-50%); /* Ensure it is properly centered */
             height: 60px;
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Two equal columns */
+            grid-template-columns: 1fr 1fr; /* Two equal columns to show buttons on the same line */
             gap: 10px; /* Reduced gap between buttons */
             padding: 10px; /* Similar padding to td */
             background-color: #fff;
@@ -100,7 +100,7 @@
             text-align: center;
             border-top: 1px solid #ccc; /* Optional: to match the border style of table rows */
         }
-
+        
         .grid-button {
             padding: 0.5rem 0.8rem;
             background-color: #3498db;
@@ -110,77 +110,77 @@
             cursor: pointer;
             border-radius: 5px;
             transition: background-color 0.3s;
-            width: 100%;
+            width: 100%; /* Make sure buttons stretch to fill the columns */
             text-align: center;
         }
-
+        
         .grid-button:hover {
             background-color: #2980b9;
         }
-
+        
         /* Responsive Design for smaller screens */
         @media (max-width: 768px) {
             h1 {
                 font-size: 1.2rem;
                 margin-top: 10px;
             }
-
+        
             table {
                 width: 95%;
                 font-size: 0.8rem;
             }
-
+        
             .quantity-box {
                 width: 45px;
                 height: 25px;
             }
-
+        
             .quantity-button {
                 padding: 0.3rem 0.4rem;
                 font-size: 0.7rem;
             }
-
+        
             .grid-button {
                 padding: 0.5rem 0.6rem;
                 font-size: 0.8rem;
             }
-
+        
             .fixed-grid {
-                grid-template-columns: 1fr;
-                height: 80px;  /* Increased height to make room for both buttons */
+                grid-template-columns: 1fr 1fr; /* Ensure buttons stay side by side on medium screens */
+                height: 60px; /* Adjust to fit both buttons */
             }
         }
-
+        
         @media (max-width: 480px) {
             h1 {
                 font-size: 1rem;
                 margin-top: 10px;
             }
-
+        
             table {
                 width: 100%;
                 font-size: 0.75rem;
             }
-
+        
             .quantity-button {
                 padding: 0.2rem 0.3rem;
                 font-size: 0.6rem;
             }
-
+        
             .quantity-box {
                 width: 40px;
                 height: 25px;
             }
-
+        
             .grid-button {
                 padding: 0.5rem 0.6rem;
                 font-size: 0.7rem;
             }
-
+        
             .fixed-grid {
-                height: 90px; /* Increased height further for smaller devices */
-                grid-template-columns: 1fr; /* Ensure both buttons are stacked */
-                gap: 15px; /* Increased gap to make sure both buttons don't overlap */
+                grid-template-columns: 1fr 1fr; /* Keep the buttons on the same line on small screens */
+                height: 60px; /* Height adjusted to accommodate the buttons */
+                gap: 10px; /* Keep a small gap between the buttons */
             }
         }
     </style>
