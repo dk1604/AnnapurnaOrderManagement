@@ -37,36 +37,18 @@ table {
     width: 100%;
     table-layout: auto; /* Adjust the columns' width dynamically */
     border-collapse: separate; /* Use separate borders for rows */
+    border-spacing: 0 8px; /* Reduces space between rows (vertical space) */
     font-size: 1.2rem; /* Increased font size for table content */
-    border-spacing: 0; /* Remove spacing between table cells */
 }
 
 /* Styling for the table rows */
 tr {
     background-color: #e9ecef; /* Slightly darker grey background for each row */
-    margin-bottom: 15px; /* Space between rows */
-    padding: 15px 0; /* Vertical padding to space out the rows */
+    padding: 8px 0; /* Reduced vertical padding to shorten row height */
     border-radius: 12px; /* Soft rounded corners for rows */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Light grey box shadow for the box effect */
     transition: background-color 0.3s ease; /* Smooth transition for hover effect */
     overflow: hidden; /* Ensures border-radius is respected */
-}
-
-/* Add space between the rows using margin-bottom */
-tr + tr {
-    margin-top: 15px; /* Space above each row */
-}
-
-/* Remove border-radius from table cells (td) */
-td {
-    padding: 12px; /* Padding for cells */
-    vertical-align: middle; /* Vertically center the content in each cell */
-    border-radius: 0; /* No rounded corners for the individual cells */
-}
-
-/* Center-align the Quantity column */
-td:nth-child(3) {
-    text-align: center; /* Center-align the Quantity column */
 }
 
 /* Add space between the header and rows */
@@ -76,6 +58,18 @@ thead th {
 
 tbody tr:first-child {
     margin-top: 30px; /* Increased space between the header row and the first data row */
+}
+
+/* Remove border-radius from table cells (td) */
+td {
+    padding: 8px 10px; /* Reduced padding for cells to shorten row height */
+    vertical-align: middle; /* Vertically center the content in each cell */
+    border-radius: 0; /* No rounded corners for the individual cells */
+}
+
+/* Center-align the Quantity column */
+td:nth-child(3) {
+    text-align: center; /* Center-align the Quantity column */
 }
 
 /* Quantity Container Styling */
@@ -156,7 +150,7 @@ tbody tr:first-child {
     /* Adjust Table Layout for Small Screens */
     table, th, td {
         font-size: 1rem;
-        padding: 10px; /* Reduced padding */
+        padding: 8px; /* Reduced padding */
     }
 
     .quantity-box input {
