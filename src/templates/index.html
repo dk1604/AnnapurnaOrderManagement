@@ -13,43 +13,48 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
+            overflow: hidden;
         }
 
         h1 {
             text-align: center;
-            margin-top: 50px;
-            font-size: 2rem; /* Relative size */
+            margin-top: 20px;
+            font-size: 1.5rem;
         }
 
         table {
-            width: 90%; /* Adjusted to allow better scaling */
-            margin: 0 auto;
+            width: 90%; /* Adjusts to 90% of the screen width */
+            margin: 20px auto;
             border-collapse: collapse;
-            max-width: 100%; /* Ensures table doesn't exceed screen size */
+            max-width: 100%; /* Ensures table doesn't overflow */
         }
 
         td {
-            padding: 1rem; /* Increased for better touch support */
+            padding: 0.5rem;
             text-align: center;
             border: none;
             background-color: #fff;
+            font-size: 0.9rem;
+            max-width: 300px; /* Ensure columns stay within 300px width */
         }
 
         .quantity-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 0; /* Removes any gap between quantity elements */
+            gap: 5px;
         }
 
         .quantity-button {
             background-color: #3498db;
             color: white;
             border: none;
-            padding: 0.8rem 1rem;
-            font-size: 1.1rem; /* Relative size */
+            padding: 0.3rem 0.5rem;
+            font-size: 0.8rem;
             cursor: pointer;
             border-radius: 5px;
+            transition: background-color 0.3s;
+            width: 35px; /* Fixed width for the button */
         }
 
         .quantity-button:hover {
@@ -60,46 +65,48 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 60px;
+            width: 50px; /* Fixed width for the input box */
             height: 30px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 1rem; /* Relative size */
-            padding: 0; /* Ensures no padding causes gaps */
+            background-color: #fff;
         }
 
         .quantity-box input {
             border: none;
             text-align: center;
-            width: 100%; /* Make input take full width of its container */
-            font-size: 1rem;
+            width: 100%;
+            font-size: 0.8rem;
             height: 100%;
             outline: none;
-            padding: 0; /* Remove padding to avoid extra space */
-            margin: 0; /* Ensure no margin causing a gap */
+            padding: 0;
+            margin: 0;
         }
 
         /* Full-Width Fixed Grid at Bottom */
         .fixed-grid {
             position: fixed;
             bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 80px;
+            left: 50%; /* Center horizontally */
+            width: 80%;
+            transform: translateX(-50%); /* Ensure it is properly centered */
+            height: 60px;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            padding: 10px;
+            grid-template-columns: 1fr 1fr; /* Two equal columns */
+            gap: 100px;
+            padding: 10px; /* Similar padding to td */
             background-color: #fff;
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border-top: 1px solid #ccc; /* Optional: to match the border style of table rows */
         }
 
         .grid-button {
-            padding: 1rem 1.5rem;
+            padding: 0.5rem 0.8rem;
             background-color: #3498db;
             color: white;
             border: none;
-            font-size: 1.1rem;
+            font-size: 0.9rem;
             cursor: pointer;
             border-radius: 5px;
             transition: background-color 0.3s;
@@ -111,68 +118,70 @@
             background-color: #2980b9;
         }
 
-        /* Media Queries for responsiveness */
+        /* Responsive Design for smaller screens */
         @media (max-width: 768px) {
             h1 {
-                font-size: 1.5rem;
-                margin-top: 30px;
+                font-size: 1.2rem;
+                margin-top: 10px;
             }
 
             table {
                 width: 95%;
+                font-size: 0.8rem;
             }
 
             .quantity-box {
-                width: 50px;
-                height: 35px;
+                width: 45px;
+                height: 25px;
             }
 
             .quantity-button {
-                padding: 0.7rem 0.8rem;
-                font-size: 1rem;
+                padding: 0.3rem 0.4rem;
+                font-size: 0.7rem;
             }
 
             .grid-button {
-                padding: 1rem 1.2rem;
-                font-size: 1rem;
+                padding: 0.5rem 0.6rem;
+                font-size: 0.8rem;
             }
 
             .fixed-grid {
-                grid-template-columns: 1fr; /* Stack buttons vertically */
-                height: 100px;
+                grid-template-columns: 1fr;
+                height: 80px;
             }
         }
 
         @media (max-width: 480px) {
             h1 {
-                font-size: 1.2rem;
-                margin-top: 20px;
+                font-size: 1rem;
+                margin-top: 10px;
             }
 
             table {
                 width: 100%;
-                font-size: 0.9rem; /* Smaller text for smaller screens */
+                font-size: 0.75rem;
             }
 
             .quantity-button {
-                padding: 0.6rem 0.7rem;
-                font-size: 0.9rem;
+                padding: 0.2rem 0.3rem;
+                font-size: 0.6rem;
             }
 
             .quantity-box {
                 width: 40px;
-                height: 30px;
+                height: 25px;
             }
 
             .grid-button {
-                padding: 1rem;
-                font-size: 0.9rem;
+                padding: 0.5rem 0.6rem;
+                font-size: 0.7rem;
             }
 
             .fixed-grid {
-                height: 120px; /* Ensure buttons still fit well */
+                height: 90px;
             }
         }
+    </style>
     </style>
 </head>
 <body>
