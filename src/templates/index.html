@@ -2,71 +2,75 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant Menu</title>
     <style>
         body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
+    background-color: #f4f4f4;
+    color: #333;
     display: flex;
+    justify-content: center;
+    align-items: flex-start;
     flex-direction: column;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 h1 {
-    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+/* Table Styling */
+.menu-table {
+    width: 80%;
+    max-width: 1000px;
     margin-top: 20px;
-    font-size: 2rem; /* Increased font size for the title */
-}
-
-table {
-    width: 90%;
-    margin: 20px auto;
     border-collapse: collapse;
-    max-width: 100%;
-    margin-bottom: 80px; /* Prevent content from hiding behind fixed grid */
-    flex-grow: 1; /* Ensures the table takes up the available space */
 }
 
-td {
-    padding: 1rem; /* Increased padding for better spacing */
-    text-align: center;
-    border: none;
-    background-color: #fff;
-    font-size: 1.5rem; /* Increased font size for the table content */
-    max-width: 300px;
+.menu-table td {
+    padding: 12px 20px;
+    text-align: left;
+    font-size: 1rem;
+    border-bottom: 1px solid #ddd;
 }
 
 .item-name {
-    font-size: 1.7rem; /* Increased font size for item name */
     font-weight: bold;
 }
 
-.price {
-    font-size: 1.6rem; /* Increased font size for price */
-    color: #3498db; /* Added color to the price */
+.item-price {
+    color: #3498db;
 }
 
 .quantity-container {
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 10px; /* Increased gap between buttons */
+    justify-content: center;
+    gap: 10px;
+}
+
+.quantity-label {
+    font-size: 1rem;
+    margin-right: 8px;
 }
 
 .quantity-button {
     background-color: #3498db;
     color: white;
     border: none;
-    padding: 0.5rem 0.8rem; /* Increased padding for buttons */
-    font-size: 1rem; /* Increased button font size */
+    padding: 8px 16px;
+    font-size: 1.25rem;
     cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-    width: 40px; /* Slightly larger button size */
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
 }
 
 .quantity-button:hover {
@@ -74,143 +78,88 @@ td {
 }
 
 .quantity-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 60px; /* Increased width of quantity box */
-    height: 40px; /* Increased height of quantity box */
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #fff;
+    width: 50px;
 }
 
 .quantity-box input {
-    border: none;
-    text-align: center;
     width: 100%;
-    font-size: 1.2rem; /* Increased font size for quantity */
-    height: 100%;
-    outline: none;
-    padding: 0;
-    margin: 0;
+    text-align: center;
+    padding: 5px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
 }
 
-/* Full-Width Fixed Grid at Bottom */
+/* Fixed Grid Button Styles */
 .fixed-grid {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%; /* Ensures it spans the entire width */
-    height: 60px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    padding: 10px;
-    background-color: #fff;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    border-top: 1px solid #ccc;
-    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin-top: 30px;
 }
 
 .grid-button {
-    padding: 0.5rem 0.8rem;
-    background-color: #3498db;
+    background-color: #2ecc71;
     color: white;
+    padding: 16px 40px;
+    font-size: 1.125rem;
+    border-radius: 8px;
     border: none;
-    font-size: 1rem; /* Increased font size for grid buttons */
     cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-    width: 100%;
-    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .grid-button:hover {
-    background-color: #2980b9;
+    background-color: #27ae60;
+    transform: translateY(-2px);
 }
 
-/* Responsive Design for smaller screens */
-@media (max-width: 768px) {
-    h1 {
-        font-size: 1.8rem; /* Adjusted font size for title */
-    }
-
-    table {
-        width: 95%;
-        font-size: 1.2rem; /* Increased font size for table content */
-        margin-bottom: 90px; /* Ensures content doesn't hide behind fixed grid */
-    }
-
-    .item-name {
-        font-size: 1.6rem; /* Adjusted font size for item name */
-    }
-
-    .price {
-        font-size: 1.5rem; /* Adjusted font size for price */
-    }
-
-    .quantity-box {
-        width: 55px; /* Adjusted width of quantity box */
-        height: 35px; /* Adjusted height of quantity box */
-    }
-
-    .quantity-button {
-        padding: 0.4rem 0.6rem; /* Adjusted padding for buttons */
-        font-size: 0.9rem; /* Adjusted font size for buttons */
-    }
-
-    .grid-button {
-        padding: 0.6rem 1rem; /* Adjusted padding for grid buttons */
-        font-size: 0.9rem; /* Adjusted font size for grid buttons */
-    }
-
-    .fixed-grid {
-        grid-template-columns: 1fr 1fr;
-        height: 60px;
-    }
+.grid-button:active {
+    transform: translateY(1px);
 }
 
-@media (max-width: 480px) {
-    h1 {
-        font-size: 1.2rem; /* Adjusted font size for title */
+/* Mobile-Friendly Styles */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
     }
 
-    table {
+    .menu-table {
         width: 100%;
-        font-size: 1rem; /* Increased font size for table content */
-        margin-bottom: 100px; /* Ensure table content isn't hidden behind fixed grid */
     }
 
-    .item-name {
-        font-size: 1.4rem; /* Adjusted font size for item name */
-    }
-
-    .price {
-        font-size: 1.3rem; /* Adjusted font size for price */
-    }
-
-    .quantity-button {
-        padding: 0.3rem 0.5rem; /* Adjusted padding for buttons */
-        font-size: 0.8rem; /* Adjusted font size for buttons */
-    }
-
-    .quantity-box {
-        width: 50px; /* Adjusted width of quantity box */
-        height: 30px; /* Adjusted height of quantity box */
+    h1 {
+        font-size: 1.8rem;
+        text-align: center;
     }
 
     .grid-button {
-        padding: 0.6rem 1rem; /* Adjusted padding for grid buttons */
-        font-size: 0.8rem; /* Adjusted font size for grid buttons */
+        width: 100%;
+        font-size: 1rem;
+        padding: 14px 28px;
     }
 
-    .fixed-grid {
-        grid-template-columns: 1fr 1fr;
-        height: 60px;
-        gap: 10px;
+    .quantity-box input {
+        width: 40px;
     }
 }
+
+@media (min-width: 601px) {
+    body {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 2.2rem;
+    }
+
+    .grid-button {
+        width: 48%;
+        font-size: 1.125rem;
+        padding: 16px 40px;
+    }
+}
+
     </style>
 </head>
 <body>
