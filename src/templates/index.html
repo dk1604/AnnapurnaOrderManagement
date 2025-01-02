@@ -15,81 +15,92 @@
 body {
     font-family: Arial, sans-serif;
     padding-bottom: 60px; /* Leave space for the fixed bottom grid */
-    font-size: 1rem; /* Default font size for the body (will scale using rem) */
-    margin: 0; /* Remove any margin on the body */
-    background-color: #f4f4f4; /* Set a light background color for the body */
+    font-size: 1rem;
+    margin: 0;
+    background-color: #f4f4f4;
 }
 
 h1 {
     text-align: center;
     margin-top: 20px;
-    font-size: 2rem; /* Increased font size for the title */
+    font-size: 2rem;
 }
 
+/* Ensure the table body is scrollable */
 .top-grid {
-    max-height: calc(100vh - 60px); /* 80% of viewport height */
+    max-height: calc(100vh - 60px); /* Adjust based on header height */
     overflow-y: auto; /* Makes the top grid scrollable */
-    padding: 0 10px; /* Reduced padding to avoid extra space */
-    margin-bottom: 0; /* No margin below the top grid */
+    padding: 0 10px;
+    margin-bottom: 0;
 }
 
+/* Styling for the table */
 table {
     width: 100%;
-    table-layout: auto; /* Adjust the columns' width dynamically */
-    border-collapse: separate; /* Use separate borders for rows */
-    border-spacing: 0 15px; /* Adds space between rows (vertical space), and no horizontal space */
-    font-size: 1.2rem; /* Increased font size for table content */
+    table-layout: auto; /* Adjusts column width dynamically */
+    border-collapse: separate;
+    border-spacing: 0 15px; /* Adds space between rows */
+    font-size: 1.2rem;
+}
+
+/* Make the header row sticky */
+thead {
+    position: sticky;
+    top: 0; /* Keep the header at the top of the table */
+    background-color: #ffffff; /* White background for header */
+    z-index: 1; /* Ensure the header stays on top of the content */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for separation */
+}
+
+/* Styling for the table header cells */
+thead th {
+    padding: 10px 15px;
+    background-color: #f1f1f1; /* Light grey background for header */
+    text-align: left;
+    font-weight: bold;
+    font-size: 1.2rem;
 }
 
 /* Styling for the table rows */
 tr {
-    background-color: #e9ecef; /* Slightly darker grey background for each row */
-    padding: 8px 0; /* Reduced vertical padding to shorten row height */
-    border-radius: 12px; /* Soft rounded corners for rows */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Light grey box shadow for the box effect */
-    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
-    overflow: hidden; /* Ensures border-radius is respected */
+    background-color: #e9ecef;
+    padding: 8px 0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    overflow: hidden;
 }
 
-/* Remove border-radius from table cells (td) */
+/* Styling for the table data cells */
 td {
-    padding: 8px 10px; /* Reduced padding for cells to shorten row height */
-    vertical-align: middle; /* Vertically center the content in each cell */
-    border-radius: 0; /* No rounded corners for the individual cells */
+    padding: 8px 10px;
+    vertical-align: middle;
+    border-radius: 0;
 }
 
 /* Center-align the Quantity column */
 td:nth-child(3) {
-    text-align: center; /* Center-align the Quantity column */
+    text-align: center;
 }
 
-/* Add space between the header and rows */
-thead th {
-    padding-bottom: 5px; /* Increased padding at the bottom of header cells */
-}
-
-tbody tr:first-child {
-    margin-top: 30px; /* Increased space between the header row and the first data row */
-}
-
-/* Quantity Container Styling */
+/* Styling for the Quantity controls */
 .quantity-container {
     display: flex;
     align-items: center;
     gap: 12px;
-    justify-content: center; /* Center the buttons and input */
+    justify-content: center;
 }
 
 .quantity-box input {
     width: 50px;
     text-align: center;
-    font-size: 1.2rem; /* Increased font size for quantity input */
+    font-size: 1.2rem;
 }
 
 .quantity-button {
-    padding: 8px 16px; /* Increased padding for buttons */
+    padding: 8px 16px;
     cursor: pointer;
-    font-size: 1.2rem; /* Increased font size for quantity buttons */
+    font-size: 1.2rem;
 }
 
 /* Bottom Grid Styles */
@@ -98,72 +109,69 @@ tbody tr:first-child {
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: transparent; /* Make background transparent */
+    background-color: transparent;
     padding: 12px;
-    display: flex; /* Use flexbox to align items */
-    justify-content: space-between; /* Space out the buttons */
-    align-items: center; /* Vertically align the buttons */
-    box-shadow: none; /* Remove shadow */
-    gap: 12px; /* Add some space between the buttons */
-    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
-    margin-top: 0; /* Ensure no margin above the bottom grid */
-    z-index: 10; /* Ensure it stays above other content */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: none;
+    gap: 12px;
+    flex-wrap: wrap;
+    z-index: 10;
 }
 
 .grid-button {
     padding: 12px 24px;
     color: white;
-    background-color: #007bff; /* Blue background for buttons */
-    border: none; /* No border */
-    border-radius: 30px; /* Rounded corners */
+    background-color: #007bff;
+    border: none;
+    border-radius: 30px;
     cursor: pointer;
-    flex: 1; /* Allow buttons to grow and take available space */
-    min-width: 140px; /* Ensure buttons don't get too small */
+    flex: 1;
+    min-width: 140px;
     text-align: center;
-    box-sizing: border-box; /* Make sure padding is included in width */
-    white-space: nowrap; /* Prevent text from breaking */
-    font-size: 1.2rem; /* Increased font size for buttons */
-    transition: all 0.3s ease; /* Smooth transition for hover and active states */
+    white-space: nowrap;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
 }
 
 .grid-button:hover {
-    background-color: #0056b3; /* Darken the background on hover */
-    color: #fff; /* Keep text color white */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow effect */
+    background-color: #0056b3;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .grid-button:active {
-    background-color: #003f7f; /* Darken the background even more on active */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Increase shadow on active state */
+    background-color: #003f7f;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
     .bottom-grid {
         padding: 15px 10px;
-        gap: 5px; /* Reduced gap on smaller screens */
+        gap: 5px;
     }
 
     .grid-button {
-        font-size: 1rem; /* Adjust button size */
-        padding: 8px 16px; /* Adjust padding */
-        min-width: 100px; /* Allow smaller buttons on smaller screens */
+        font-size: 1rem;
+        padding: 8px 16px;
+        min-width: 100px;
     }
 
-    /* Adjust Table Layout for Small Screens */
     table, th, td {
         font-size: 1rem;
-        padding: 8px; /* Reduced padding */
+        padding: 8px;
     }
 
     .quantity-box input {
-        width: 40px; /* Smaller input field on mobile */
-        font-size: 1rem; /* Adjusted font size */
+        width: 40px;
+        font-size: 1rem;
     }
 
     .quantity-button {
-        padding: 6px 12px; /* Smaller buttons for mobile */
-        font-size: 1rem; /* Adjust font size for mobile */
+        padding: 6px 12px;
+        font-size: 1rem;
     }
 }
 
@@ -174,23 +182,23 @@ tbody tr:first-child {
     }
 
     .grid-button {
-        font-size: 0.9rem; /* Adjust font size for very small screens */
+        font-size: 0.9rem;
         padding: 8px;
-        min-width: 80px; /* Smaller buttons for mobile */
+        min-width: 80px;
     }
 
     table, th, td {
-        font-size: 0.9rem; /* Adjust font size for smaller screens */
+        font-size: 0.9rem;
     }
 
     .quantity-box input {
-        width: 30px; /* Further reduced size for mobile */
-        font-size: 1rem; /* Adjusted font size */
+        width: 30px;
+        font-size: 1rem;
     }
 
     .quantity-button {
-        padding: 5px 10px; /* Smaller buttons for mobile */
-        font-size: 1rem; /* Adjust font size for mobile */
+        padding: 5px 10px;
+        font-size: 1rem;
     }
 }
 
