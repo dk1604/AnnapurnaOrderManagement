@@ -16,6 +16,7 @@
             font-family: Arial, sans-serif;
             padding-bottom: 60px; /* Leave space for the fixed bottom grid */
             font-size: 1rem; /* Default font size for the body (will scale using rem) */
+            margin: 0; /* Remove any margin on the body */
         }
 
         h1 {
@@ -27,7 +28,7 @@
         .top-grid {
             max-height: 60vh; /* 60% of viewport height */
             overflow-y: auto; /* Makes the top grid scrollable */
-            margin: 0 5px; /* Reduced margin on both sides for less space */
+            margin: 0; /* Remove any margin */
             padding-left: 10px; /* Reduced left padding */
             padding-right: 10px; /* Reduced right padding */
             margin-bottom: 0; /* Ensure no gap below the top grid */
@@ -86,6 +87,7 @@
             box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
             gap: 12px; /* Add some space between the buttons */
             flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+            margin-top: 0; /* Ensure no margin above the bottom grid */
         }
 
         .grid-button {
@@ -174,6 +176,13 @@
 
 <div class="top-grid">
     <table>
+        <thead>
+        <tr>
+            <th>Item Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+        </tr>
+        </thead>
         <tbody>
         {% for item in menu_items %}
         <tr>
