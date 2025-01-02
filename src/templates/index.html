@@ -98,12 +98,12 @@ tbody tr:first-child {
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: #333;
+    background-color: transparent; /* Make background transparent */
     padding: 12px;
     display: flex; /* Use flexbox to align items */
     justify-content: space-between; /* Space out the buttons */
     align-items: center; /* Vertically align the buttons */
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: none; /* Remove shadow */
     gap: 12px; /* Add some space between the buttons */
     flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
     margin-top: 0; /* Ensure no margin above the bottom grid */
@@ -113,8 +113,9 @@ tbody tr:first-child {
 .grid-button {
     padding: 12px 24px;
     color: white;
-    background-color: #007bff;
-    border: none;
+    background-color: #007bff; /* Blue background for buttons */
+    border: none; /* No border */
+    border-radius: 30px; /* Rounded corners */
     cursor: pointer;
     flex: 1; /* Allow buttons to grow and take available space */
     min-width: 140px; /* Ensure buttons don't get too small */
@@ -122,20 +123,22 @@ tbody tr:first-child {
     box-sizing: border-box; /* Make sure padding is included in width */
     white-space: nowrap; /* Prevent text from breaking */
     font-size: 1.2rem; /* Increased font size for buttons */
-    touch-action: manipulation;
+    transition: all 0.3s ease; /* Smooth transition for hover and active states */
 }
 
 .grid-button:hover {
-    background-color: #0056b3;
+    background-color: #0056b3; /* Darken the background on hover */
+    color: #fff; /* Keep text color white */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow effect */
+}
+
+.grid-button:active {
+    background-color: #003f7f; /* Darken the background even more on active */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Increase shadow on active state */
 }
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
-    .top-grid {
-        margin-left: 5px;
-        margin-right: 5px;
-    }
-
     .bottom-grid {
         padding: 15px 10px;
         gap: 5px; /* Reduced gap on smaller screens */
