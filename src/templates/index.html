@@ -32,14 +32,13 @@
 
         table {
             width: 100%;
-            table-layout: fixed; /* This ensures all columns have equal width */
+            table-layout: auto; /* Adjust the columns' width dynamically */
             border-collapse: collapse; /* Ensures borders collapse to a single line */
         }
 
         th, td {
             padding: 10px;
             text-align: left;
-            /* Remove borders */
             border: none;
             word-wrap: break-word; /* Ensures that content inside columns wraps if it's too long */
         }
@@ -49,14 +48,16 @@
             font-weight: bold;
         }
 
+        /* Adjust the Quantity Container */
         .quantity-container {
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-wrap: nowrap; /* Prevent wrapping for mobile */
         }
 
         .quantity-box input {
-            width: 50px;
+            width: 40px;
             text-align: center;
         }
 
@@ -65,6 +66,7 @@
             cursor: pointer;
         }
 
+        /* Bottom Grid Styles */
         .bottom-grid {
             position: fixed;
             bottom: 0;
@@ -76,8 +78,8 @@
             justify-content: space-between; /* Space out the buttons */
             align-items: center; /* Vertically align the buttons */
             box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
-            flex-wrap: nowrap; /* Prevent buttons from wrapping */
             gap: 10px; /* Add some space between the buttons */
+            flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
         }
 
         .grid-button {
@@ -99,6 +101,11 @@
 
         /* Responsive Design */
         @media screen and (max-width: 768px) {
+            .top-grid {
+                margin-left: 5px;
+                margin-right: 5px;
+            }
+
             .bottom-grid {
                 padding: 15px 10px;
                 gap: 5px; /* Reduced gap on smaller screens */
@@ -108,6 +115,20 @@
                 font-size: 14px; /* Adjust button size */
                 padding: 8px 16px; /* Adjust padding */
                 min-width: 100px; /* Allow smaller buttons on smaller screens */
+            }
+
+            /* Adjust Table Layout for Small Screens */
+            table, th, td {
+                font-size: 14px;
+                padding: 8px; /* Reduce padding */
+            }
+
+            .quantity-box input {
+                width: 30px; /* Smaller input field on mobile */
+            }
+
+            .quantity-button {
+                padding: 4px 8px; /* Smaller buttons for mobile */
             }
         }
 
@@ -121,6 +142,18 @@
                 font-size: 12px; /* Adjust font size for very small screens */
                 padding: 8px;
                 min-width: 80px; /* Smaller buttons for mobile */
+            }
+
+            table, th, td {
+                font-size: 12px;
+            }
+
+            .quantity-box input {
+                width: 25px; /* Further reduced size for mobile */
+            }
+
+            .quantity-button {
+                padding: 3px 6px; /* Smaller buttons for mobile */
             }
         }
     </style>
