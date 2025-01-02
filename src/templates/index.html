@@ -78,6 +78,13 @@ td {
     border-radius: 0;
 }
 
+td.item-name {
+    font-size: 1.5rem; /* Increase font size */
+    white-space: nowrap; /* Prevents text wrapping to a new line */
+    overflow: hidden; /* Ensures text doesn't overflow */
+    text-overflow: ellipsis; /* Adds ellipsis if the text is too long */
+}
+
 /* Center-align the Quantity column */
 td:nth-child(3) {
     text-align: center;
@@ -219,7 +226,7 @@ td:nth-child(3) {
         <tbody>
         {% for item in menu_items %}
         <tr>
-            <td>{{ item.name }}</td>
+            <td class="item-name">{{ item.name }}</td>
             <td>{{ item.price }}</td>
             <td>
                 <div class="quantity-container">
