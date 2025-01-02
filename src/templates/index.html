@@ -37,7 +37,7 @@ table {
     width: 100%;
     table-layout: auto; /* Adjust the columns' width dynamically */
     border-collapse: separate; /* Use separate borders for rows */
-    border-spacing: 0 8px; /* Reduces space between rows (vertical space) */
+    border-spacing: 0 15px; /* Adds space between rows (vertical space), and no horizontal space */
     font-size: 1.2rem; /* Increased font size for table content */
 }
 
@@ -51,15 +51,6 @@ tr {
     overflow: hidden; /* Ensures border-radius is respected */
 }
 
-/* Add space between the header and rows */
-thead th {
-    padding-bottom: 5px; /* Increased padding at the bottom of header cells */
-}
-
-tbody tr:first-child {
-    margin-top: 30px; /* Increased space between the header row and the first data row */
-}
-
 /* Remove border-radius from table cells (td) */
 td {
     padding: 8px 10px; /* Reduced padding for cells to shorten row height */
@@ -70,6 +61,15 @@ td {
 /* Center-align the Quantity column */
 td:nth-child(3) {
     text-align: center; /* Center-align the Quantity column */
+}
+
+/* Add space between the header and rows */
+thead th {
+    padding-bottom: 5px; /* Increased padding at the bottom of header cells */
+}
+
+tbody tr:first-child {
+    margin-top: 30px; /* Increased space between the header row and the first data row */
 }
 
 /* Quantity Container Styling */
