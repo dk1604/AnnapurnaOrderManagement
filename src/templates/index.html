@@ -144,7 +144,6 @@
             <td>{{ item.price }}</td>
             <td>
                 <div class="quantity-container">
-                    <label for="quantity-{{ item.id }}" class="quantity-label">Quantity:</label>
                     <button type="button" class="quantity-button" onclick="adjustQuantity({{ item.id }}, -1)">-</button>
                     <div class="quantity-box">
                         <input type="number" id="quantity-{{ item.id }}" value="{{ cart_quantities.get(item.id, 0) }}" name="quantity" readonly>
