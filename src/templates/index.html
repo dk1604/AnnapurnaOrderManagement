@@ -15,11 +15,13 @@
         body {
             font-family: Arial, sans-serif;
             padding-bottom: 60px; /* Leave space for the fixed bottom grid */
+            font-size: 1rem; /* Default font size for the body (will scale using rem) */
         }
 
         h1 {
             text-align: center;
             margin-top: 20px;
+            font-size: 2rem; /* Increased font size for the title */
         }
 
         .top-grid {
@@ -35,36 +37,39 @@
             width: 100%;
             table-layout: auto; /* Adjust the columns' width dynamically */
             border-collapse: collapse; /* Ensures borders collapse to a single line */
+            font-size: 1.2rem; /* Increased font size for table content */
         }
 
         th, td {
-            padding: 10px;
+            padding: 12px; /* Increased padding for better readability */
             text-align: left;
             border: none;
             word-wrap: break-word; /* Ensures that content inside columns wraps if it's too long */
         }
 
-        th {
-            background-color: #f4f4f4; /* Light background for headers */
-            font-weight: bold;
+        /* Center-align the Quantity column */
+        td:nth-child(3) {
+            text-align: center; /* Center align data in Quantity column */
         }
 
-        /* Adjust the Quantity Container */
+        /* Adjust the Quantity Container to be centered */
         .quantity-container {
             display: flex;
             align-items: center;
-            gap: 10px;
-            flex-wrap: nowrap; /* Prevent wrapping for mobile */
+            gap: 12px;
+            justify-content: center; /* Center the buttons and input */
         }
 
         .quantity-box input {
-            width: 40px;
+            width: 50px;
             text-align: center;
+            font-size: 1.2rem; /* Increased font size for quantity input */
         }
 
         .quantity-button {
-            padding: 5px 10px;
+            padding: 8px 16px; /* Increased padding for buttons */
             cursor: pointer;
+            font-size: 1.2rem; /* Increased font size for quantity buttons */
         }
 
         /* Bottom Grid Styles */
@@ -74,26 +79,27 @@
             left: 0;
             width: 100%;
             background-color: #333;
-            padding: 10px;
+            padding: 12px;
             display: flex; /* Use flexbox to align items */
             justify-content: space-between; /* Space out the buttons */
             align-items: center; /* Vertically align the buttons */
             box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
-            gap: 10px; /* Add some space between the buttons */
+            gap: 12px; /* Add some space between the buttons */
             flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
         }
 
         .grid-button {
-            padding: 10px 20px;
+            padding: 12px 24px;
             color: white;
             background-color: #007bff;
             border: none;
             cursor: pointer;
             flex: 1; /* Allow buttons to grow and take available space */
-            min-width: 120px; /* Ensure buttons don't get too small */
+            min-width: 140px; /* Ensure buttons don't get too small */
             text-align: center;
             box-sizing: border-box; /* Make sure padding is included in width */
             white-space: nowrap; /* Prevent text from breaking */
+            font-size: 1.2rem; /* Increased font size for buttons */
         }
 
         .grid-button:hover {
@@ -113,23 +119,25 @@
             }
 
             .grid-button {
-                font-size: 14px; /* Adjust button size */
+                font-size: 1rem; /* Adjust button size */
                 padding: 8px 16px; /* Adjust padding */
                 min-width: 100px; /* Allow smaller buttons on smaller screens */
             }
 
             /* Adjust Table Layout for Small Screens */
             table, th, td {
-                font-size: 14px;
-                padding: 8px; /* Reduce padding */
+                font-size: 1rem;
+                padding: 10px; /* Reduced padding */
             }
 
             .quantity-box input {
-                width: 30px; /* Smaller input field on mobile */
+                width: 40px; /* Smaller input field on mobile */
+                font-size: 1rem; /* Adjusted font size */
             }
 
             .quantity-button {
-                padding: 4px 8px; /* Smaller buttons for mobile */
+                padding: 6px 12px; /* Smaller buttons for mobile */
+                font-size: 1rem; /* Adjust font size for mobile */
             }
         }
 
@@ -140,21 +148,23 @@
             }
 
             .grid-button {
-                font-size: 12px; /* Adjust font size for very small screens */
+                font-size: 0.9rem; /* Adjust font size for very small screens */
                 padding: 8px;
                 min-width: 80px; /* Smaller buttons for mobile */
             }
 
             table, th, td {
-                font-size: 12px;
+                font-size: 0.9rem; /* Adjust font size for smaller screens */
             }
 
             .quantity-box input {
-                width: 25px; /* Further reduced size for mobile */
+                width: 30px; /* Further reduced size for mobile */
+                font-size: 1rem; /* Adjusted font size */
             }
 
             .quantity-button {
-                padding: 3px 6px; /* Smaller buttons for mobile */
+                padding: 5px 10px; /* Smaller buttons for mobile */
+                font-size: 1rem; /* Adjust font size for mobile */
             }
         }
     </style>
@@ -164,13 +174,6 @@
 
 <div class="top-grid">
     <table>
-        <thead>
-        <tr>
-            <th>Item Name</th>
-            <th>Price</th>
-            <th>Quantity</th>
-        </tr>
-        </thead>
         <tbody>
         {% for item in menu_items %}
         <tr>
