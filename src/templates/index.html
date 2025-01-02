@@ -284,6 +284,14 @@
             alert('Please select items and quantities before adding to the cart.');
         }
     }
+
+    // Prevent double-tap zooming on iOS
+    document.addEventListener('touchstart', function(event) {
+        var touch = event.touches[0];
+        if (touch && touch.target && touch.target.closest('.grid-button')) {
+            event.preventDefault();
+        }
+    });
 </script>
 </body>
 </html>
