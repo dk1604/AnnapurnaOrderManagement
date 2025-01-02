@@ -72,8 +72,12 @@
             width: 100%;
             background-color: #333;
             padding: 10px;
-            text-align: center;
+            display: flex; /* Use flexbox to align items */
+            justify-content: space-between; /* Space out the buttons */
+            align-items: center; /* Vertically align the buttons */
             box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+            flex-wrap: nowrap; /* Prevent buttons from wrapping */
+            gap: 10px; /* Add some space between the buttons */
         }
 
         .grid-button {
@@ -81,8 +85,12 @@
             color: white;
             background-color: #007bff;
             border: none;
-            margin: 0 10px;
             cursor: pointer;
+            flex: 1; /* Allow buttons to grow and take available space */
+            min-width: 120px; /* Ensure buttons don't get too small */
+            text-align: center;
+            box-sizing: border-box; /* Make sure padding is included in width */
+            white-space: nowrap; /* Prevent text from breaking */
         }
 
         .grid-button:hover {
@@ -91,67 +99,28 @@
 
         /* Responsive Design */
         @media screen and (max-width: 768px) {
-            .top-grid {
-                margin: 0 5px;
-                padding-left: 10px;
-                padding-right: 10px;
-            }
-
-            table {
-                font-size: 14px; /* Adjust font size for mobile/tablet */
-            }
-
-            th, td {
-                padding: 8px;
-            }
-
-            .quantity-box input {
-                width: 40px; /* Slightly smaller input box on mobile */
-            }
-
-            .quantity-button {
-                padding: 5px 8px; /* Smaller button size */
-            }
-
             .bottom-grid {
                 padding: 15px 10px;
+                gap: 5px; /* Reduced gap on smaller screens */
             }
 
             .grid-button {
-                padding: 8px 16px;
                 font-size: 14px; /* Adjust button size */
-                width: 100%; /* Full-width buttons */
-                margin: 5px 0;
+                padding: 8px 16px; /* Adjust padding */
+                min-width: 100px; /* Allow smaller buttons on smaller screens */
             }
         }
 
         @media screen and (max-width: 480px) {
-            table {
-                font-size: 12px; /* Adjust font size for smaller screens */
-            }
-
-            .quantity-container {
-                flex-direction: column; /* Stack quantity controls vertically */
-                align-items: flex-start;
-            }
-
-            .quantity-box input {
-                width: 35px; /* Even smaller input box */
-            }
-
-            .quantity-button {
-                padding: 4px 8px; /* Smaller buttons */
-            }
-
             .bottom-grid {
                 padding: 10px 5px;
+                gap: 5px;
             }
 
             .grid-button {
+                font-size: 12px; /* Adjust font size for very small screens */
                 padding: 8px;
-                font-size: 12px;
-                width: 100%;
-                margin: 5px 0;
+                min-width: 80px; /* Smaller buttons for mobile */
             }
         }
     </style>
