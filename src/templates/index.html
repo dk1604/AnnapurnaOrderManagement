@@ -18,23 +18,20 @@ body {
     font-size: 1rem;
     margin: 0;
     background-color: #f4f4f4;
-    display: flex;
-    flex-direction: column;
-    height: 100vh; /* Make sure the body fills the entire height */
 }
 
 h1 {
     text-align: center;
     margin-top: 20px;
     font-size: 2rem;
-    padding: 10px;
 }
 
-/* Top grid for the table */
+/* Ensure the table body is scrollable */
 .top-grid {
-    flex: 1; /* This makes the .top-grid take up the remaining space */
+    max-height: calc(100vh - 60px); /* Adjust based on header height */
     overflow-y: auto; /* Makes the top grid scrollable */
     padding: 0 10px;
+    margin-bottom: 0;
 }
 
 /* Styling for the table */
@@ -132,7 +129,6 @@ td:nth-child(3) {
     cursor: pointer;
     flex: 1;
     min-width: 140px;
-    min-height: 80px;
     text-align: center;
     white-space: nowrap;
     font-size: 1.2rem;
