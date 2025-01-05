@@ -24,7 +24,7 @@ class CustomAlembicVersion(Base):
     version_num = Column(String(32), primary_key=True)
 
 
-class menu(Base):
+class Menu(Base):
     __tablename__ = "menu"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
