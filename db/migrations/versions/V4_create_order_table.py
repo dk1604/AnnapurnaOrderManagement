@@ -2,7 +2,7 @@
 
 Revision ID: V4
 Revises: V3
-Create Date: 2025-01-05 16:44:01.018659
+Create Date: 2025-01-06 09:19:12.762033
 
 """
 from typing import Sequence, Union
@@ -27,7 +27,7 @@ def upgrade() -> None:
     sa.Column('cart_price', sa.Numeric(precision=10, scale=2), nullable=False),
     sa.Column('user_name', sa.String(length=250), nullable=True),
     sa.Column('user_phone', sa.String(length=100), nullable=True),
-    sa.Column('order_date', sa.Date(), nullable=False),
+    sa.Column('order_date', sa.BigInteger(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('order_id')
     )
