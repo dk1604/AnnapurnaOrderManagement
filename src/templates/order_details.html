@@ -4,12 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Details Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f7f7;
             margin: 0;
             padding: 0;
+            color: #333;
         }
 
         .container {
@@ -17,20 +21,35 @@
             max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
-            background-color: white;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+
+        header h1 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 10px;
         }
 
         .filter-section {
             display: flex;
-            flex-wrap: wrap; /* Allow flex items to wrap */
+            flex-wrap: wrap;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .filter-section label {
+            font-size: 14px;
+            color: #34495e;
+            font-weight: 600;
         }
 
         input {
@@ -38,30 +57,80 @@
             font-size: 14px;
             width: 200px;
             min-width: 150px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            transition: border 0.3s;
+        }
+
+        input:focus {
+            border-color: #3498db;
         }
 
         button {
-            padding: 10px 15px;
+            padding: 12px 18px;
             font-size: 14px;
             cursor: pointer;
-            min-width: 150px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .pie-container {
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .pie-chart-container {
+            width: 25%;
+            margin-right: 15px;
+        }
+
+        .total-counts {
+            width: 40%;
+            padding: 15px;
+            background-color: #ecf0f1;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+        }
+
+        .total-counts h3 {
+            color: #2c3e50;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .total-counts p {
+            font-size: 16px;
+            color: #7f8c8d;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            overflow-x: auto;
+            display: none;
         }
 
         th, td {
             border: 1px solid #ddd;
-            padding: 10px;
+            padding: 12px;
             text-align: center;
         }
 
         th {
-            background-color: #f4f4f4;
+            background-color: #3498db;
+            color: white;
+            font-weight: 600;
         }
 
         tr:nth-child(even) {
@@ -69,20 +138,20 @@
         }
 
         .order-details {
-            display: none; /* Initially hide the Order Details column */
+            display: none;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-top: 1px solid #ddd;
         }
 
-        /* Hide the 'Order Details' column header */
         th.order-details {
             display: none;
         }
 
-        /* Make the table scrollable horizontally on small screens */
         .table-wrapper {
             overflow-x: auto;
         }
 
-        /* Responsive adjustments */
         @media (max-width: 768px) {
             .filter-section {
                 flex-direction: column;
@@ -123,11 +192,6 @@
             }
         }
     </style>
-
-    <!-- Include Flatpickr CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <!-- Include Flatpickr JS -->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
 <body>
 <div class="container">
@@ -145,7 +209,20 @@
         <button onclick="fetchOrders()">Fetch Orders</button>
     </div>
 
-    <!-- Table wrapper for horizontal scrolling on small screens -->
+    <div class="pie-container">
+        <div class="pie-chart-container">
+            <canvas id="pie-chart" width="200" height="200"></canvas>
+        </div>
+        <div class="total-counts">
+            <h3>Total: ₹<span id="total-count">0</span></h3>
+            <p>Cash: ₹<span id="cash-count">0</span></p>
+            <p>Online: ₹<span id="online-count">0</span></p>
+        </div>
+    </div>
+
+    <!-- Button to toggle table visibility -->
+    <button id="toggleOrdersBtn" onclick="toggleTableVisibility()" style="display: none;">Show Orders</button>
+
     <div class="table-wrapper">
         <table id="orders_table">
             <thead>
@@ -166,31 +243,32 @@
 </div>
 
 <script>
-    // Initialize Flatpickr for date and time inputs
+    let allOrders = [];
+
     flatpickr("#start_date", {
-        enableTime: true, // Enable time selection
-        dateFormat: "Y-m-d H:i:S", // Set date and time format (YYYY-MM-DD HH:MM:SS)
-        allowInput: true, // Allows users to type the date manually
-        time_24hr: true // 24-hour time format
+        enableTime: true,
+        dateFormat: "Y-m-d H:i:S",
+        allowInput: true,
+        time_24hr: true
     });
 
     flatpickr("#end_date", {
-        enableTime: true, // Enable time selection
-        dateFormat: "Y-m-d H:i:S", // Set date and time format (YYYY-MM-DD HH:MM:SS)
-        allowInput: true, // Allows users to type the date manually
-        time_24hr: true // 24-hour time format
+        enableTime: true,
+        dateFormat: "Y-m-d H:i:S",
+        allowInput: true,
+        time_24hr: true
     });
 
-    // Fetch orders based on the date range
     function fetchOrders() {
         const startDate = document.getElementById('start_date').value;
         const endDate = document.getElementById('end_date').value;
 
-        // Validate date format (if needed)
         if (!startDate || !endDate) {
-            alert('Please enter both start and end dates');
+            alert('Please select both start and end dates.');
             return;
         }
+
+        clearPreviousData();
 
         const url = `/order/summary?start_date=${startDate}&end_date=${endDate}`;
 
@@ -200,7 +278,10 @@
                 if (data.error) {
                     alert(data.error);
                 } else {
+                    allOrders = data;
+                    updatePaymentModeChart(data);
                     populateTable(data);
+                    document.getElementById('toggleOrdersBtn').style.display = 'inline-block';
                 }
             })
             .catch(error => {
@@ -209,15 +290,81 @@
             });
     }
 
-    // Populate the table with order details
+    function clearPreviousData() {
+        const tableBody = document.getElementById('orders_body');
+        tableBody.innerHTML = '';
+
+        const ctx = document.getElementById('pie-chart').getContext('2d');
+        const pieChart = Chart.getChart(ctx);
+        if (pieChart) {
+            pieChart.destroy();
+        }
+    }
+
+    function updatePaymentModeChart(orders) {
+        if (orders.length === 0) {
+            alert('No data available for the selected date range.');
+            return;
+        }
+
+        const paymentModes = { online: 0, cash: 0 };
+
+        orders.forEach(order => {
+            if (order.payment_mode === 'online') {
+                paymentModes.online += order.cart_price;
+            } else if (order.payment_mode === 'cash') {
+                paymentModes.cash += order.cart_price;
+            }
+        });
+
+        const total = paymentModes.online + paymentModes.cash;
+
+        document.getElementById('total-count').textContent = total;
+        document.getElementById('cash-count').textContent = paymentModes.cash;
+        document.getElementById('online-count').textContent = paymentModes.online;
+
+        const ctx = document.getElementById('pie-chart').getContext('2d');
+        const pieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Online', 'Cash'],
+                datasets: [{
+                    label: 'Payment Mode Distribution',
+                    data: [paymentModes.online, paymentModes.cash],
+                    backgroundColor: ['#3498db', '#2ecc71'],
+                    borderColor: ['#2980b9', '#27ae60'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                aspectRatio: 1,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ': ₹' + tooltipItem.raw;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        document.querySelector('.pie-container').style.display = 'flex';
+    }
+
     function populateTable(orders) {
         const tableBody = document.getElementById('orders_body');
-        tableBody.innerHTML = ''; // Clear the table before populating it
+        tableBody.innerHTML = '';
 
         orders.forEach(order => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${order.cart_price}</td>
+                <td>₹${order.cart_price}</td>
                 <td>${order.payment_mode}</td>
                 <td>${order.user_phone}</td>
                 <td>${new Date(order.order_date * 1000).toLocaleString()}</td>
@@ -226,19 +373,31 @@
             `;
             tableBody.appendChild(row);
         });
+
+        document.querySelector('table').style.display = 'table'; // Show the table after it has been populated
     }
 
-    // Toggle the visibility of the Order Details
     function toggleDetails(button) {
         const row = button.parentElement.parentElement;
         const orderDetails = row.querySelector('.order-details');
 
         if (orderDetails.style.display === "none") {
-            orderDetails.style.display = "table-cell"; // Show the details
-            button.textContent = "Show Less"; // Change button text
+            orderDetails.style.display = "table-cell";
+            button.textContent = "Show Less";
         } else {
-            orderDetails.style.display = "none"; // Hide the details
-            button.textContent = "Show More"; // Change button text
+            orderDetails.style.display = "none";
+            button.textContent = "Show More";
+        }
+    }
+
+    function toggleTableVisibility() {
+        const table = document.querySelector('table');
+        if (table.style.display === 'none' || table.style.display === '') {
+            table.style.display = 'table';
+            document.getElementById('toggleOrdersBtn').textContent = 'Hide Orders';
+        } else {
+            table.style.display = 'none';
+            document.getElementById('toggleOrdersBtn').textContent = 'Show Orders';
         }
     }
 </script>
