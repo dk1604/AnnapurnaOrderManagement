@@ -2,7 +2,7 @@ import logging
 import sys
 
 from sqlalchemy.orm import sessionmaker, scoped_session
-from sqlalchemy import Column, String, Integer, VARCHAR, create_engine, Numeric, Date
+from sqlalchemy import Column, String, Integer, VARCHAR, create_engine, Numeric, BigInteger
 from sqlalchemy.orm import declarative_base
 from Properties import user, password, host, port, database
 
@@ -41,9 +41,10 @@ class CustomerOrder(Base):
     order_id = Column(String(100), unique=True, nullable=False)
     order_details = Column(String(500), nullable=False)
     cart_price = Column(Numeric(precision=10, scale=2), nullable=False)
+    payment_mode = Column(String(50), nullable=True)
     user_name = Column(String(250), nullable=True)
     user_phone = Column(String(100), nullable=True)
-    order_date = Column(Date, nullable=False)
+    order_date = Column(BigInteger, nullable=False)
 
 
 
