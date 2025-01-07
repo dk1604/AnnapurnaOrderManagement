@@ -2,7 +2,7 @@ import logging
 
 import mysql.connector
 from mysql.connector import Error
-from sqlalchemy import create_engine, Column, String, Integer, VARCHAR, Numeric, Date
+from sqlalchemy import create_engine, Column, String, Integer, VARCHAR, Numeric, BigInteger
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import sessionmaker, declarative_base, scoped_session
 
@@ -35,9 +35,10 @@ class CustomerOrder(Base):
     order_id = Column(String(100), unique=True, nullable=False)
     order_details = Column(String(500), nullable=False)
     cart_price = Column(Numeric(precision=10, scale=2), nullable=False)
+    payment_mode = Column(String(50), nullable=True)
     user_name = Column(String(250), nullable=True)
     user_phone = Column(String(100), nullable=True)
-    order_date = Column(Date, nullable=False)
+    order_date = Column(BigInteger, nullable=False)
 
 
 
