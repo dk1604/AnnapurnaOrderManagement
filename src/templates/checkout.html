@@ -67,19 +67,34 @@
         }
 
         button {
-            background-color: #3498db;
+            padding: 12px 24px;
             color: white;
+            background-color: #3498db;
             border: none;
-            padding: 15px 30px;
-            font-size: 18px;
+            border-radius: 30px;
             cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
             width: 100%;
+            margin-bottom: 10px;
         }
 
         button:hover {
             background-color: #2980b9;
+            color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+         button:active {
+            background-color: #003f7f;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;  /* Distribute buttons evenly */
+            gap: 20px;  /* Add space between buttons */
+            width: 100%; /* Ensure the buttons take full width of the container */
         }
 
         .back-link {
@@ -153,12 +168,13 @@
     </div>
 
     <!-- Form for POST to backend -->
-    <div class="row">
-        <button id="renderBtn">Pay Now</button>
+    <div class="button-group">
+        <button id="onlinePaymentBtn">Online Payment</button>
+        <button id="cashOnDeliveryBtn">Cash on Delivery</button>
     </div>
     <script>
-        // Listen for the "Pay Now" button click to create payment session
-        document.getElementById("renderBtn").addEventListener("click", () => {
+        // Listen for the "Online Payment" button click to create payment session
+        document.getElementById("onlinePaymentBtn").addEventListener("click", () => {
             // Get user details from form
             const userName = document.getElementById('user_name').value;
             const userPhone = document.getElementById('user_phone').value;
@@ -177,14 +193,15 @@
                 },
                 body: JSON.stringify({
                     user_name: userName,
-                    user_phone: userPhone
+                    user_phone: userPhone,
+                    payment_mode: 'online'  // Specify online payment method
                 })
             })
             .then(response => {
                 return response.json();
             })
             .then(data => {
-                console.log("Payment Session ID received:", data);
+                console.log("Response received:", data);
                 if (data.payment_session_id) {
                     // Store the payment session ID for later use
                     window.paymentSessionId = data.payment_session_id;
@@ -206,6 +223,48 @@
             })
             .catch(error => {
                 console.error('Error during fetch: ', error);
+            });
+        });
+
+        // Listen for the "Cash" button click
+        document.getElementById("cashOnDeliveryBtn").addEventListener("click", () => {
+            // Get user details from form
+            const userName = document.getElementById('user_name').value;
+            const userPhone = document.getElementById('user_phone').value;
+
+            // Validate user details
+            if (!userName || !userPhone) {
+                alert('Please enter both your name and phone number');
+                return;
+            }
+            console.log('1-----------------')
+
+            // Send a request to the backend for Cash on Delivery
+            fetch('/checkout', {
+                method: 'POST',  // Using POST to trigger order creation
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_name: userName,
+                    user_phone: userPhone,
+                    payment_mode: 'cash'
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Response is HTML for success page, so load it directly
+                    return response.text();
+                } else {
+                    throw new Error('Failed to process the request');
+                }
+            })
+            .then(html => {
+                // Replace the current page with the success page HTML
+                document.documentElement.innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error during fetch cash: ', error);
             });
         });
     </script>
