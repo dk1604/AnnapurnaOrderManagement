@@ -60,4 +60,4 @@ def create_table():
 if __name__ == '__main__':
     create_table()  # Make sure the menu table is created
     initialize_engines()
-    app.run(host='0.0.0.0', port=5050, debug=False)
+    app.run(host='0.0.0.0', port=5000, debug=False)
