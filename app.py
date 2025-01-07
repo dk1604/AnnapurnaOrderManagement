@@ -8,10 +8,9 @@ from alembic.config import Config
 from flask import Flask
 
 from src.admin.controller.admin_routes import configure_admin_routes
+from src.controller.order_routes import order_routes
 from src.controller.routes import configure_routes
 from src.database.PSQLAdapterImpl import PSQLAdapterImpl
-logging.error("path....%s", sys.path)
-logging.error("Current working directory: %s", os.getcwd())
 
 
 def handle_exception(exc_type, exc_value, exc_tb):
@@ -34,6 +33,7 @@ app.secret_key = secrets.token_hex(16)
 
 configure_routes(app)
 configure_admin_routes(app)
+order_routes(app)
 
 
 def run_db_migrations():
@@ -60,4 +60,4 @@ def create_table():
 if __name__ == '__main__':
     create_table()  # Make sure the menu table is created
     initialize_engines()
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    app.run(host='0.0.0.0', port=5050, debug=False)
