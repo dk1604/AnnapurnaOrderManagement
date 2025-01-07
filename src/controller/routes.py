@@ -9,6 +9,8 @@ from flask.sansio.blueprints import Blueprint
 
 import Properties
 import Constants
+from src.models.CanteenModels import customer_order_details
+from src.service.OrderService import save_order_details_service
 from src.service.PaymentService import get_cashfree_payment_session
 from src.service.Service import get_order_item_by_id, get_all_options_by_food_category
 
@@ -153,6 +155,9 @@ def configure_routes(app):
             data = request.get_json()
             user_name = data.get('user_name')
             user_phone = data.get('user_phone')
+            payment_mode = data.get('payment_mode')
+
+            logging.error("payment_mode...............%s", payment_mode)
             if user_name and user_phone:
                 session['user_name'] = user_name
                 session['user_phone'] = user_phone
@@ -175,15 +180,26 @@ def configure_routes(app):
                         "return_url": f"{Properties.base_url}/payment/success?order_id={unique_order_id}"
                     }
                 }
-                payment_session_id = get_cashfree_payment_session(order_data)
+                if payment_mode == 'online':
+                    session['payment_mode'] = payment_mode
+                    payment_session_id = get_cashfree_payment_session(order_data)
 
-                if payment_session_id:
-                    return jsonify({'payment_session_id': payment_session_id})
+                    if payment_session_id:
+                        return jsonify({'payment_session_id': payment_session_id})
+                    else:
+                        return jsonify({'error': 'Error creating payment session'})
+                elif payment_mode == 'cash':
+                    session['payment_mode'] = payment_mode
+                    print("session.................", session)
+                    if unique_order_id:
+                        # After order is created, redirect the user to the success page
+                        return redirect(url_for('payment_success', order_id=unique_order_id))
+                    else:
+                        return jsonify({"error": "Unable to create order"}), 500
                 else:
-                    return jsonify({'error': 'Error creating payment session'})
+                    return jsonify({"error": "Invalid payment method"}), 400
             except Exception as e:
                 logging.error("error at CashfreeImpl %s", e)
-
         return render_template('checkout.html', cart_items=cart_items, cart_total=cart_total)
 
     @app.route('/payment/success', methods=['GET'])
@@ -202,6 +218,7 @@ def configure_routes(app):
 
             cart_items = session.get('cart', [])
             cart_total = sum(item['quantity'] * item['price'] for item in cart_items)
+            payment_mode = session.get('payment_mode')
 
             logging.error("ORDER SUCCESS ***** cart_items %s", cart_items)
             logging.error("ORDER SUCCESS ***** cart_total %s", cart_total)
@@ -212,6 +229,13 @@ def configure_routes(app):
             session.pop('cart_timestamp', None)
             session.pop('user_name', None)
             session.pop('user_phone', None)
+            session.pop('payment_mode', None)
+
+            # save order details to customer_order table
+            order_time = int(order_token[3:-4])
+
+            customer_order_detail = customer_order_details(order_id=order_id, order_details=str(cart_items), cart_price=cart_total, payment_mode=payment_mode, user_name=user_name, user_phone=user_phone, order_date=order_time)
+            save_order_details_service(customer_order_detail)
 
             return render_template('success.html', order_id=order_id, order_token=order_token, user_name=user_name, user_phone=user_phone)
         else:
