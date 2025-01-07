@@ -13,7 +13,8 @@
         }
 
         .container {
-            width: 80%;
+            width: 100%;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
             background-color: white;
@@ -26,6 +27,7 @@
 
         .filter-section {
             display: flex;
+            flex-wrap: wrap; /* Allow flex items to wrap */
             justify-content: center;
             gap: 10px;
             margin-bottom: 20px;
@@ -35,18 +37,21 @@
             padding: 10px;
             font-size: 14px;
             width: 200px;
+            min-width: 150px;
         }
 
         button {
             padding: 10px 15px;
             font-size: 14px;
             cursor: pointer;
+            min-width: 150px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            overflow-x: auto;
         }
 
         th, td {
@@ -63,7 +68,66 @@
             background-color: #f9f9f9;
         }
 
+        .order-details {
+            display: none; /* Initially hide the Order Details column */
+        }
+
+        /* Hide the 'Order Details' column header */
+        th.order-details {
+            display: none;
+        }
+
+        /* Make the table scrollable horizontally on small screens */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .filter-section {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            input, button {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            th, td {
+                font-size: 12px;
+                padding: 8px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+
+            input, button {
+                max-width: 250px;
+            }
+
+            th, td {
+                font-size: 10px;
+                padding: 6px;
+            }
+
+            button {
+                padding: 8px 12px;
+            }
+        }
     </style>
+
+    <!-- Include Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Include Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
 <body>
 <div class="container">
@@ -81,64 +145,102 @@
         <button onclick="fetchOrders()">Fetch Orders</button>
     </div>
 
-    <table id="orders_table">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Order Details</th>
-            <th>Cart Price</th>
-            <th>Payment Mode</th>
-            <th>User Phone</th>
-            <th>Order Date</th>
-        </tr>
-        </thead>
-        <tbody id="orders_body">
-        <!-- Order rows will be populated here dynamically -->
-        </tbody>
-    </table>
-
+    <!-- Table wrapper for horizontal scrolling on small screens -->
+    <div class="table-wrapper">
+        <table id="orders_table">
+            <thead>
+            <tr>
+                <th>Cart Price</th>
+                <th>Payment Mode</th>
+                <th>User Phone</th>
+                <th>Order Date</th>
+                <th>Action</th>
+                <th class="order-details">Order Details</th>
+            </tr>
+            </thead>
+            <tbody id="orders_body">
+            <!-- Order rows will be populated here dynamically -->
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script>
-    function fetchOrders() {
-    const startDate = document.getElementById('start_date').value;
-    const endDate = document.getElementById('end_date').value;
-
-    const url = `/order/summary?start_date=${startDate}&end_date=${endDate}`;
-
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                alert(data.error);
-            } else {
-                populateTable(data);
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching order details:', error);
-            alert('An error occurred while fetching the data.');
-        });
-}
-
-function populateTable(orders) {
-    const tableBody = document.getElementById('orders_body');
-    tableBody.innerHTML = ''; // Clear the table before populating it
-
-    orders.forEach(order => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${order.id}</td>
-            <td>${order.order_details}</td>
-            <td>${order.cart_price}</td>
-            <td>${order.payment_mode}</td>
-            <td>${order.user_phone}</td>
-            <td>${new Date(order.order_date * 1000).toLocaleString()}</td>
-        `;
-        tableBody.appendChild(row);
+    // Initialize Flatpickr for date and time inputs
+    flatpickr("#start_date", {
+        enableTime: true, // Enable time selection
+        dateFormat: "Y-m-d H:i:S", // Set date and time format (YYYY-MM-DD HH:MM:SS)
+        allowInput: true, // Allows users to type the date manually
+        time_24hr: true // 24-hour time format
     });
-}
 
+    flatpickr("#end_date", {
+        enableTime: true, // Enable time selection
+        dateFormat: "Y-m-d H:i:S", // Set date and time format (YYYY-MM-DD HH:MM:SS)
+        allowInput: true, // Allows users to type the date manually
+        time_24hr: true // 24-hour time format
+    });
+
+    // Fetch orders based on the date range
+    function fetchOrders() {
+        const startDate = document.getElementById('start_date').value;
+        const endDate = document.getElementById('end_date').value;
+
+        // Validate date format (if needed)
+        if (!startDate || !endDate) {
+            alert('Please enter both start and end dates');
+            return;
+        }
+
+        const url = `/order/summary?start_date=${startDate}&end_date=${endDate}`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    populateTable(data);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching order details:', error);
+                alert('An error occurred while fetching the data.');
+            });
+    }
+
+    // Populate the table with order details
+    function populateTable(orders) {
+        const tableBody = document.getElementById('orders_body');
+        tableBody.innerHTML = ''; // Clear the table before populating it
+
+        orders.forEach(order => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${order.cart_price}</td>
+                <td>${order.payment_mode}</td>
+                <td>${order.user_phone}</td>
+                <td>${new Date(order.order_date * 1000).toLocaleString()}</td>
+                <td><button onclick="toggleDetails(this)">Show More</button></td>
+                <td class="order-details">${order.order_details}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    // Toggle the visibility of the Order Details
+    function toggleDetails(button) {
+        const row = button.parentElement.parentElement;
+        const orderDetails = row.querySelector('.order-details');
+
+        if (orderDetails.style.display === "none") {
+            orderDetails.style.display = "table-cell"; // Show the details
+            button.textContent = "Show Less"; // Change button text
+        } else {
+            orderDetails.style.display = "none"; // Hide the details
+            button.textContent = "Show More"; // Change button text
+        }
+    }
 </script>
 </body>
 </html>
