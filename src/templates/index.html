@@ -32,6 +32,7 @@
             overflow-y: auto; /* Makes the top grid scrollable */
             padding: 0 10px;
             margin-bottom: 0;
+            transition: opacity 0.3s ease;
         }
 
         /* Styling for the table */
@@ -151,6 +152,66 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
+        /* Search Box Styles */
+        .search-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 20;
+        }
+
+        .search-box {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            background-color: #fff;
+            padding: 8px 15px;
+            border-radius: 30px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-box.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .search-input {
+            padding: 5px 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        /* Suggestions Box */
+        #suggestionBox {
+            position: absolute;
+            top: 40px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        #suggestionBox div {
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        #suggestionBox div:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Faded state for the top-grid */
+        .faded {
+            opacity: 0.3;
+        }
+
         /* Responsive Design */
         @media screen and (max-width: 768px) {
             .bottom-grid {
@@ -210,8 +271,7 @@
 </head>
 <body>
 <h1>Restaurant Menu</h1>
-
-<div class="top-grid">
+<div class="top-grid" id="topGrid">
     <table>
         <tbody>
         {% for item in menu_items %}
@@ -241,93 +301,56 @@
 
 <script>
     var currentCart = {{ session.get('cart', []) | tojson }};
-    var cartItemIds = currentCart.map(item => item.id); // Array of item IDs currently in the cart
+    var cartItemIds = currentCart.map(item => item.id);
 
-    // Function to adjust the quantity
     function adjustQuantity(itemId, change) {
         var quantityDisplay = document.getElementById('quantity-' + itemId);
         var currentQuantity = parseInt(quantityDisplay.value);
-
-        if (isNaN(currentQuantity)) {
-            currentQuantity = 0;
-        }
-
+        if (isNaN(currentQuantity)) { currentQuantity = 0; }
         currentQuantity += change;
-
-        // Ensure quantity is never less than 0
-        if (currentQuantity < 0) {
-            currentQuantity = 0;
-        }
-
+        if (currentQuantity < 0) { currentQuantity = 0; }
         quantityDisplay.value = currentQuantity;
-
-        // Highlight or un-highlight the item based on the quantity
         highlightItem(itemId, currentQuantity);
     }
 
-    // Function to highlight the selected item
     function highlightItem(itemId, quantity) {
         var row = document.getElementById('row-' + itemId);
-
-        // If quantity is greater than 0, highlight the row; otherwise, remove the highlight
         if (quantity > 0) {
             if (!row.classList.contains('selected')) {
                 row.classList.add('selected');
-                // Add to the cart item IDs array if not already present
-                if (!cartItemIds.includes(itemId)) {
-                    cartItemIds.push(itemId);
-                }
+                if (!cartItemIds.includes(itemId)) { cartItemIds.push(itemId); }
             }
         } else {
             if (row.classList.contains('selected')) {
                 row.classList.remove('selected');
-                // Remove from the cart item IDs array if quantity is 0
                 cartItemIds = cartItemIds.filter(id => id !== itemId);
             }
         }
-
-        // Update sessionStorage with the current cart state
         sessionStorage.setItem('cart', JSON.stringify(cartItemIds));
     }
 
-    // Reapply the selected state on page load based on cart items
     window.onload = function() {
         cartItemIds.forEach(function(itemId) {
             var row = document.getElementById('row-' + itemId);
             var quantity = parseInt(document.getElementById('quantity-' + itemId).value);
-
-            if (row && quantity > 0) {
-                row.classList.add('selected');
-            }
+            if (row && quantity > 0) { row.classList.add('selected'); }
         });
     }
 
-    // Function to handle the order submission
     function submitOrder() {
         var items = [];
-        var quantityInputs = document.querySelectorAll('input[type="number"]'); // All quantity input fields
-
+        var quantityInputs = document.querySelectorAll('input[type="number"]');
         quantityInputs.forEach(function(input) {
-            var itemId = input.id.split('-')[1];  // Extract item ID from the input field ID
+            var itemId = input.id.split('-')[1];
             var quantity = parseInt(input.value);
-
             var existingItem = currentCart.find(item => item.id == itemId);
-
-            if (existingItem) {
-                items.push({ itemId: itemId, quantity: quantity });
-            } else {
-                if (quantity > 0) {
-                    items.push({ itemId: itemId, quantity: quantity });
-                }
-            }
+            if (existingItem) { items.push({ itemId: itemId, quantity: quantity }); }
+            else { if (quantity > 0) { items.push({ itemId: itemId, quantity: quantity }); } }
         });
-
         if (items.length > 0) {
-            // Create a form dynamically
             var form = document.createElement('form');
             form.method = 'POST';
-            form.action = '/order';  // The endpoint that will handle the POST request
-
+            form.action = '/order';
             items.forEach(function(item) {
                 var inputItemId = document.createElement('input');
                 inputItemId.type = 'hidden';
@@ -341,7 +364,6 @@
                 inputQuantity.value = item.quantity;
                 form.appendChild(inputQuantity);
             });
-
             document.body.appendChild(form);
             form.submit();
         } else {
