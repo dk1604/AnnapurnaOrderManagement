@@ -4,152 +4,162 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> <!-- Font Awesome for the cart icon -->
     <style>
         /* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-    color: #333;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    min-height: 100vh;
-    box-sizing: border-box;
-    overflow-x: hidden; /* Prevent horizontal scrolling */
-}
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            box-sizing: border-box;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+        }
 
-h1 {
-    color: #2c3e50;
-    margin-bottom: 20px;
-    font-size: 2rem; /* Improved readability */
-    font-weight: 600;
-}
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 2rem; /* Improved readability */
+            font-weight: 600;
+        }
 
-/* Food Options Section (Side-by-Side Buttons) */
-.food-options {
-    display: flex;
-    flex-direction: row; /* Change to row for side-by-side buttons */
-    justify-content: center; /* Center the buttons horizontally */
-    margin-top: 20px;
-    gap: 15px; /* Adds space between the buttons */
-    flex-wrap: wrap; /* Allows buttons to wrap on small screens */
-}
+        /* Food Options Section (Side-by-Side Buttons) */
+        .food-options {
+            display: flex;
+            flex-direction: row; /* Change to row for side-by-side buttons */
+            justify-content: center; /* Center the buttons horizontally */
+            margin-top: 20px;
+            gap: 15px; /* Adds space between the buttons */
+            flex-wrap: wrap; /* Allows buttons to wrap on small screens */
+        }
 
-/* Button Styles */
-.food-button {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    padding: 16px 32px; /* Added more space for better touch target */
-    font-size: 1.125rem; /* Slightly larger text */
-    cursor: pointer;
-    border-radius: 8px; /* Rounded corners */
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    width: 100%; /* Make buttons responsive to the container */
-    max-width: 300px; /* Limit the maximum width of each button */
-    box-sizing: border-box;
-    min-height: 60px; /* Make buttons taller for better touch targets */
-}
+        /* Button Styles */
+        .food-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 16px 32px; /* Added more space for better touch target */
+            font-size: 1.125rem; /* Slightly larger text */
+            cursor: pointer;
+            border-radius: 8px; /* Rounded corners */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: 100%; /* Make buttons responsive to the container */
+            max-width: 300px; /* Limit the maximum width of each button */
+            box-sizing: border-box;
+            min-height: 60px; /* Make buttons taller for better touch targets */
+        }
 
-/* Button Hover and Active States */
-.food-button:hover {
-    background-color: #2980b9;
-    transform: translateY(-2px); /* Small lift effect */
-}
+        /* Button Hover and Active States */
+        .food-button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px); /* Small lift effect */
+        }
 
-.food-button:active {
-    transform: translateY(1px); /* Small push effect */
-}
+        .food-button:active {
+            transform: translateY(1px); /* Small push effect */
+        }
 
-/* Cart Button Styles */
-.cart-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #2ecc71;
-    color: white;
-    padding: 16px 40px;
-    font-size: 1.125rem;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    min-width: 60px;
-    min-height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+        /* Cart Button Styles */
+        .cart-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2ecc71;
+            color: white;
+            padding: 16px 40px;
+            font-size: 1.125rem;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            min-width: 60px;
+            min-height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px; /* Space between icon and text */
+        }
 
-/* Remove the blue outline or background (when button is focused or clicked) */
-.cart-button:focus,
-.cart-button:active {
-    outline: none; /* Removes focus outline */
-    background-color: #1e8449; /* Darker green when clicked */
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3); /* Larger shadow on hover and click */
-}
+        .cart-button .cart-icon {
+            font-size: 1.5rem; /* Icon size */
+        }
 
-/* Hover effect */
-.cart-button:hover {
-    background-color: #27ae60;
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3); /* Slightly larger shadow on hover */
-}
+        /* Notification-style Cart Count */
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: red;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border-radius: 50%;
+            padding: 5px 10px;
+            min-width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Shadow effect for notification */
+        }
 
-/* Mobile-Friendly Styles */
-@media (max-width: 600px) {
-    body {
-        padding: 10px; /* Reduce padding for small devices */
-    }
+        /* Mobile-Friendly Styles */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px; /* Reduce padding for small devices */
+            }
 
-    h1 {
-        font-size: 1.8rem; /* Slightly smaller font for smaller screens */
-        text-align: center;
-    }
+            h1 {
+                font-size: 1.8rem; /* Slightly smaller font for smaller screens */
+                text-align: center;
+            }
 
-    .food-button {
-        font-size: 1rem;
-        width: 100%; /* Buttons will take full width on mobile */
-        max-width: none; /* Remove max-width for better responsiveness */
-        padding: 14px 28px; /* Reduced padding for smaller screens */
-    }
+            .food-button {
+                font-size: 1rem;
+                width: 100%; /* Buttons will take full width on mobile */
+                max-width: none; /* Remove max-width for better responsiveness */
+                padding: 14px 28px; /* Reduced padding for smaller screens */
+            }
 
-    .cart-button {
-        bottom: 10px;
-        right: 10px;
-        padding: 12px 28px; /* Adjust padding for mobile */
-        font-size: 1rem;
-        min-width: 50px; /* Smaller size on mobile */
-        min-height: 50px;
-    }
-}
+            .cart-button {
+                bottom: 10px;
+                right: 10px;
+                padding: 12px 28px; /* Adjust padding for mobile */
+                font-size: 1rem;
+                min-width: 50px; /* Smaller size on mobile */
+                min-height: 50px;
+            }
+        }
 
-/* Tablet and Larger Screens */
-@media (min-width: 601px) {
-    body {
-        padding: 20px;
-    }
+        /* Tablet and Larger Screens */
+        @media (min-width: 601px) {
+            body {
+                padding: 20px;
+            }
 
-    h1 {
-        font-size: 2.2rem; /* Larger font for tablets and desktop */
-    }
+            h1 {
+                font-size: 2.2rem; /* Larger font for tablets and desktop */
+            }
 
-    .food-button {
-        font-size: 1.1rem;
-        padding: 16px 36px; /* Adjusted padding */
-        max-width: 300px; /* Keep max-width on larger screens */
-    }
+            .food-button {
+                font-size: 1.1rem;
+                padding: 16px 36px; /* Adjusted padding */
+                max-width: 300px; /* Keep max-width on larger screens */
+            }
 
-    .cart-button {
-        bottom: 20px;
-        right: 20px;
-        padding: 16px 40px;
-    }
-}
-
+            .cart-button {
+                bottom: 20px;
+                right: 20px;
+                padding: 16px 40px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -176,8 +186,32 @@ h1 {
     </div>
 </form>
 
-<!-- Cart Button -->
-<button class="cart-button" onclick="location.href='/checkout'">Go to Cart</button>
+<!-- Cart Button with Item Count as Notification Badge -->
+<button class="cart-button" onclick="location.href='/checkout'" id="cartButton">
+    <i class="fas fa-shopping-cart cart-icon"></i> <!-- Cart Icon from Font Awesome -->
+    <span>Go to Cart</span>
+    <div id="cartCount" class="cart-count" style="display: none;">0</div> <!-- Notification-style Cart Count, initially hidden -->
+</button>
+
+<script>
+    // Function to get the item count from the cart (this can be a session or other data)
+    function updateCartCount() {
+        // Example cart data (you would replace this with actual cart data, e.g., from session)
+        var cartItems = {{ session.get('cart', []) | length }};
+
+        var cartCountElement = document.getElementById('cartCount');
+
+        if (cartItems > 0) {
+            cartCountElement.style.display = 'flex'; // Show the badge if there are items in the cart
+            cartCountElement.innerText = cartItems;
+        } else {
+            cartCountElement.style.display = 'none'; // Hide the badge if the cart is empty
+        }
+    }
+
+    // Call the updateCartCount function when the page loads
+    updateCartCount();
+</script>
 
 </body>
 </html>
