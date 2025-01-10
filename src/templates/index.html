@@ -6,202 +6,206 @@
     <title>Restaurant Menu</title>
     <style>
         /* Basic Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-body {
-    font-family: Arial, sans-serif;
-    padding-bottom: 60px; /* Leave space for the fixed bottom grid */
-    font-size: 1rem;
-    margin: 0;
-    background-color: #f4f4f4;
-}
+        body {
+            font-family: Arial, sans-serif;
+            padding-bottom: 60px; /* Leave space for the fixed bottom grid */
+            font-size: 1rem;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
 
-h1 {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 2rem;
-}
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 2rem;
+        }
 
-/* Ensure the table body is scrollable */
-.top-grid {
-    max-height: calc(100vh - 60px); /* Adjust based on header height */
-    overflow-y: auto; /* Makes the top grid scrollable */
-    padding: 0 10px;
-    margin-bottom: 0;
-}
+        /* Ensure the table body is scrollable */
+        .top-grid {
+            max-height: calc(100vh - 60px); /* Adjust based on header height */
+            overflow-y: auto; /* Makes the top grid scrollable */
+            padding: 0 10px;
+            margin-bottom: 0;
+        }
 
-/* Styling for the table */
-table {
-    width: 100%;
-    table-layout: auto; /* Adjusts column width dynamically */
-    border-collapse: separate;
-    border-spacing: 0 15px; /* Adds space between rows */
-    font-size: 1.2rem;
-}
+        /* Styling for the table */
+        table {
+            width: 100%;
+            table-layout: auto; /* Adjusts column width dynamically */
+            border-collapse: separate;
+            border-spacing: 0 15px; /* Adds space between rows */
+            font-size: 1.2rem;
+        }
 
-/* Make the header row sticky */
-thead {
-    position: sticky;
-    top: 0; /* Keep the header at the top of the table */
-    background-color: #ffffff; /* White background for header */
-    z-index: 1; /* Ensure the header stays on top of the content */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for separation */
-}
+        /* Make the header row sticky */
+        thead {
+            position: sticky;
+            top: 0; /* Keep the header at the top of the table */
+            background-color: #ffffff; /* White background for header */
+            z-index: 1; /* Ensure the header stays on top of the content */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for separation */
+        }
 
-/* Styling for the table header cells */
-thead th {
-    padding: 10px 15px;
-    background-color: #f1f1f1; /* Light grey background for header */
-    text-align: left;
-    font-weight: bold;
-    font-size: 1.2rem;
-}
+        /* Styling for the table header cells */
+        thead th {
+            padding: 10px 15px;
+            background-color: #f1f1f1; /* Light grey background for header */
+            text-align: left;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
 
-/* Styling for the table rows */
-tr {
-    background-color: #e9ecef;
-    padding: 8px 0;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease;
-    overflow: hidden;
-}
+        /* Styling for the table rows */
+        tr {
+            background-color: #e9ecef;
+            padding: 8px 0;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+            overflow: hidden;
+        }
 
-/* Styling for the table data cells */
-td {
-    padding: 8px 10px;
-    vertical-align: middle;
-    border-radius: 0;
-}
+        /* Styling for the table data cells */
+        td {
+            padding: 8px 10px;
+            vertical-align: middle;
+            border-radius: 0;
+        }
 
-/* Center-align the Quantity column */
-td:nth-child(3) {
-    text-align: center;
-}
+        /* Center-align the Quantity column */
+        td:nth-child(3) {
+            text-align: center;
+        }
 
-/* Styling for the Quantity controls */
-.quantity-container {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    justify-content: center;
-}
+        /* Highlight the selected row */
+        .selected {
+            background-color: #ffeb3b; /* Yellow background to highlight selection */
+        }
 
-.quantity-box input {
-    width: 50px;
-    text-align: center;
-    font-size: 1.2rem;
-}
+        /* Styling for the Quantity controls */
+        .quantity-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            justify-content: center;
+        }
 
-.quantity-button {
-    padding: 8px 16px;
-    cursor: pointer;
-    font-size: 1.2rem;
-}
+        .quantity-box input {
+            width: 50px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
 
-/* Bottom Grid Styles */
-.bottom-grid {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: transparent;
-    padding: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: none;
-    gap: 12px;
-    flex-wrap: wrap;
-    z-index: 10;
-}
+        .quantity-button {
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
 
-.grid-button {
-    padding: 12px 24px;
-    color: white;
-    background-color: #3498db;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    flex: 1;
-    min-width: 140px;
-    text-align: center;
-    white-space: nowrap;
-    font-size: 1.2rem;
-    transition: all 0.3s ease;
-}
+        /* Bottom Grid Styles */
+        .bottom-grid {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: transparent;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: none;
+            gap: 12px;
+            flex-wrap: wrap;
+            z-index: 10;
+        }
 
-.grid-button:hover {
-    background-color: #2980b9;
-    color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+        .grid-button {
+            padding: 12px 24px;
+            color: white;
+            background-color: #3498db;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            flex: 1;
+            min-width: 140px;
+            text-align: center;
+            white-space: nowrap;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
 
-.grid-button:active {
-    background-color: #003f7f;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
+        .grid-button:hover {
+            background-color: #2980b9;
+            color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-/* Responsive Design */
-@media screen and (max-width: 768px) {
-    .bottom-grid {
-        padding: 15px 10px;
-        gap: 5px;
-    }
+        .grid-button:active {
+            background-color: #003f7f;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
 
-    .grid-button {
-        font-size: 1rem;
-        padding: 8px 16px;
-        min-width: 100px;
-    }
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .bottom-grid {
+                padding: 15px 10px;
+                gap: 5px;
+            }
 
-    table, th, td {
-        font-size: 1rem;
-        padding: 8px;
-    }
+            .grid-button {
+                font-size: 1rem;
+                padding: 8px 16px;
+                min-width: 100px;
+            }
 
-    .quantity-box input {
-        width: 40px;
-        font-size: 1rem;
-    }
+            table, th, td {
+                font-size: 1rem;
+                padding: 8px;
+            }
 
-    .quantity-button {
-        padding: 6px 12px;
-        font-size: 1rem;
-    }
-}
+            .quantity-box input {
+                width: 40px;
+                font-size: 1rem;
+            }
 
-@media screen and (max-width: 480px) {
-    .bottom-grid {
-        padding: 10px 5px;
-        gap: 5px;
-    }
+            .quantity-button {
+                padding: 6px 12px;
+                font-size: 1rem;
+            }
+        }
 
-    .grid-button {
-        font-size: 0.9rem;
-        padding: 8px;
-        min-width: 80px;
-    }
+        @media screen and (max-width: 480px) {
+            .bottom-grid {
+                padding: 10px 5px;
+                gap: 5px;
+            }
 
-    table, th, td {
-        font-size: 0.9rem;
-    }
+            .grid-button {
+                font-size: 0.9rem;
+                padding: 8px;
+                min-width: 80px;
+            }
 
-    .quantity-box input {
-        width: 30px;
-        font-size: 1rem;
-    }
+            table, th, td {
+                font-size: 0.9rem;
+            }
 
-    .quantity-button {
-        padding: 5px 10px;
-        font-size: 1rem;
-    }
-}
+            .quantity-box input {
+                width: 30px;
+                font-size: 1rem;
+            }
 
+            .quantity-button {
+                padding: 5px 10px;
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -209,16 +213,9 @@ td:nth-child(3) {
 
 <div class="top-grid">
     <table>
-<!--        <thead>-->
-<!--        <tr>-->
-<!--            <th>Item Name</th>-->
-<!--            <th>Price</th>-->
-<!--            <th>Quantity</th>-->
-<!--        </tr>-->
-<!--        </thead>-->
         <tbody>
         {% for item in menu_items %}
-        <tr>
+        <tr id="row-{{ item.id }}" class="{{ 'selected' if item.id in cart_item_ids else '' }}">
             <td class="item-name">{{ item.name }}</td>
             <td>{{ item.price }}</td>
             <td>
@@ -244,7 +241,7 @@ td:nth-child(3) {
 
 <script>
     var currentCart = {{ session.get('cart', []) | tojson }};
-    console.log(currentCart);
+    var cartItemIds = currentCart.map(item => item.id); // Array of item IDs currently in the cart
 
     // Function to adjust the quantity
     function adjustQuantity(itemId, change) {
@@ -263,6 +260,46 @@ td:nth-child(3) {
         }
 
         quantityDisplay.value = currentQuantity;
+
+        // Highlight or un-highlight the item based on the quantity
+        highlightItem(itemId, currentQuantity);
+    }
+
+    // Function to highlight the selected item
+    function highlightItem(itemId, quantity) {
+        var row = document.getElementById('row-' + itemId);
+
+        // If quantity is greater than 0, highlight the row; otherwise, remove the highlight
+        if (quantity > 0) {
+            if (!row.classList.contains('selected')) {
+                row.classList.add('selected');
+                // Add to the cart item IDs array if not already present
+                if (!cartItemIds.includes(itemId)) {
+                    cartItemIds.push(itemId);
+                }
+            }
+        } else {
+            if (row.classList.contains('selected')) {
+                row.classList.remove('selected');
+                // Remove from the cart item IDs array if quantity is 0
+                cartItemIds = cartItemIds.filter(id => id !== itemId);
+            }
+        }
+
+        // Update sessionStorage with the current cart state
+        sessionStorage.setItem('cart', JSON.stringify(cartItemIds));
+    }
+
+    // Reapply the selected state on page load based on cart items
+    window.onload = function() {
+        cartItemIds.forEach(function(itemId) {
+            var row = document.getElementById('row-' + itemId);
+            var quantity = parseInt(document.getElementById('quantity-' + itemId).value);
+
+            if (row && quantity > 0) {
+                row.classList.add('selected');
+            }
+        });
     }
 
     // Function to handle the order submission
@@ -279,8 +316,6 @@ td:nth-child(3) {
             if (existingItem) {
                 items.push({ itemId: itemId, quantity: quantity });
             } else {
-                // Add the item if it's not in the cart
-                console.log('Item added to the cart');
                 if (quantity > 0) {
                     items.push({ itemId: itemId, quantity: quantity });
                 }
@@ -293,7 +328,6 @@ td:nth-child(3) {
             form.method = 'POST';
             form.action = '/order';  // The endpoint that will handle the POST request
 
-            // Append the item_id and quantity as hidden inputs in the form
             items.forEach(function(item) {
                 var inputItemId = document.createElement('input');
                 inputItemId.type = 'hidden';
@@ -308,23 +342,12 @@ td:nth-child(3) {
                 form.appendChild(inputQuantity);
             });
 
-            // Append the form to the body (it won't be visible)
             document.body.appendChild(form);
-
-            // Submit the form to send the POST request
             form.submit();
         } else {
             alert('Please select items and quantities before adding to the cart.');
         }
     }
-
-    // Prevent double-tap zooming on iOS
-    document.addEventListener('touchstart', function(event) {
-        var touch = event.touches[0];
-        if (touch && touch.target && touch.target.closest('.grid-button')) {
-            event.preventDefault();
-        }
-    });
 </script>
 </body>
 </html>
