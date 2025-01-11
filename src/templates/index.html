@@ -332,8 +332,14 @@
     window.onload = function() {
         cartItemIds.forEach(function(itemId) {
             var row = document.getElementById('row-' + itemId);
-            var quantity = parseInt(document.getElementById('quantity-' + itemId).value);
-            if (row && quantity > 0) { row.classList.add('selected'); }
+            if (row) {
+                var quantity = parseInt(document.getElementById('quantity-' + itemId).value);
+                if (quantity > 0) {
+                    row.classList.add('selected');  // Highlight the row if quantity > 0
+                } else {
+                    row.classList.remove('selected');  // Remove highlight if quantity is 0
+                }
+            }
         });
     }
 
