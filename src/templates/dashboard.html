@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/new_style.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="container">
+  <!-- Left Sidebar -->
+  <div class="sidebar">
+    <h2>Admin Panel</h2>
+    <ul class="nav">
+      <li><a href="#" onclick="showSection('daily_sales')">Daily Sales Report</a></li>
+      <li><a href="#" onclick="showSection('custom_sales')">Custom Sales Report</a></li>
+      <li><a href="#" onclick="showSection('inventory')">Inventory</a></li>
+    </ul>
+  </div>
+
+  <!-- Right Content Area -->
+  <div class="content">
+    <!-- Default to Daily Sales -->
+    <div id="daily_sales" class="section">
+      <h2>Today's Report</h2>
+      <div class="sales-summary">
+        <!-- Total Collection Box -->
+        <div>
+          <div>
+            <h3>Total Collection</h3>
+            <p id="total-collection"></p>
+          </div>
+        </div>
+
+        <!-- Order Breakdown Box -->
+        <div>
+          <div>
+            <h3>Total Orders</h3>
+            <p id="total-orders"></p>
+          </div>
+          <div>
+            <h3>Cash Collection</h3>
+            <p id="cash-collection"></p>
+          </div>
+          <div>
+            <h3>Online Collection</h3>
+            <p id="online-collection"></p>
+          </div>
+        </div>
+      </div>
+
+      <button onclick="loadDailySales()">Today's Report</button>
+
+      <table id="dailySalesTable">
+        <thead>
+        <tr>
+          <th>Cart Price</th>
+          <th>Payment Mode</th>
+          <th>User Phone</th>
+          <th>Order Date</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div id="inventory" class="section" style="display:none;">
+      <h2>Inventory</h2>
+      <table id="inventoryTable">
+        <thead>
+        <tr>
+          <th>Food Item</th>
+          <th>Quantity in Stock</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
