@@ -7,7 +7,7 @@ from flask import Blueprint, Flask, request, jsonify, Response, render_template
 
 from src.service.OrderService import get_order_details_service
 
-routes_blueprint = Blueprint("routes", __name__)
+routes_blueprint = Blueprint("order_routes", __name__)
 logging.basicConfig(level=logging.INFO)
 
 
@@ -54,7 +54,13 @@ def order_routes(app):
         print('\nresponse_dict..................', response_dict)
 
         return jsonify(response_dict)
+        # return render_template('order_details.html', orders=response_list, start_date=start_date, end_date=end_date)
 
     @app.route('/order/dashboard')
     def index():
-        return render_template('order_details.html')
+        return render_template('dashboard.html')
+        # return render_template('order_details.html')
+
+    @app.template_filter('datetime_format')
+    def datetime_format(value):
+        return datetime.utcfromtimestamp(value).strftime('%Y-%m-%d %H:%M:%S')
