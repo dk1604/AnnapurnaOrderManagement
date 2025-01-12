@@ -5,6 +5,7 @@ body {
     padding: 0;
     background-color: #f4f6f9;
     color: #333;
+    box-sizing: border-box;
 }
 
 /* Container (Sidebar and Content) */
@@ -182,7 +183,7 @@ strong {
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
     .container {
         flex-direction: column;
     }
@@ -208,5 +209,86 @@ strong {
     .nav li a {
         font-size: 14px;
         padding: 10px;
+    }
+}
+
+/* Tablet (portrait) */
+@media (max-width: 1024px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        position: relative;
+        height: auto;
+    }
+
+    .content {
+        margin-left: 0;
+    }
+
+    .sales-summary {
+        flex-direction: column;
+        margin-bottom: 20px;
+    }
+
+    .sales-summary > div {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    button {
+        width: 100%;
+        padding: 15px;
+    }
+}
+
+/* Mobile (portrait) */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        position: relative;
+        height: auto;
+    }
+
+    .content {
+        margin-left: 0;
+    }
+
+    .sales-summary {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .sales-summary > div {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .nav li a {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    table, th, td {
+        font-size: 12px;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+    }
+
+    .sales-summary h3 {
+        font-size: 16px;
+    }
+
+    .sales-summary p {
+        font-size: 18px;
     }
 }
