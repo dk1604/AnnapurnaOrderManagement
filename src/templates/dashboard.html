@@ -96,10 +96,9 @@
       display: flex;
       justify-content: space-between;
       margin-bottom: 30px;
-      background-color: #ffffff;
       padding: 20px;
       border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      height: 100px;
     }
 
     .sales-summary > div {
@@ -112,13 +111,15 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.2);
     }
 
     .sales-summary h3 {
       font-size: 18px;
       font-weight: 600;
       color: #34495E;
-      margin-bottom: 10px;
+      margin: 0;
+      text-align: left;
     }
 
     .sales-summary p {
@@ -126,6 +127,16 @@
       font-weight: 700;
       color: #27ae60;
       text-align: right;
+      margin: 0;
+    }
+
+    #total-collection {
+      font-size: 35px; /* Larger font size for emphasis */
+      font-weight: 800; /* Bold weight for emphasis */
+      color: #e74c3c; /* A distinct red color for the total collection */
+      letter-spacing: 1px; /* Add space between characters for a stylish look */
+      transition: all 0.3s ease; /* Smooth transition for animations */
+      visibility: visible; /* Ensure it's visible */
     }
 
     /* Button Styles */
@@ -192,71 +203,7 @@
       color: #333;
     }
 
-    /* Responsive Design */
-    @media (max-width: 1200px) {
-      .container {
-        flex-direction: column;
-      }
-
-      .sidebar {
-        width: 100%;
-        position: relative;
-        height: auto;
-        transform: translateX(0);
-      }
-
-      .content {
-        margin-left: 0;
-      }
-
-      .sales-summary {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .sales-summary > div {
-        margin-bottom: 20px;
-      }
-
-      .nav li a {
-        font-size: 14px;
-        padding: 10px;
-      }
-    }
-
-    /* Tablet (portrait) */
-    @media (max-width: 1024px) {
-      .container {
-        flex-direction: column;
-      }
-
-      .sidebar {
-        width: 100%;
-        position: relative;
-        height: auto;
-      }
-
-      .content {
-        margin-left: 0;
-      }
-
-      .sales-summary {
-        flex-direction: column;
-        margin-bottom: 20px;
-      }
-
-      .sales-summary > div {
-        width: 100%;
-        margin-bottom: 10px;
-      }
-
-      button {
-        width: 100%;
-        padding: 15px;
-      }
-    }
-
-    /* Mobile (portrait) */
+    /* Media Queries for Responsiveness */
     @media (max-width: 768px) {
       .container {
         flex-direction: column;
@@ -266,6 +213,7 @@
         width: 100%;
         position: relative;
         height: auto;
+        box-shadow: none;
       }
 
       .content {
@@ -274,12 +222,11 @@
 
       .sales-summary {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
       }
 
       .sales-summary > div {
-        width: 100%;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
       }
 
       .nav li a {
@@ -287,21 +234,30 @@
         padding: 10px;
       }
 
-      table, th, td {
+      button {
+        width: auto;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .sidebar {
+        display: none; /* Hide sidebar on very small screens */
+      }
+
+      .content {
+        padding: 20px;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+
+      table {
         font-size: 12px;
       }
 
       button {
-        width: 100%;
-        padding: 12px;
-      }
-
-      .sales-summary h3 {
-        font-size: 16px;
-      }
-
-      .sales-summary p {
-        font-size: 18px;
+        font-size: 14px;
       }
     }
   </style>
@@ -327,25 +283,23 @@
       <div class="sales-summary">
         <!-- Total Collection Box -->
         <div>
-          <div>
             <h3>Total Collection</h3>
-            <p id="total-collection"></p>
-          </div>
+            <p id="total-collection">₹0.00</p>
         </div>
 
         <!-- Order Breakdown Box -->
         <div>
           <div>
             <h3>Total Orders</h3>
-            <p id="total-orders"></p>
+            <p id="total-orders">0</p>
           </div>
           <div>
-            <h3>Cash Collection</h3>
-            <p id="cash-collection"></p>
+            <h3>Cash</h3>
+            <p id="cash-collection">₹0.00</p>
           </div>
           <div>
-            <h3>Online Collection</h3>
-            <p id="online-collection"></p>
+            <h3>Online</h3>
+            <p id="online-collection">₹0.00</p>
           </div>
         </div>
       </div>
@@ -393,6 +347,31 @@
     return `${yyyy}-${mm}-${dd} ${time}`;
   }
 
+  function animateNumber(elementId, targetValue, duration = 2000) {
+    const element = document.getElementById(elementId);
+    const startValue = 0;
+    const startTime = performance.now();
+
+    function updateNumber(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1); // Ensure progress doesn't exceed 1
+
+        // Calculate the current value
+        const currentValue = startValue + (targetValue - startValue) * progress;
+
+        // Update the element with the current value (rounded to two decimal places)
+        element.textContent = `₹${currentValue.toFixed(2)}`;
+
+        // If not done, request another animation frame
+        if (progress < 1) {
+            requestAnimationFrame(updateNumber);
+        }
+    }
+
+    // Start the animation
+    requestAnimationFrame(updateNumber);
+}
+
   //// Function to load daily sales
   function loadDailySales() {
     const startDate = getTodayDate("00:00:00");
@@ -425,7 +404,8 @@
                     totalOnline += order.cart_price;
                 }
             });
-            document.getElementById('total-collection').textContent = `₹${(totalCash + totalOnline).toFixed(2)}`;
+            animateNumber('total-collection', totalCash + totalOnline);
+            //document.getElementById('total-collection').textContent = `₹${(totalCash + totalOnline).toFixed(2)}`;
             document.getElementById('total-orders').textContent = totalOrders;
             document.getElementById('cash-collection').textContent = `₹${totalCash.toFixed(2)}`;
             document.getElementById('online-collection').textContent = `₹${totalOnline.toFixed(2)}`;
