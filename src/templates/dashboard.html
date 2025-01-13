@@ -25,7 +25,7 @@
 
     /* Sidebar Styles */
     .sidebar {
-      width: 250px;
+      width: 60px; /* Reduced width for the collapsed sidebar */
       background-color: #2C3E50;
       color: white;
       padding: 20px;
@@ -35,7 +35,12 @@
       left: 0;
       z-index: 100;
       box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
+      transition: width 0.3s ease;
+      overflow: hidden; /* Hide text when collapsed */
+    }
+
+    .sidebar:hover {
+      width: 250px; /* Expanded sidebar width */
     }
 
     .sidebar h2 {
@@ -44,6 +49,11 @@
       font-size: 24px;
       font-weight: 600;
       color: #ecf0f1;
+      visibility: hidden; /* Hide title when collapsed */
+    }
+
+    .sidebar:hover h2 {
+      visibility: visible; /* Show title when expanded */
     }
 
     .nav {
@@ -63,6 +73,11 @@
       padding: 12px 20px;
       border-radius: 4px;
       transition: background-color 0.3s ease, transform 0.2s ease;
+      visibility: hidden; /* Hide links when collapsed */
+    }
+
+    .sidebar:hover .nav li a {
+      visibility: visible; /* Show links when expanded */
     }
 
     .nav li a:hover {
@@ -256,26 +271,50 @@
     }
 
     @media (max-width: 480px) {
-      .sidebar {
-        display: block; /* Hide sidebar on very small screens */
-      }
-
-      .content {
-        padding: 20px;
-      }
-
-      h2 {
-        font-size: 24px;
-      }
-
-      table {
-        font-size: 12px;
-      }
-
-      button {
-        font-size: 14px;
-      }
+    .sidebar {
+      left: 0; /* Sidebar is now visible initially */
+      transform: translateX(0); /* Remove hiding effect */
+      width: 100%;
+      position: fixed;
+      height: 100vh;
+      transition: transform 0.3s ease;
     }
+
+    .sidebar:hover {
+      transform: translateX(0); /* Sidebar will expand on hover */
+    }
+
+    .content {
+      margin-left: 0; /* Full width for content */
+      padding: 15px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    button {
+      font-size: 14px;
+    }
+
+    table {
+      font-size: 12px;
+    }
+
+    .sales-summary {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sales-summary > div {
+      margin-bottom: 15px;
+    }
+
+    /* Remove the sidebar toggle button style */
+    .sidebar-toggle {
+      display: none;
+    }
+  }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -299,8 +338,8 @@
       <div class="sales-summary">
         <!-- Total Collection Box -->
         <div>
-            <h3>Total Collection</h3>
-            <p id="total-collection">₹0.00</p>
+          <h3>Total Collection</h3>
+          <p id="total-collection">₹0.00</p>
         </div>
 
         <!-- Order Breakdown Box -->
@@ -421,7 +460,6 @@
                 }
             });
             animateNumber('total-collection', totalCash + totalOnline);
-            //document.getElementById('total-collection').textContent = `₹${(totalCash + totalOnline).toFixed(2)}`;
             document.getElementById('total-orders').textContent = totalOrders;
             document.getElementById('cash-collection').textContent = `₹${totalCash.toFixed(2)}`;
             document.getElementById('online-collection').textContent = `₹${totalOnline.toFixed(2)}`;
