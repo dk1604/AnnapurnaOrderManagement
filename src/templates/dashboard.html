@@ -4,302 +4,306 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard</title>
-<!--  <link rel="stylesheet" href="{{ url_for('static', filename='css/new_style.css') }}">-->
   <style>
     /* General Styles */
-  body {
-  font-family: 'Arial', sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f4f6f9;
-  color: #333;
-  box-sizing: border-box;
-  }
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f6f9;
+      color: #333;
+      box-sizing: border-box;
+    }
 
-  /* Container (Sidebar and Content) */
-  .container {
-  display: flex;
-  min-height: 100vh;
-  transition: margin-left 0.3s ease;
-  }
+    /* Container (Sidebar and Content) */
+    .container {
+      display: flex;
+      min-height: 100vh;
+      transition: margin-left 0.3s ease;
+      flex-direction: row;
+    }
 
-  /* Sidebar Styles */
-  .sidebar {
-  width: 250px;
-  background-color: #2C3E50;
-  color: white;
-  padding: 20px;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
-  box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
-  }
+    /* Sidebar Styles */
+    .sidebar {
+      width: 250px;
+      background-color: #2C3E50;
+      color: white;
+      padding: 20px;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
 
-  .sidebar h2 {
-  text-align: center;
-  margin-bottom: 40px;
-  font-size: 24px;
-  font-weight: 600;
-  color: #ecf0f1;
-  }
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 24px;
+      font-weight: 600;
+      color: #ecf0f1;
+    }
 
-  .nav {
-  list-style: none;
-  padding: 0;
-  }
+    .nav {
+      list-style: none;
+      padding: 0;
+    }
 
-  .nav li {
-  margin: 15px 0;
-  }
+    .nav li {
+      margin: 15px 0;
+    }
 
-  .nav li a {
-  color: white;
-  text-decoration: none;
-  font-size: 16px;
-  display: block;
-  padding: 12px 20px;
-  border-radius: 4px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  }
+    .nav li a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      display: block;
+      padding: 12px 20px;
+      border-radius: 4px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
 
-  .nav li a:hover {
-  background-color: #34495E;
-  transform: translateX(5px);
-  }
+    .nav li a:hover {
+      background-color: #34495E;
+      transform: translateX(5px);
+    }
 
-  /* Active Link */
-  .nav li a.active {
-  background-color: #1ABC9C;
-  font-weight: bold;
-  }
+    /* Active Link */
+    .nav li a.active {
+      background-color: #1ABC9C;
+      font-weight: bold;
+    }
 
-  /* Content Area Styles */
-  .content {
-  flex: 1;
-  padding: 30px;
-  margin-left: 270px; /* Add margin to make space for the sidebar */
-  transition: margin-left 0.3s ease;
-  }
+    /* Content Area Styles */
+    .content {
+      flex: 1;
+      padding: 30px;
+      margin-left: 270px; /* Add margin to make space for the sidebar */
+      transition: margin-left 0.3s ease;
+    }
 
-  h2 {
-  font-size: 28px;
-  font-weight: 600;
-  color: #2C3E50;
-  margin-bottom: 20px;
-  }
+    h2 {
+      font-size: 28px;
+      font-weight: 600;
+      color: #2C3E50;
+      margin-bottom: 20px;
+    }
 
-  /* Sales Summary Box Styles */
-  .sales-summary {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 30px;
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  }
+    /* Sales Summary Box Styles */
+    .sales-summary {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
 
-  .sales-summary > div {
-  flex: 1;
-  padding: 15px;
-  margin: 0 10px;
-  background-color: #ecf0f1;
-  border-radius: 8px;
-  text-align: left;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  }
+    .sales-summary > div {
+      flex: 1;
+      padding: 15px;
+      margin: 0 10px;
+      background-color: #ecf0f1;
+      border-radius: 8px;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-  .sales-summary h3 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #34495E;
-  margin-bottom: 10px;
-  }
+    .sales-summary h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #34495E;
+      margin-bottom: 10px;
+    }
 
-  .sales-summary p {
-  font-size: 20px;
-  font-weight: 700;
-  color: #27ae60;
-  text-align: right;
-  }
+    .sales-summary p {
+      font-size: 20px;
+      font-weight: 700;
+      color: #27ae60;
+      text-align: right;
+    }
 
-  /* Button Styles */
-  button {
-  padding: 12px 20px;
-  background-color: #1ABC9C;
-  color: white;
-  border: none;
-  cursor: pointer;
-  margin-bottom: 20px;
-  font-size: 16px;
-  border-radius: 8px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  }
+    /* Button Styles */
+    button {
+      padding: 12px 20px;
+      background-color: #1ABC9C;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-bottom: 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      width: 100%;
+    }
 
-  button:hover {
-  background-color: #16a085;
-  transform: translateY(-3px);
-  }
+    button:hover {
+      background-color: #16a085;
+      transform: translateY(-3px);
+    }
 
-  /* Table Styles */
-  table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 30px;
-  border-radius: 8px;
-  overflow: hidden;
-  background-color: #ffffff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  }
+    /* Table Styles */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: #ffffff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
 
-  table, th, td {
-  border: 1px solid #ddd;
-  }
+    table, th, td {
+      border: 1px solid #ddd;
+    }
 
-  th, td {
-  padding: 15px;
-  text-align: left;
-  font-size: 14px;
-  }
+    th, td {
+      padding: 15px;
+      text-align: left;
+      font-size: 14px;
+    }
 
-  th {
-  background-color: #f4f6f9;
-  font-weight: bold;
-  }
+    th {
+      background-color: #f4f6f9;
+      font-weight: bold;
+    }
 
-  td {
-  color: #555;
-  }
+    td {
+      color: #555;
+    }
 
-  #dailySalesTable tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
-  }
+    #dailySalesTable tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
 
-  #dailySalesTable tbody tr:hover {
-  background-color: #ecf0f1;
-  cursor: pointer;
-  }
+    #dailySalesTable tbody tr:hover {
+      background-color: #ecf0f1;
+      cursor: pointer;
+    }
 
-  /* Currency Symbol Styling */
-  strong {
-  font-size: 1.2em;
-  color: #333;
-  }
+    /* Currency Symbol Styling */
+    strong {
+      font-size: 1.2em;
+      color: #333;
+    }
 
-  /* Responsive Design */
-  @media (max-width: 1200px) {
-  .container {
-  flex-direction: column;
-  }
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+      .container {
+        flex-direction: column;
+      }
 
-  .sidebar {
-  width: 100%;
-  height: auto;
-  }
+      .sidebar {
+        width: 100%;
+        position: relative;
+        height: auto;
+        transform: translateX(0);
+      }
 
-  .content {
-  margin-left: 0;
-  }
+      .content {
+        margin-left: 0;
+      }
 
-  .sales-summary {
-  flex-direction: column;
-  align-items: flex-start;
-  }
+      .sales-summary {
+        flex-direction: column;
+        align-items: flex-start;
+      }
 
-  .sales-summary > div {
-  margin-bottom: 20px;
-  }
+      .sales-summary > div {
+        margin-bottom: 20px;
+      }
 
-  .nav li a {
-  font-size: 14px;
-  padding: 10px;
-  }
-  }
+      .nav li a {
+        font-size: 14px;
+        padding: 10px;
+      }
+    }
 
-  /* Tablet (portrait) */
-  @media (max-width: 1024px) {
-  .container {
-  flex-direction: column;
-  }
+    /* Tablet (portrait) */
+    @media (max-width: 1024px) {
+      .container {
+        flex-direction: column;
+      }
 
-  .sidebar {
-  width: 100%;
-  position: relative;
-  height: auto;
-  }
+      .sidebar {
+        width: 100%;
+        position: relative;
+        height: auto;
+      }
 
-  .content {
-  margin-left: 0;
-  }
+      .content {
+        margin-left: 0;
+      }
 
-  .sales-summary {
-  flex-direction: column;
-  margin-bottom: 20px;
-  }
+      .sales-summary {
+        flex-direction: column;
+        margin-bottom: 20px;
+      }
 
-  .sales-summary > div {
-  width: 100%;
-  margin-bottom: 10px;
-  }
+      .sales-summary > div {
+        width: 100%;
+        margin-bottom: 10px;
+      }
 
-  button {
-  width: 100%;
-  padding: 15px;
-  }
-  }
+      button {
+        width: 100%;
+        padding: 15px;
+      }
+    }
 
-  /* Mobile (portrait) */
-  @media (max-width: 768px) {
-  .container {
-  flex-direction: column;
-  }
+    /* Mobile (portrait) */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
 
-  .sidebar {
-  width: 100%;
-  position: relative;
-  height: auto;
-  }
+      .sidebar {
+        width: 100%;
+        position: relative;
+        height: auto;
+      }
 
-  .content {
-  margin-left: 0;
-  }
+      .content {
+        margin-left: 0;
+      }
 
-  .sales-summary {
-  flex-direction: column;
-  align-items: flex-start;
-  }
+      .sales-summary {
+        flex-direction: column;
+        align-items: flex-start;
+      }
 
-  .sales-summary > div {
-  width: 100%;
-  margin-bottom: 20px;
-  }
+      .sales-summary > div {
+        width: 100%;
+        margin-bottom: 20px;
+      }
 
-  .nav li a {
-  font-size: 14px;
-  padding: 10px;
-  }
+      .nav li a {
+        font-size: 14px;
+        padding: 10px;
+      }
 
-  table, th, td {
-  font-size: 12px;
-  }
+      table, th, td {
+        font-size: 12px;
+      }
 
-  button {
-  width: 100%;
-  padding: 12px;
-  }
+      button {
+        width: 100%;
+        padding: 12px;
+      }
 
-  .sales-summary h3 {
-  font-size: 16px;
-  }
+      .sales-summary h3 {
+        font-size: 16px;
+      }
 
-  .sales-summary p {
-  font-size: 18px;
-  }
-  }
+      .sales-summary p {
+        font-size: 18px;
+      }
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -375,6 +379,7 @@
     </div>
   </div>
 </div>
+
 <script>
   function getTodayDate(time = "00:00:00") {
     const today = new Date();
@@ -386,10 +391,10 @@
 
     // Return the date in the format YYYY-MM-DD with a customizable time (default to "00:00:00")
     return `${yyyy}-${mm}-${dd} ${time}`;
-}
+  }
 
-//// Function to load daily sales
-function loadDailySales() {
+  //// Function to load daily sales
+  function loadDailySales() {
     const startDate = getTodayDate("00:00:00");
     const endDate = getTodayDate("23:59:59");
     console.log('-------------------')
@@ -434,45 +439,6 @@ document.addEventListener("DOMContentLoaded", function() {
     loadDailySales(); // Call the function once the DOM is loaded
 });
 
-//// Handle custom sales report form submission
-//document.getElementById('customSalesForm').addEventListener('submit', function (event) {
-//    event.preventDefault();
-//    const startDate = document.getElementById('start_date').value;
-//    const endDate = document.getElementById('end_date').value;
-//
-//    const formData = new FormData();
-//    formData.append('start_date', startDate);
-//    formData.append('end_date', endDate);
-//
-//    fetch('/custom_sales', {
-//        method: 'POST',
-//        body: formData
-//    })
-//    .then(response => response.json())
-//    .then(data => {
-//        const tableBody = document.querySelector('#customSalesTable tbody');
-//        tableBody.innerHTML = '';
-//        data.forEach(sale => {
-//            const row = document.createElement('tr');
-//            row.innerHTML = `<td>${sale.food_name}</td><td>$${sale.total_sales}</td>`;
-//            tableBody.appendChild(row);
-//        });
-//    });
-//});
-//
-//// Fetch inventory data
-//fetch('/inventory')
-//    .then(response => response.json())
-//    .then(data => {
-//        const tableBody = document.querySelector('#inventoryTable tbody');
-//        tableBody.innerHTML = '';
-//        data.forEach(item => {
-//            const row = document.createElement('tr');
-//            row.innerHTML = `<td>${item.name}</td><td>${item.quantity}</td>`;
-//            tableBody.appendChild(row);
-//        });
-//    });
-//
 // Function to show the selected section and hide others
 function showSection(sectionId) {
     // Hide all sections
@@ -488,8 +454,6 @@ function showSection(sectionId) {
 
 // Load daily sales by default
 showSection('daily_sales');
-
 </script>
-<!--<script src="{{ url_for('static', filename='js/script.js') }}"></script>-->
 </body>
 </html>
