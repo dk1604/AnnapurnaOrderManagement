@@ -253,10 +253,45 @@
 @media (max-width: 480px) {
   .sidebar {
     width: 100%;
-    position: relative;
+    position: absolute;
     top: 0;
     left: 0;
-    transform: translateX(0); /* Sidebar is now visible on top */
+    transform: translateX(0); /* Sidebar will be displayed at the top */
+    height: auto; /* Allow sidebar height to fit content */
+    background-color: #2C3E50;
+    z-index: 100;
+    padding: 10px 15px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow for floating effect */
+  }
+
+  .nav {
+    display: flex; /* Use flexbox to arrange links horizontally */
+    justify-content: space-around; /* Space out the items */
+    padding: 0;
+    list-style: none;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+    margin: 0;
+  }
+
+  .nav li {
+    margin: 5px; /* Reduced space between items */
+    flex: 1 1 auto; /* Allow list items to take equal width */
+  }
+
+  .nav li a {
+    font-size: 12px; /* Adjust font size */
+    padding: 8px 10px; /* Smaller padding */
+    border-radius: 4px;
+    background-color: #34495E;
+    color: white;
+    text-decoration: none;
+    text-align: center; /* Center text */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .nav li a:hover {
+    background-color: #16a085;
+    transform: translateY(-2px);
   }
 
   .content {
@@ -283,20 +318,6 @@
 
   .sales-summary > div {
     margin-bottom: 10px;
-  }
-  
-  .nav {
-    display: flex; /* Use flexbox to arrange links horizontally */
-    justify-content: space-around; /* Space out the items */
-    padding: 0;
-    list-style: none;
-    flex-wrap: wrap; /* Allow wrapping on small screens */
-    margin: 0;
-  }
-
-  .nav li a {
-    font-size: 12px;
-    padding: 8px 10px;
   }
 }
   </style>
