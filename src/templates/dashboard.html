@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard</title>
-  <style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
     /* General Styles */
     body {
       font-family: 'Arial', sans-serif;
@@ -80,7 +80,7 @@
     .content {
       flex: 1;
       padding: 30px;
-      margin-left: 270px; /* Add margin to make space for the sidebar */
+      margin-left: 270px;
       transition: margin-left 0.3s ease;
     }
 
@@ -131,12 +131,12 @@
     }
 
     #total-collection {
-      font-size: 35px; /* Larger font size for emphasis */
-      font-weight: 800; /* Bold weight for emphasis */
-      color: #e74c3c; /* A distinct red color for the total collection */
-      letter-spacing: 1px; /* Add space between characters for a stylish look */
-      transition: all 0.3s ease; /* Smooth transition for animations */
-      visibility: visible; /* Ensure it's visible */
+      font-size: 35px;
+      font-weight: 800;
+      color: #e74c3c;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      visibility: visible;
     }
 
     /* Button Styles */
@@ -205,7 +205,7 @@
 
     @media (max-width: 768px) {
     .container {
-      flex-direction: column; /* Stack sidebar and content vertically */
+      flex-direction: column;
     }
 
     .sidebar {
@@ -214,16 +214,25 @@
       height: auto;
       top: 0;
       left: 0;
-      transform: translateX(0); /* No need to hide sidebar */
+      transform: translateX(0);
     }
 
     .content {
-      margin-left: 0; /* Adjust content to full width */
+      margin-left: 0;
       padding: 15px;
     }
 
     .sidebar h2 {
       font-size: 20px;
+    }
+
+    .content {
+      margin-left: 0;
+      padding: 15px;
+    }
+  
+    .content h2 {
+      font-size: 18px;
     }
 
     .nav li a {
@@ -256,46 +265,46 @@
     position: absolute;
     top: 0;
     left: 0;
-    transform: translateX(0); /* Sidebar will be displayed at the top */
-    height: auto; /* Allow sidebar height to fit content */
+    transform: translateX(0);
+    height: auto;
     background-color: #2C3E50;
     z-index: 100;
     padding: 10px 15px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow for floating effect */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   }
 
   .nav {
-    display: flex; /* Use flexbox to arrange links horizontally */
-    justify-content: space-around; /* Space out the items */
+    display: flex;
+    justify-content: space-around;
     padding: 0;
     list-style: none;
-    flex-wrap: wrap; /* Allow wrapping on small screens */
+    flex-wrap: wrap;
     margin: 0;
   }
 
   .nav li {
-    margin: 5px; /* Reduced space between items */
-    flex: 1 1 auto; /* Allow list items to take equal width */
+    margin: 5px;
+    flex: 1 1 auto;
   }
 
   .nav li a {
-    font-size: 12px; /* Adjust font size */
-    padding: 8px 10px; /* Smaller padding */
+    font-size: 12px;
+    padding: 8px 10px;
     border-radius: 4px;
     background-color: #34495E;
     color: white;
     text-decoration: none;
-    text-align: center; /* Center text */
+    text-align: center;
     transition: background-color 0.3s ease, transform 0.2s ease;
   }
-  
+
   .nav li a:hover {
     background-color: #16a085;
     transform: translateY(-2px);
   }
 
   .content {
-    margin-left: 0; /* Content occupies full width */
+    margin-left: 0;
     padding: 10px;
   }
 
@@ -320,78 +329,79 @@
     margin-bottom: 10px;
   }
 }
-  </style>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <div class="container">
-  <!-- Left Sidebar -->
-  <div class="sidebar">
-    <h2>Admin Panel</h2>
-    <ul class="nav">
-      <li><a href="#" onclick="showSection('daily_sales')">Daily Sales Report</a></li>
-      <li><a href="#" onclick="showSection('custom_sales')">Custom Sales Report</a></li>
-      <li><a href="#" onclick="showSection('inventory')">Inventory</a></li>
-    </ul>
-  </div>
-
-  <!-- Right Content Area -->
-  <div class="content">
-    <!-- Default to Daily Sales -->
-    <div id="daily_sales" class="section">
-      <h2>Today's Report</h2>
-      <div class="sales-summary">
-        <!-- Total Collection Box -->
-        <div>
-          <h3>Total Collection</h3>
-          <p id="total-collection">₹0.00</p>
-        </div>
-
-        <!-- Order Breakdown Box -->
-        <div>
-          <div>
-            <h3>Total Orders</h3>
-            <p id="total-orders">0</p>
-          </div>
-          <div>
-            <h3>Cash</h3>
-            <p id="cash-collection">₹0.00</p>
-          </div>
-          <div>
-            <h3>Online</h3>
-            <p id="online-collection">₹0.00</p>
-          </div>
-        </div>
-      </div>
-
-      <button onclick="loadDailySales()">Today's Report</button>
-
-      <table id="dailySalesTable">
-        <thead>
-        <tr>
-          <th>Cart Price</th>
-          <th>Payment Mode</th>
-          <th>User Phone</th>
-          <th>Order Date</th>
-        </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+    <!-- Left Sidebar -->
+    <div class="sidebar">
+        <h2>Admin Panel</h2>
+        <ul class="nav">
+            <li><a href="#" onclick="showSection('daily_sales')">Daily Sales Report</a></li>
+            <li><a href="#" onclick="showSection('custom_sales')">Custom Sales Report</a></li>
+            <li><a href="#" onclick="showSection('inventory')">Inventory</a></li>
+        </ul>
     </div>
 
-    <div id="inventory" class="section" style="display:none;">
-      <h2>Inventory</h2>
-      <table id="inventoryTable">
-        <thead>
-        <tr>
-          <th>Food Item</th>
-          <th>Quantity in Stock</th>
-        </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+    <!-- Right Content Area -->
+    <div class="content">
+        <!-- Default to Daily Sales -->
+        <div id="daily_sales" class="section">
+            <h2>Today's Report</h2>
+            <div class="sales-summary">
+                <!-- Total Collection Box -->
+                <div>
+                    <h3>Total Collection</h3>
+                    <p id="total-collection">₹0.00</p>
+                </div>
+
+                <!-- Order Breakdown Box -->
+                <div>
+                    <div>
+                        <h3>Total Orders</h3>
+                        <p id="total-orders">0</p>
+                    </div>
+                    <div>
+                        <h3>Cash</h3>
+                        <p id="cash-collection">₹0.00</p>
+                    </div>
+                    <div>
+                        <h3>Online</h3>
+                        <p id="online-collection">₹0.00</p>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="loadDailySales()">Today's Report</button>
+
+            <table id="dailySalesTable">
+                <thead>
+                <tr>
+                    <th>Cart Price</th>
+                    <th>Payment Mode</th>
+                    <th>User Phone</th>
+                    <th>Order Date</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div id="inventory" class="section" style="display:none;">
+            <h2>Inventory</h2>
+            <table id="inventoryTable">
+                <thead>
+                <tr>
+                    <th>Food Item</th>
+                    <th>Quantity in Stock</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
-  </div>
 </div>
 
 <script>
@@ -493,6 +503,7 @@ function showSection(sectionId) {
 
 // Load daily sales by default
 showSection('daily_sales');
+
 </script>
 </body>
 </html>
