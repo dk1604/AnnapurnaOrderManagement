@@ -25,7 +25,7 @@
 
     /* Sidebar Styles */
     .sidebar {
-      width: 60px; /* Reduced width for the collapsed sidebar */
+      width: 250px; /* Reduced width for the collapsed sidebar */
       background-color: #2C3E50;
       color: white;
       padding: 20px;
@@ -35,12 +35,7 @@
       left: 0;
       z-index: 100;
       box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
-      transition: width 0.3s ease;
-      overflow: hidden; /* Hide text when collapsed */
-    }
-
-    .sidebar:hover {
-      width: 250px; /* Expanded sidebar width */
+      transition: transform 0.3s ease;
     }
 
     .sidebar h2 {
@@ -49,11 +44,6 @@
       font-size: 24px;
       font-weight: 600;
       color: #ecf0f1;
-      visibility: hidden; /* Hide title when collapsed */
-    }
-
-    .sidebar:hover h2 {
-      visibility: visible; /* Show title when expanded */
     }
 
     .nav {
@@ -73,11 +63,6 @@
       padding: 12px 20px;
       border-radius: 4px;
       transition: background-color 0.3s ease, transform 0.2s ease;
-      visibility: hidden; /* Hide links when collapsed */
-    }
-
-    .sidebar:hover .nav li a {
-      visibility: visible; /* Show links when expanded */
     }
 
     .nav li a:hover {
@@ -218,87 +203,32 @@
       color: #333;
     }
 
-    /* Media Queries for Responsiveness */
     @media (max-width: 768px) {
-      .container {
-        flex-direction: column;
-      }
-
-      .sidebar {
-        width: 100%;
-        position: absolute;
-        top: 0;
-        left: -250px;
-        height: 100vh;
-        transition: transform 0.3s ease;
-      }
-
-      .sidebar.open {
-        transform: translateX(250px);
-      }
-
-      .content {
-        margin-left: 0;
-      }
-
-      .sales-summary {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .sales-summary > div {
-        margin-bottom: 15px;
-      }
-
-      .nav li a {
-        font-size: 14px;
-        padding: 10px;
-      }
-
-      button {
-        width: auto;
-      }
-
-      .sidebar-toggle {
-        display: block;
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        font-size: 24px;
-        cursor: pointer;
-        z-index: 200;
-      }
+    .container {
+      flex-direction: column; /* Stack sidebar and content vertically */
     }
 
-    @media (max-width: 480px) {
     .sidebar {
-      left: 0; /* Sidebar is now visible initially */
-      transform: translateX(0); /* Remove hiding effect */
       width: 100%;
-      position: fixed;
-      height: 100vh;
-      transition: transform 0.3s ease;
-    }
-
-    .sidebar:hover {
-      transform: translateX(0); /* Sidebar will expand on hover */
+      position: relative;
+      height: auto;
+      top: 0;
+      left: 0;
+      transform: translateX(0); /* No need to hide sidebar */
     }
 
     .content {
-      margin-left: 0; /* Full width for content */
+      margin-left: 0; /* Adjust content to full width */
       padding: 15px;
     }
 
-    h2 {
-      font-size: 24px;
+    .sidebar h2 {
+      font-size: 20px;
     }
 
-    button {
+    .nav li a {
       font-size: 14px;
-    }
-
-    table {
-      font-size: 12px;
+      padding: 10px;
     }
 
     .sales-summary {
@@ -310,11 +240,56 @@
       margin-bottom: 15px;
     }
 
-    /* Remove the sidebar toggle button style */
-    .sidebar-toggle {
-      display: none;
+    button {
+      font-size: 14px;
+    }
+
+    table {
+      font-size: 12px;
     }
   }
+
+/* Media Queries for Mobile (max-width: 480px) */
+@media (max-width: 480px) {
+  .sidebar {
+    width: 100%;
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: translateX(0); /* Sidebar is now visible on top */
+  }
+
+  .content {
+    margin-left: 0; /* Content occupies full width */
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  button {
+    font-size: 14px;
+  }
+
+  table {
+    font-size: 12px;
+  }
+
+  .sales-summary {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .sales-summary > div {
+    margin-bottom: 10px;
+  }
+
+  .nav li a {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+}
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
