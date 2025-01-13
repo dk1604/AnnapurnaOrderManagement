@@ -211,9 +211,15 @@
 
       .sidebar {
         width: 100%;
-        position: relative;
-        height: auto;
-        box-shadow: none;
+        position: absolute;
+        top: 0;
+        left: -250px;
+        height: 100vh;
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar.open {
+        transform: translateX(250px);
       }
 
       .content {
@@ -237,11 +243,21 @@
       button {
         width: auto;
       }
+
+      .sidebar-toggle {
+        display: block;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        font-size: 24px;
+        cursor: pointer;
+        z-index: 200;
+      }
     }
 
     @media (max-width: 480px) {
       .sidebar {
-        display: none; /* Hide sidebar on very small screens */
+        display: block; /* Hide sidebar on very small screens */
       }
 
       .content {
