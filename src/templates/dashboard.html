@@ -122,16 +122,17 @@
       text-align: left;
     }
 
-    .sales-summary p {
-      font-size: 20px;
-      font-weight: 700;
-      color: #27ae60;
-      text-align: right;
-      margin: 0;
+    #total-collection-daily, #total-collection-custom {
+      font-size: 35px;
+      font-weight: 800;
+      color: #e74c3c;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      visibility: visible;
     }
 
-    #total-collection {
-      font-size: 35px;
+    #total-orders-daily, #cash-collection-daily, #online-collection-daily, #total-orders-custom, #cash-collection-custom, #online-collection-custom {
+      font-size: 20px;
       font-weight: 800;
       color: #e74c3c;
       letter-spacing: 1px;
@@ -180,7 +181,8 @@
     }
 
     th {
-      background-color: #f4f6f9;
+      background-color: #2C3E50; /* Dark Blue */
+      color: white;
       font-weight: bold;
     }
 
@@ -188,11 +190,11 @@
       color: #555;
     }
 
-    #dailySalesTable tbody tr:nth-child(even) {
+    #dailySalesTable tbody tr:nth-child(even), #customSalesTable tbody tr:nth-child(even) {
       background-color: #f9f9f9;
     }
 
-    #dailySalesTable tbody tr:hover {
+    #dailySalesTable tbody tr:hover, #customSalesTable tbody tr:hover {
       background-color: #ecf0f1;
       cursor: pointer;
     }
@@ -202,6 +204,45 @@
       font-size: 1.2em;
       color: #333;
     }
+
+    .date-range-container {
+      display: flex;
+      flex-direction: row;
+      gap: 40px; /* Add space between the input groups */
+      align-items: center; /* Add space below the form */
+      margin-bottom: 30px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: row;
+      align-items: center; /* Vertically align the label and input */
+      gap: 10px; /* Space between label and input */
+    }
+
+    /* Label Styling */
+    .input-group label {
+      font-size: 16px;
+      font-weight: 600;
+      color: #34495E;
+      margin: 0;
+      width: auto; /* Set a fixed width for the label */
+    }
+
+  input[type="datetime-local"] {
+    font-size: 16px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 200px;
+    background-color: #ffffff;
+    transition: border-color 0.3s ease;
+  }
+
+  input[type="datetime-local"]:focus {
+    border-color: #1ABC9C; /* Highlight border color when focused */
+    outline: none;
+  }
 
     @media (max-width: 768px) {
     .container {
@@ -261,73 +302,26 @@
 /* Media Queries for Mobile (max-width: 480px) */
 @media (max-width: 480px) {
   .sidebar {
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: translateX(0);
-    height: 100%;
-    background-color: #8a883b;
-    z-index: 100;
-    padding: 0;
-    margin: 0;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Sidebar takes full width */
+    right: -100%; /* Initially hide the sidebar off-screen to the right */
   }
 
-  .nav {
-    display: flex;
-    justify-content: space-around;
-    padding: 0;
-    list-style: none;
-    flex-wrap: wrap;
-    margin: 0;
-  }
-
-  .nav li {
-    margin: 5px;
-    flex: 1 1 auto;
-  }
-
-  .nav li a {
-    font-size: 12px;
-    padding: 8px 10px;
-    border-radius: 4px;
-    background-color: #8c4d41;
-    color: white;
-    text-decoration: none;
-    text-align: center;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-
-  .nav li a:hover {
-    background-color: #16a085;
-    transform: translateY(-2px);
-  }
-
+  /* Adjust content padding and margin for smaller screens */
   .content {
-    margin-left: 0;
-    padding: 10px;
+    margin-right: 0;
+    transition: margin-right 0.3s ease-in-out;
   }
 
-  h2 {
-    font-size: 20px;
+  .sidebar.open {
+    right: 0; /* Slide the sidebar to the right when it's open */
   }
 
-  button {
-    font-size: 14px;
-  }
-
-  table {
-    font-size: 12px;
-  }
-
-  .sales-summary {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .sales-summary > div {
-    margin-bottom: 10px;
+  /* Adjust sidebar toggle button position */
+  .sidebar-toggle {
+    top: 10px;
+    left: 10px;
+    font-size: 22px;
+    padding: 8px 12px;
   }
 }
 
@@ -337,6 +331,7 @@
 <body>
 <div class="container">
   <!-- Left Sidebar -->
+  <div class="sidebar-toggle" onclick="toggleSidebar()">☰</div>
   <div class="sidebar">
     <h2>Admin Panel</h2>
     <ul class="nav">
@@ -352,26 +347,22 @@
     <div id="daily_sales" class="section">
       <h2>Today's Report</h2>
       <div class="sales-summary">
-        <!-- Total Collection Box -->
         <div>
-          <h3>Total Collection</h3>
-          <p id="total-collection">₹0.00</p>
+          <!-- <h3>Total Collection</h3>-->
+          <p id="total-collection-daily">₹0.00</p>
         </div>
 
-        <!-- Order Breakdown Box -->
         <div>
-          <div>
-            <h3>Total Orders</h3>
-            <p id="total-orders">0</p>
-          </div>
-          <div>
-            <h3>Cash</h3>
-            <p id="cash-collection">₹0.00</p>
-          </div>
-          <div>
-            <h3>Online</h3>
-            <p id="online-collection">₹0.00</p>
-          </div>
+          <h3>Total Orders</h3>
+          <p id="total-orders-daily">0</p>
+        </div>
+        <div>
+          <h3>Cash</h3>
+          <p id="cash-collection-daily">₹0.00</p>
+        </div>
+        <div>
+          <h3>Online</h3>
+          <p id="online-collection-daily">₹0.00</p>
         </div>
       </div>
 
@@ -390,6 +381,53 @@
       </table>
     </div>
 
+    <!-- custom sales report-->
+    <div id="custom_sales" class="section">
+      <h2>Today's Report</h2>
+      <div class="sales-summary">
+        <div>
+          <!-- <h3>Total Collection</h3>-->
+          <p id="total-collection-custom">₹0.00</p>
+        </div>
+
+        <div>
+          <h3>Total Orders</h3>
+          <p id="total-orders-custom">0</p>
+        </div>
+        <div>
+          <h3>Cash</h3>
+          <p id="cash-collection-custom">₹0.00</p>
+        </div>
+        <div>
+          <h3>Online</h3>
+          <p id="online-collection-custom">₹0.00</p>
+        </div>
+      </div>
+      <div class="date-range-container">
+        <div class="input-group">
+          <label for="startDate">Start Date & Time:</label>
+          <input type="datetime-local" id="startDate" name="startDate">
+        </div>
+        <div class="input-group">
+          <label for="endDate">End Date & Time:</label>
+          <input type="datetime-local" id="endDate" name="endDate">
+        </div>
+      </div>
+      <button onclick="loadCustomSales()">Get Report</button>
+      <table id="customSalesTable">
+        <thead>
+        <tr>
+          <th>Cart Price</th>
+          <th>Payment Mode</th>
+          <th>User Phone</th>
+          <th>Order Date</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- inventory -->
     <div id="inventory" class="section" style="display:none;">
       <h2>Inventory</h2>
       <table id="inventoryTable">
@@ -418,7 +456,7 @@
     return `${yyyy}-${mm}-${dd} ${time}`;
   }
 
-  function animateNumber(elementId, targetValue, duration = 2000) {
+  function animateNumber(elementId, targetValue, duration = 1000) {
     const element = document.getElementById(elementId);
     const startValue = 0;
     const startTime = performance.now();
@@ -443,17 +481,41 @@
     requestAnimationFrame(updateNumber);
 }
 
-  //// Function to load daily sales
-  function loadDailySales() {
+  function loadDailySales(){
     const startDate = getTodayDate("00:00:00");
     const endDate = getTodayDate("23:59:59");
-    console.log('-------------------')
-    console.log(startDate)
-    console.log(endDate)
+
+    loadSales(startDate, endDate, 'daily')
+  }
+
+  function loadCustomSales(){
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+    var formattedStartDate = new Date(startDate).toISOString().slice(0, 19).replace('T', ' ');
+    var formattedEndDate = new Date(endDate).toISOString().slice(0, 19).replace('T', ' ');
+
+    // Ensure both dates are selected
+    if (!formattedStartDate || !formattedEndDate) {
+        alert("Please select both start and end dates.");
+        return;
+    }
+    loadSales(formattedStartDate, formattedEndDate, 'custom')
+  }
+
+  //// Function to load daily sales
+  function loadSales(startDate, endDate, tableType) {
     fetch(`/order/summary?start_date=${startDate}&end_date=${endDate}`)
         .then(response => response.json())
         .then(data => {
-            const tableBody = document.querySelector('#dailySalesTable tbody');
+            let tableBody;
+            if (tableType === 'daily') {
+                tableBody = document.querySelector('#dailySalesTable tbody');
+            } else if (tableType === 'custom') {
+                tableBody = document.querySelector('#customSalesTable tbody');
+            } else {
+                console.error('Invalid table type');
+                return;
+            }
             tableBody.innerHTML = '';
 
             let totalOrders = 0;
@@ -475,10 +537,20 @@
                     totalOnline += order.cart_price;
                 }
             });
-            animateNumber('total-collection', totalCash + totalOnline);
-            document.getElementById('total-orders').textContent = totalOrders;
-            document.getElementById('cash-collection').textContent = `₹${totalCash.toFixed(2)}`;
-            document.getElementById('online-collection').textContent = `₹${totalOnline.toFixed(2)}`;
+            if (tableType === 'daily') {
+                animateNumber('total-collection-daily', totalCash + totalOnline);
+                document.getElementById('total-orders-daily').textContent = totalOrders;
+                document.getElementById('cash-collection-daily').textContent = `₹${totalCash.toFixed(2)}`;
+                document.getElementById('online-collection-daily').textContent = `₹${totalOnline.toFixed(2)}`;
+            } else if (tableType === 'custom') {
+                animateNumber('total-collection-custom', totalCash + totalOnline);
+                document.getElementById('total-orders-custom').textContent = totalOrders;
+                document.getElementById('cash-collection-custom').textContent = `₹${totalCash.toFixed(2)}`;
+                document.getElementById('online-collection-custom').textContent = `₹${totalOnline.toFixed(2)}`;
+            } else {
+                console.error('Invalid table type');
+                return;
+            }
         })
         .catch(error => {
             console.error("Error fetching sales data:", error);
@@ -487,6 +559,10 @@
 
 document.addEventListener("DOMContentLoaded", function() {
     loadDailySales(); // Call the function once the DOM is loaded
+});
+
+document.querySelector('button').addEventListener('click', function() {
+    loadCustomSales(); // Load custom sales data on button click
 });
 
 // Function to show the selected section and hide others
