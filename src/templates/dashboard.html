@@ -190,11 +190,11 @@
       color: #555;
     }
 
-    #dailySalesTable tbody tr:nth-child(even), #customSalesTable tbody tr:nth-child(even) {
+    #dailySalesTable tbody tr:nth-child(even), #customSalesTable tbody tr:nth-child(even), #menuTable tbody tr:nth-child(even) {
       background-color: #f9f9f9;
     }
 
-    #dailySalesTable tbody tr:hover, #customSalesTable tbody tr:hover {
+    #dailySalesTable tbody tr:hover, #customSalesTable tbody tr:hover, #menuTable tbody tr:hover {
       background-color: #ecf0f1;
       cursor: pointer;
     }
@@ -337,7 +337,7 @@
     <ul class="nav">
       <li><a href="#" onclick="showSection('daily_sales')">Daily Sales Report</a></li>
       <li><a href="#" onclick="showSection('custom_sales')">Custom Sales Report</a></li>
-      <li><a href="#" onclick="showSection('inventory')">Inventory</a></li>
+      <li><a href="#" onclick="showSection('menu')">Menu</a></li>
     </ul>
   </div>
 
@@ -375,6 +375,7 @@
           <th>Payment Mode</th>
           <th>User Phone</th>
           <th>Order Date</th>
+          <th>Order ID</th>
         </tr>
         </thead>
         <tbody></tbody>
@@ -427,14 +428,17 @@
       </table>
     </div>
 
-    <!-- inventory -->
-    <div id="inventory" class="section" style="display:none;">
-      <h2>Inventory</h2>
-      <table id="inventoryTable">
+    <!-- menu -->
+    <div id="menu" class="section">
+      <h2>Menu</h2>
+      <table id="menuTable">
         <thead>
         <tr>
-          <th>Food Item</th>
-          <th>Quantity in Stock</th>
+          <th>Id</th>
+          <th>Item</th>
+          <th>Description</th>
+          <th>Category</th>
+          <th>Price</th>
         </tr>
         </thead>
         <tbody></tbody>
@@ -527,6 +531,7 @@
                 row.innerHTML = `<td>₹${order.cart_price}</td>
                                 <td>${order.payment_mode}</td>
                                 <td>${order.user_phone}</td>
+                                <td>${order.order_id}</td>
                                 <td>${new Date(order.order_date * 1000).toLocaleString()}</td>`;
                 tableBody.appendChild(row);
 
@@ -557,12 +562,117 @@
     });
 }
 
+function loadMenu() {
+    fetch('/order/menu-items')
+        .then(response => response.json())
+        .then(menuItems => {
+            const menuTableBody = document.querySelector('#menuTable tbody');
+            menuTableBody.innerHTML = ''; // Clear existing rows
+            const bulkSaveBtnContainer = document.querySelector('.bulk-save-container');
+            bulkSaveBtnContainer.innerHTML = ''; // Clear the previous save button
+
+            menuItems.forEach(item => {
+                const row = document.createElement('tr');
+                row.dataset.itemId = item.id; // Store the item ID in the row for easy access
+
+                row.innerHTML = `
+                    <td><input type="text" value="${item.name}" class="edit-name" disabled></td>
+                    <td><input type="text" value="${item.description}" class="edit-description" disabled></td>
+                    <td><input type="text" value="${item.food_category}" class="edit-category" disabled></td>
+                    <td><input type="number" value="${item.price}" class="edit-price" disabled></td>
+                    <td>
+                        <button class="edit-btn">Edit</button>
+                    </td>
+                `;
+                menuTableBody.appendChild(row);
+
+                const editBtn = row.querySelector('.edit-btn');
+
+                editBtn.addEventListener('click', function() {
+                    // Enable the inputs for editing
+                    row.querySelectorAll('input').forEach(input => input.disabled = false);
+
+                    // Hide the "Edit" button and show the "Save" button for bulk update
+                    editBtn.style.display = 'none';
+
+                    // Enable the bulk save button
+                    if (!bulkSaveBtnContainer.querySelector('.save-btn')) {
+                        const saveBtn = document.createElement('button');
+                        saveBtn.classList.add('save-btn');
+                        saveBtn.textContent = 'Save All Changes';
+                        saveBtn.addEventListener('click', function() {
+                            saveAllChanges(menuItems);
+                        });
+                        bulkSaveBtnContainer.appendChild(saveBtn);
+                    }
+                });
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching menu items:', error);
+        });
+}
+
+// Function to save all changes at once
+function saveAllChanges(menuItems) {
+    const updatedItems = [];
+
+    // Loop through the menu items and collect updated data
+    const rows = document.querySelectorAll('#menuTable tbody tr');
+    rows.forEach(row => {
+        const itemId = row.dataset.itemId;
+        const name = row.querySelector('.edit-name').value;
+        const description = row.querySelector('.edit-description').value;
+        const foodCategory = row.querySelector('.edit-category').value;
+        const price = parseInt(row.querySelector('.edit-price').value, 10); // Ensure price is an integer
+
+        // Check if there are any changes
+        if (menuItems.some(item => item.id === parseInt(itemId))) {
+            updatedItems.push({
+                id: itemId,
+                name: name,
+                description: description,
+                food_category: foodCategory,
+                price: price
+            });
+        }
+    });
+
+    // Send all updated items in one request
+    if (updatedItems.length > 0) {
+        fetch('/order/menu-items', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedItems),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Items updated successfully!');
+                loadMenu();  // Reload the updated menu after saving
+            } else {
+                alert('Error updating items.');
+            }
+        })
+        .catch(error => {
+            console.error('Error updating menu items:', error);
+            alert('Failed to update items.');
+        });
+    } else {
+        alert('No changes detected.');
+    }
+}
+
+
 document.addEventListener("DOMContentLoaded", function() {
-    loadDailySales(); // Call the function once the DOM is loaded
+    loadDailySales();
+    loadMenu();
 });
 
 document.querySelector('button').addEventListener('click', function() {
-    loadCustomSales(); // Load custom sales data on button click
+    loadCustomSales();
 });
 
 // Function to show the selected section and hide others
