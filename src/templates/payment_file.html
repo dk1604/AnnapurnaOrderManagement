@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PhonePe QR Code</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode.js@1.0.0/qrcode.min.js"></script>
+  <script>
+    function generatePhonePeQRCode() {
+      // UPI Payment Link for PhonePe
+      const upiPaymentLink = "upi://pay?pa=your-phonepe@upi&pn=YourName&am=100&cu=INR";
+
+      // Clear any existing QR code
+      const qrCodeContainer = document.getElementById("qrcode");
+      qrCodeContainer.innerHTML = '';
+
+      // Generate new QR code for the payment link
+      new QRCode(qrCodeContainer, upiPaymentLink);
+    }
+  </script>
+</head>
+<body>
+<h2>PhonePe Payment QR Code</h2>
+<button onclick="generatePhonePeQRCode()">Generate QR Code</button>
+
+<div id="qrcode" style="margin-top: 20px;"></div> <!-- QR code will appear here -->
+</body>
+</html>
