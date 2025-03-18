@@ -247,3 +247,9 @@ def configure_routes(app):
     def payment_failure():
         # This could be the page to handle any failed payment cases.
         return render_template('failure.html', message="Payment failed. Please try again.")
+
+    @app.route('/payment/test', methods=['GET'])
+    def payment_failure():
+        logging.error("test payment_file called", e)
+        # This could be the page to handle any failed payment cases.
+        return render_template('payment_file.html')
