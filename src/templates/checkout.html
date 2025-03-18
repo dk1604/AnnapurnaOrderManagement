@@ -175,15 +175,16 @@
     </div>
     <script>
         // Listen for the "Custom Payment" button click to create payment session
-        document.getElementById("customPaymentBtn").addEventListener("click", () => {
-        fetch(`/payment/test`)
-            .then(response => response.text())  // Get the response text from Flask
+        document.getElementById("customPaymentBtn").addEventListener("click", function() {
+        // Fetch the Flask route for custom payment
+        fetch('/payment/test')
+            .then(response => response.text())  // Get the response text (HTML)
             .then(data => {
-                // Display the response in the "paymentResponse" div
+                // Insert the returned HTML into the page (can be a new div or replace content)
                 document.getElementById("paymentResponse").innerHTML = data;
             })
             .catch(error => {
-                console.error("Error during the payment request:", error);
+                console.error("Error during the request:", error);
             });
         });
 
