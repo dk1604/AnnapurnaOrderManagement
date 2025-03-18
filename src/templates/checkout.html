@@ -177,12 +177,7 @@
         // Listen for the "Custom Payment" button click to create payment session
         document.getElementById("customPaymentBtn").addEventListener("click", function() {
         // Fetch the Flask route for custom payment
-        fetch('/payment/test')
-            .then(response => response.text())  // Get the response text (HTML)
-            .then(data => {
-                // Insert the returned HTML into the page (can be a new div or replace content)
-                document.getElementById("paymentResponse").innerHTML = data;
-            })
+        fetch('/payment/test', { method: 'GET' })
             .catch(error => {
                 console.error("Error during the request:", error);
             });
