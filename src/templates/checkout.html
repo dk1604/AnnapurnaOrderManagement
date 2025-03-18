@@ -176,7 +176,7 @@
     <script>
         // Listen for the "Custom Payment" button click to create payment session
         document.getElementById("customPaymentBtn").addEventListener("click", () => {
-        etch(`/payment/test`)
+        fetch(`/payment/test`)
             .then(response => response.text())  // Get the response text from Flask
             .then(data => {
                 // Display the response in the "paymentResponse" div
