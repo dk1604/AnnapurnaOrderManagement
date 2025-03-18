@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PhonePe QR Code</title>
   <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+
   <script>
     function generatePhonePeQRCode() {
       // UPI Payment Link for PhonePe
@@ -16,6 +18,38 @@
 
       // Generate new QR code for the payment link
       new QRCode(qrCodeContainer, upiPaymentLink);
+
+      startQRCodeScanner();
+    }
+    
+    function startQRCodeScanner() {
+      // This function will start the QR code scanner using the user's camera
+
+      const html5QrCode = new Html5Qrcode("reader");
+
+      // Start scanning QR codes from the camera
+      html5QrCode.start(
+        { facingMode: "environment" }, // Using environment facing camera (back camera)
+        {
+          fps: 10, // Frame rate
+          qrbox: 250 // Size of the scanning box
+        },
+        (decodedText, decodedResult) => {
+          // This function will be called when a QR code is detected
+          alert("Scanned QR Code: " + decodedText);
+          html5QrCode.stop().then(() => {
+            console.log("Scanner stopped");
+          }).catch((err) => {
+            console.error("Error stopping the scanner:", err);
+          });
+        },
+        (errorMessage) => {
+          // This function will be called when an error occurs during scanning
+          console.log("Error scanning QR Code:", errorMessage);
+        }
+      ).catch(err => {
+        console.error("Error starting the QR code scanner:", err);
+      });
     }
   </script>
 </head>
