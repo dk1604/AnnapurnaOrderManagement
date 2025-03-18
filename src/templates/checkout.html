@@ -169,10 +169,24 @@
 
     <!-- Form for POST to backend -->
     <div class="button-group">
+        <button id="customPaymentBtn">Custom Payment</button>
         <button id="onlinePaymentBtn">Online Payment</button>
         <button id="cashOnDeliveryBtn">Cash on Delivery</button>
     </div>
     <script>
+        // Listen for the "Custom Payment" button click to create payment session
+        document.getElementById("customPaymentBtn").addEventListener("click", () => {
+        etch(`/payment/test`)
+            .then(response => response.text())  // Get the response text from Flask
+            .then(data => {
+                // Display the response in the "paymentResponse" div
+                document.getElementById("paymentResponse").innerHTML = data;
+            })
+            .catch(error => {
+                console.error("Error during the payment request:", error);
+            });
+        });
+
         // Listen for the "Online Payment" button click to create payment session
         document.getElementById("onlinePaymentBtn").addEventListener("click", () => {
             // Get user details from form
