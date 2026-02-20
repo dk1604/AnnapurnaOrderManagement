@@ -20,14 +20,14 @@ client_id = os.getenv("client_id")
 client_secret = os.getenv("client_secret")
 
 db_type = os.getenv("db_type").lower()
-host = "dpg-cvc0stij1k6c73e3a1jg-a.oregon-postgres.render.com"
+host = "dpg-d6c0shi4d50c73d1ckb0-a.oregon-postgres.render.com"
 port = "5432"
-database = "menu_y9ts"
+database = "canteen_7mv1"
 user = "root"
-password = "NfxfbIaVkRxd84n6NPR5wQjPouu4yvqW"
-internal_database_url = "postgresql://root:NfxfbIaVkRxd84n6NPR5wQjPouu4yvqW@dpg-cvc0stij1k6c73e3a1jg-a/menu_y9ts"
-external_database_url = "postgresql://root:NfxfbIaVkRxd84n6NPR5wQjPouu4yvqW@dpg-cvc0stij1k6c73e3a1jg-a.oregon-postgres.render.com/menu_y9ts"
-psql_command = "PGPASSWORD=NfxfbIaVkRxd84n6NPR5wQjPouu4yvqW psql -h dpg-cvc0stij1k6c73e3a1jg-a.oregon-postgres.render.com -U root menu_y9ts"
+password = "oJ0IMIYpVgHZONT0XZwBEPBzdW82eEu1"
+internal_database_url = "postgresql://root:oJ0IMIYpVgHZONT0XZwBEPBzdW82eEu1@dpg-d6c0shi4d50c73d1ckb0-a/canteen_7mv1"
+external_database_url = "postgresql://root:oJ0IMIYpVgHZONT0XZwBEPBzdW82eEu1@dpg-d6c0shi4d50c73d1ckb0-a.oregon-postgres.render.com/canteen_7mv1"
+psql_command = "PGPASSWORD=oJ0IMIYpVgHZONT0XZwBEPBzdW82eEu1 psql -h dpg-d6c0shi4d50c73d1ckb0-a.oregon-postgres.render.com -U root canteen_7mv1"
 
 time_to_nullify_session = os.getenv("time_to_nullify_session")
 base_url = "https://annapurnaordermanagement.onrender.com"
