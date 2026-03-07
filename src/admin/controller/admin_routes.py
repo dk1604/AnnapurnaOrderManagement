@@ -9,7 +9,8 @@ from flask.sansio.blueprints import Blueprint
 
 from src.admin.models.AdminModel import CanteenMenu, VendorExpenseModel
 from src.admin.service.AdminService import save_service, save_all_service, save_vendor_expense_service, \
-    get_vendor_expense_service
+    get_vendor_expense_service, get_all_menu_service
+from src.service.Service import get_all_options_by_food_category
 
 admin_routes_blueprint = Blueprint("admin_routes", __name__)
 logging.basicConfig(level=logging.INFO)
@@ -86,3 +87,14 @@ def configure_admin_routes(app):
             return response_dicts, HTTPStatus.OK
         except Exception as e:
             logging.error("get_vendor_expense route failed............%s", str(e))
+
+    @app.route('/order/menu-items', methods=['GET'])
+    def get_menu():
+        try:
+            logging.error('inside get_menu api')
+            response = get_all_menu_service()
+            response_dicts = [item.model_dump() for item in response]
+
+            return response_dicts, HTTPStatus.OK
+        except Exception as e:
+            logging.error("get_menu route failed............%s", str(e))
