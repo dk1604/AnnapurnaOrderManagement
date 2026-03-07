@@ -826,13 +826,13 @@ function addVendorExpense(){
 
   const vendor=document.getElementById('vendorName').value;
   const material=document.getElementById('materialName').value;
-  const amount=document.getElementById('expenseAmount').value;
+  const amount=Number(document.getElementById('expenseAmount').value);
   const paymentMode=document.getElementById('expensePaymentMode').value;
   const expenseDate = document.getElementById("expenseDate").value;
 
   if(!vendor || !material || !amount){
-  alert("Please fill all fields");
-  return;
+    alert("Please fill all fields");
+    return;
   }
 
 fetch('/order/vendor-expenses',{
