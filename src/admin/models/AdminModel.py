@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Optional
 
 from attr import field
@@ -11,3 +12,12 @@ class CanteenMenu(BaseModel):
     price: int
     food_category: str
     id: Optional[int] = field(default=None)
+
+
+class VendorExpenseModel(BaseModel):
+    vendor: str
+    material: str
+    amount: float
+    payment_mode: str
+    date: Optional[datetime] = None
+    id: Optional[int] = None
