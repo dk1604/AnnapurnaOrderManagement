@@ -26,7 +26,7 @@ def upgrade() -> None:
         sa.Column('id', sa.Integer(), primary_key=True, autoincrement=True),
         sa.Column('vendor', sa.String(length=100), nullable=False),
         sa.Column('material', sa.String(length=100), nullable=False),
-        sa.Column('amount', sa.Float(), nullable=False),
+        sa.Column('amount', sa.Integer, nullable=False),
         sa.Column('payment_mode', sa.String(length=20), nullable=False),
         sa.Column('date', sa.DateTime(), nullable=False, default=datetime.utcnow),
     )
