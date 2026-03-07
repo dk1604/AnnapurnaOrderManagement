@@ -57,7 +57,6 @@ def save_all_dao(session):
 def save_vendor_expense_dao(session, event):
     logging.error("inside save_vendor_expense_dao:,%s", event)
     try:
-        print(f"1,,,,,{event.id}")
         if event.id:
             existing = session.query(VendorExpense).filter(VendorExpense.id == event.id).first()
             if not existing:
