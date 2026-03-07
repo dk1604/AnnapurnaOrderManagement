@@ -123,7 +123,7 @@ def get_all_menu_dao(session):
 
     except Exception as dbError:
         session.rollback()
-        logging.error(f'Error during get_vendor_expense_dao: {str(dbError)}')
+        logging.error(f'Error during get_all_menu_dao: {str(dbError)}')
         raise None
 
 def map_to_pydantic_manual(expenses):
@@ -150,7 +150,7 @@ def map_to_pydantic_manual_get_all_menu(expenses):
                 name=e.name,
                 description=e.description,
                 price=e.price,
-                food_category=e.food_cvategory
+                food_category=e.food_category
             )
         )
     return result
