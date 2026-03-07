@@ -147,9 +147,10 @@ def map_to_pydantic_manual_get_all_menu(expenses):
         result.append(
             MenuResponse(
                 id=e.id,
-                price=e.price,
+                name=e.name,
                 description=e.description,
-                name=e.name
+                price=e.price,
+                food_category=e.food_cvategory
             )
         )
     return result
