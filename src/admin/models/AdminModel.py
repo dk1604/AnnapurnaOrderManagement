@@ -24,7 +24,8 @@ class VendorExpenseModel(BaseModel):
 
 class MenuResponse(BaseModel):
     model_config = ConfigDict(extra="forbid")
+    id: int
     name: str
     description: str
     price: int
-    id: Optional[int] = None
+    food_category: str
