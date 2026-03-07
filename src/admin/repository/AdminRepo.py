@@ -3,7 +3,8 @@ import sys
 
 from sqlalchemy import text
 
-from src.admin.dao.AdminDao import save_dao, save_all_dao, save_vendor_expense_dao, get_vendor_expense_dao
+from src.admin.dao.AdminDao import save_dao, save_all_dao, save_vendor_expense_dao, get_vendor_expense_dao, \
+    get_all_menu_dao
 from src.database.DbModels import menu, VendorExpense
 from src.database.PSQLAdapterImpl import SessionFactory
 
@@ -95,6 +96,23 @@ def get_vendor_expense_repo():
     except Exception as ex:
         session.rollback()
         logging.error("exception occurred in get_vendor_expense_repo %s", str(ex))
+        None
+    finally:
+        session.close()
+
+
+def get_all_menu_repo():
+    try:
+        get_session = SessionFactory.get_session()
+        logging.error("get_session successful")
+        with get_session as session:
+            with session.begin():
+                vendor_expense = get_all_menu_dao(session)
+                logging.error("get_all_menu_repo...........vendor_expense: %s", vendor_expense)
+                return vendor_expense
+    except Exception as ex:
+        session.rollback()
+        logging.error("exception occurred in get_all_menu_repo %s", str(ex))
         None
     finally:
         session.close()
