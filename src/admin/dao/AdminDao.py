@@ -118,21 +118,9 @@ def get_vendor_expense_dao(session):
 def get_all_menu_dao(session):
     try:
         logging.error("inside get_vendor_expense_dao")
-        records = session.query(menu).all()
-        logging.error("Fetched all menu items")
-
-        response_list = [
-            #menu_table_response(id=row.id, name=row.name, description=row.description, price=row.price) for row in records
-            menu_table_response(id=row.id, name=row.name, price=row.price) for row in records
-        ]
-        logging.error("Fetched response_list_db %s", response_list)
-        return response_list
-    except Exception as e:
-        logging.error(f"Error fetching all data: {e}")
-        return None
-        expenses = session.query(VendorExpense).order_by(VendorExpense.date.desc()).order_by(VendorExpense.date.desc()).all()
-        print(f"expenses  {expenses}")
-        return map_to_pydantic_manual(expenses)
+        all_menu = session.query(menu).all()
+        logging.error("Fetched all menu item")
+        return map_to_pydantic_manual_get_all_menu(all_menu)
 
     except Exception as dbError:
         session.rollback()
@@ -150,6 +138,18 @@ def map_to_pydantic_manual(expenses):
                 amount=e.amount,
                 payment_mode=e.payment_mode,
                 date=e.date
+            )
+        )
+    return result
+
+def map_to_pydantic_manual_get_all_menu(expenses):
+    result = []
+    for e in expenses:
+        result.append(
+            menu_table_response(
+                id=e.id,
+                price=e.price,
+                name=e.name
             )
         )
     return result
