@@ -4,7 +4,8 @@ psycopg2==2.9.10
 SQLAlchemy==2.0.36
 alembic==1.14.0
 properties~=0.6.1
-pydantic==2.8.2
-cashfree_pg==4.3.6
+pydantic==2.11.7
+cashfree_pg==5.0.6
 requests~=2.32.3
-jsonschema~=4.23.0
+jsonschema~=4.23.0,
+urllib3 == 1.25.3
