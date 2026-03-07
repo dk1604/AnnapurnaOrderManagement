@@ -772,7 +772,7 @@ function loadVendorExpenses(){
     let cash=0;
     let online=0;
     let vendors=new Set();
-    let vendorBalances = {};
+    let vendorBalances=0;
 
     data.forEach(expense=>{
 
@@ -789,6 +789,7 @@ function loadVendorExpenses(){
     tableBody.appendChild(row);
 
     totalExpense+=expense.amount;
+    totalExpense+=(cash+online)-totalExpense;
     vendors.add(expense.vendor);
 
     if(expense.payment_mode.toLowerCase()==="cash"){
@@ -814,6 +815,7 @@ function loadVendorExpenses(){
 }
 
   function addVendorExpense(){
+  console.log('hi 1')
 
 const vendor=document.getElementById('vendorName').value;
 const material=document.getElementById('materialName').value;
