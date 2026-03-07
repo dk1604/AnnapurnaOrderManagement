@@ -456,8 +456,8 @@
         </div>
 
         <div>
-          <h3>Total Vendors</h3>
-          <p id="total-vendors">0</p>
+          <h3>Vendor Balance</h3>
+          <p id="all-vendor-balance">₹0.00</p>
         </div>
 
         <div>
@@ -469,6 +469,7 @@
           <h3>Online</h3>
           <p id="online-expense">₹0.00</p>
         </div>
+
       </div>
 
       <h3>Add Vendor Expense</h3>
@@ -491,24 +492,25 @@
             <option value="cash">Cash</option>
             <option value="online">Online</option>
           </select>
+          <button onclick="addVendorExpense()">Add Expense</button>
         </div>
-        <table id="vendorExpenseTable">
-          <thead>
-          <tr>
-            <th>Vendor</th>
-            <th>Material</th>
-            <th>Amount</th>
-            <th>Payment Mode</th>
-            <th>Date</th>
-          </tr>
-          </thead>
-
+        </div>
+      <div>
+        <!-- Table always goes below inputs -->
+        <div class="vendor-table-container">
+          <table id="vendorExpenseTable">
+            <thead>
+              <tr>
+                <th>Vendor</th>
+                <th>Material</th>
+                <th>Amount</th>
+                <th>Payment Mode</th>
+                <th>Date</th>
+              </tr>
+            </thead>
           <tbody></tbody>
-
         </table>
-
       </div>
-
       </div>
   </div>
 </div>
@@ -770,6 +772,7 @@ function loadVendorExpenses(){
     let cash=0;
     let online=0;
     let vendors=new Set();
+    let vendorBalances = {};
 
     data.forEach(expense=>{
 
@@ -799,10 +802,9 @@ function loadVendorExpenses(){
 });
 
   document.getElementById('total-expense').textContent=`₹${totalExpense.toFixed(2)}`;
+  document.getElementById('all-vendor-balance').textContent = `₹${totalExpense.toFixed(2)}`;
   document.getElementById('cash-expense').textContent=`₹${cash.toFixed(2)}`;
   document.getElementById('online-expense').textContent=`₹${online.toFixed(2)}`;
-  document.getElementById('total-vendors').textContent=vendors.size;
-
 })
 
 .catch(error=>{
@@ -817,6 +819,14 @@ const vendor=document.getElementById('vendorName').value;
 const material=document.getElementById('materialName').value;
 const amount=document.getElementById('expenseAmount').value;
 const paymentMode=document.getElementById('expensePaymentMode').value;
+const vendorBalanceDiv = document.getElementById('all-vendor-balances');
+
+// Loop through each vendor and display their balance
+for (const vendor in vendorBalances) {
+  const p = document.createElement('p');
+  p.textContent = `${vendor}: ₹${vendorBalances[vendor].toFixed(2)}`;
+  vendorBalanceDiv.appendChild(p);
+}
 
 if(!vendor || !material || !amount){
 alert("Please fill all fields");
@@ -825,18 +835,18 @@ return;
 
 fetch('/order/vendor-expenses',{
 
-method:'POST',
+  method:'POST',
 
-headers:{
-'Content-Type':'application/json'
-},
+  headers:{
+  'Content-Type':'application/json'
+  },
 
-body:JSON.stringify({
-vendor:vendor,
-material:material,
-amount:amount,
-payment_mode:paymentMode
-})
+  body:JSON.stringify({
+    vendor:vendor,
+    material:material,
+    amount:amount,
+    payment_mode:paymentMode
+  })
 
 })
 .then(res=>res.json())
@@ -845,15 +855,16 @@ payment_mode:paymentMode
 alert("Expense Added Successfully");
 
 document.getElementById('vendorName').value='';
+document.getElementById('vendorName').value='';
 document.getElementById('materialName').value='';
-document.getElementById('expenseAmount').value='';
+document.getElementById('vendorBalanceDiv').value='';
 loadVendorExpenses();
 })
 .catch(error=>{
 console.error("Error adding expense:",error);
 });
 }
-  
+
 document.addEventListener("DOMContentLoaded", function() {
   loadDailySales();
   loadMenu();
