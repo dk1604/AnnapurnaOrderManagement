@@ -637,7 +637,9 @@ function loadMenu() {
             const menuTableBody = document.querySelector('#menuTable tbody');
             menuTableBody.innerHTML = ''; // Clear existing rows
             const bulkSaveBtnContainer = document.querySelector('.bulk-save-container');
-            bulkSaveBtnContainer.innerHTML = ''; // Clear the previous save button
+            if (bulkSaveBtnContainer) {
+              bulkSaveBtnContainer.innerHTML = '';
+            }
 
             menuItems.forEach(item => {
                 const row = document.createElement('tr');
