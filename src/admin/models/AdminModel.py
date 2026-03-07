@@ -21,3 +21,10 @@ class VendorExpenseModel(BaseModel):
     payment_mode: str
     date: Optional[datetime] = None
     id: Optional[int] = None
+
+class MenuResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    name: str
+    description: str
+    price: int
+    id: Optional[int] = None
