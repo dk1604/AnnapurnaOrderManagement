@@ -435,7 +435,7 @@
       <table id="menuTable">
         <thead>
         <tr>
-          <th>Id</th>
+<!--          <th>Id</th>-->
           <th>Item</th>
           <th>Description</th>
           <th>Category</th>
@@ -646,6 +646,7 @@ function loadMenu() {
                 row.dataset.itemId = item.id; // Store the item ID in the row for easy access
 
                 row.innerHTML = `
+<!--                    <td><input type="text" value="${item.id}" class="edit-id" disabled></td>-->
                     <td><input type="text" value="${item.name}" class="edit-name" disabled></td>
                     <td><input type="text" value="${item.description}" class="edit-description" disabled></td>
                     <td><input type="text" value="${item.food_category}" class="edit-category" disabled></td>
