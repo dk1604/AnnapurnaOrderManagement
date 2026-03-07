@@ -494,6 +494,10 @@
           </select>
           <button onclick="addVendorExpense()">Add Expense</button>
         </div>
+        <div class="input-group">
+          <label>Date</label>
+          <input type="date" id="expenseDate">
+        </div>
         </div>
       <div>
         <!-- Table always goes below inputs -->
@@ -817,26 +821,19 @@ function loadVendorExpenses(){
 
 }
 
-  function addVendorExpense(){
+function addVendorExpense(){
   console.log('hi 1')
 
-const vendor=document.getElementById('vendorName').value;
-const material=document.getElementById('materialName').value;
-const amount=document.getElementById('expenseAmount').value;
-const paymentMode=document.getElementById('expensePaymentMode').value;
-const vendorBalanceDiv = document.getElementById('all-vendor-balances');
+  const vendor=document.getElementById('vendorName').value;
+  const material=document.getElementById('materialName').value;
+  const amount=document.getElementById('expenseAmount').value;
+  const paymentMode=document.getElementById('expensePaymentMode').value;
+  const expenseDate = document.getElementById("expenseDate").value;
 
-// Loop through each vendor and display their balance
-for (const vendor in vendorBalances) {
-  const p = document.createElement('p');
-  p.textContent = `${vendor}: ₹${vendorBalances[vendor].toFixed(2)}`;
-  vendorBalanceDiv.appendChild(p);
-}
-
-if(!vendor || !material || !amount){
-alert("Please fill all fields");
-return;
-}
+  if(!vendor || !material || !amount){
+  alert("Please fill all fields");
+  return;
+  }
 
 fetch('/order/vendor-expenses',{
 
@@ -850,7 +847,8 @@ fetch('/order/vendor-expenses',{
     vendor:vendor,
     material:material,
     amount:amount,
-    payment_mode:paymentMode
+    payment_mode:paymentMode,
+    date:expenseDate
   })
 
 })
