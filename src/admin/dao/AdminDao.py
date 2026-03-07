@@ -3,7 +3,8 @@ from datetime import datetime, timezone
 
 from src.admin.models.AdminModel import CanteenMenu, VendorExpenseModel
 from src.admin.service.utility import parse_insert_statement
-from src.database.DbModels import VendorExpense
+from src.database.DbModels import VendorExpense, menu
+from src.models.CanteenModels import menu_table_response
 
 
 def save_dao(session, event):
@@ -104,7 +105,32 @@ def save_vendor_expense_dao(session, event):
 def get_vendor_expense_dao(session):
     try:
         logging.error("inside get_vendor_expense_dao")
-        expenses = session.query(VendorExpense).order_by(VendorExpense.date.desc()).all()
+        expenses = session.query(VendorExpense).order_by(VendorExpense.date.desc()).order_by(VendorExpense.date.desc()).all()
+        print(f"expenses  {expenses}")
+        return map_to_pydantic_manual(expenses)
+
+    except Exception as dbError:
+        session.rollback()
+        logging.error(f'Error during get_vendor_expense_dao: {str(dbError)}')
+        raise None
+
+
+def get_all_menu_dao(session):
+    try:
+        logging.error("inside get_vendor_expense_dao")
+        records = session.query(menu).all()
+        logging.error("Fetched all menu items")
+
+        response_list = [
+            #menu_table_response(id=row.id, name=row.name, description=row.description, price=row.price) for row in records
+            menu_table_response(id=row.id, name=row.name, price=row.price) for row in records
+        ]
+        logging.error("Fetched response_list_db %s", response_list)
+        return response_list
+    except Exception as e:
+        logging.error(f"Error fetching all data: {e}")
+        return None
+        expenses = session.query(VendorExpense).order_by(VendorExpense.date.desc()).order_by(VendorExpense.date.desc()).all()
         print(f"expenses  {expenses}")
         return map_to_pydantic_manual(expenses)
 
