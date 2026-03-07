@@ -1,8 +1,6 @@
 import logging
 from datetime import datetime, timezone
 
-from pandas.core.methods.to_dict import to_dict
-
 from src.admin.models.AdminModel import CanteenMenu, VendorExpenseModel
 from src.admin.service.utility import parse_insert_statement
 from src.database.DbModels import VendorExpense
