@@ -338,6 +338,7 @@
       <li><a href="#" onclick="showSection('daily_sales')">Daily Sales Report</a></li>
       <li><a href="#" onclick="showSection('custom_sales')">Custom Sales Report</a></li>
       <li><a href="#" onclick="showSection('menu')">Menu</a></li>
+      <li><a href="#" onclick="showSection('vendor_expense')">Vendor Expense Report</a></li>
     </ul>
   </div>
 
@@ -444,6 +445,71 @@
         <tbody></tbody>
       </table>
     </div>
+
+    <!-- vendor_expense -->
+    <div id="vendor_expense" class="section">
+      <h2>Vendor Expense Report</h2>
+      <div class="sales-summary">
+        <div>
+          <h3>Total Expense</h3>
+          <p id="total-expense">₹0.00</p>
+        </div>
+
+        <div>
+          <h3>Total Vendors</h3>
+          <p id="total-vendors">0</p>
+        </div>
+
+        <div>
+          <h3>Cash</h3>
+          <p id="cash-expense">₹0.00</p>
+        </div>
+
+        <div>
+          <h3>Online</h3>
+          <p id="online-expense">₹0.00</p>
+        </div>
+      </div>
+
+      <h3>Add Vendor Expense</h3>
+      <div class="date-range-container">
+        <div class="input-group">
+          <label>Vendor Name</label>
+          <input type="text" id="vendorName">
+        </div>
+        <div class="input-group">
+          <label>Material</label>
+          <input type="text" id="materialName">
+        </div>
+        <div class="input-group">
+          <label>Amount</label>
+          <input type="number" id="expenseAmount">
+        </div>
+        <div class="input-group">
+          <label>Payment Mode</label>
+          <select id="expensePaymentMode">
+            <option value="cash">Cash</option>
+            <option value="online">Online</option>
+          </select>
+        </div>
+        <table id="vendorExpenseTable">
+          <thead>
+          <tr>
+            <th>Vendor</th>
+            <th>Material</th>
+            <th>Amount</th>
+            <th>Payment Mode</th>
+            <th>Date</th>
+          </tr>
+          </thead>
+
+          <tbody></tbody>
+
+        </table>
+
+      </div>
+
+      </div>
   </div>
 </div>
 
@@ -691,6 +757,108 @@ function showSection(sectionId) {
 // Load daily sales by default
 showSection('daily_sales');
 
+// for vendor management
+function loadVendorExpenses(){
+  fetch('/order/vendor-expenses')
+    .then(response => response.json())
+    .then(data => {
+
+    const tableBody = document.querySelector('#vendorExpenseTable tbody');
+    tableBody.innerHTML='';
+
+    let totalExpense=0;
+    let cash=0;
+    let online=0;
+    let vendors=new Set();
+
+    data.forEach(expense=>{
+
+    const row=document.createElement('tr');
+
+    row.innerHTML=`
+    <td>${expense.vendor}</td>
+    <td>${expense.material}</td>
+    <td>₹${expense.amount}</td>
+    <td>${expense.payment_mode}</td>
+    <td>${new Date(expense.date*1000).toLocaleString()}</td>
+    `;
+
+    tableBody.appendChild(row);
+
+    totalExpense+=expense.amount;
+    vendors.add(expense.vendor);
+
+    if(expense.payment_mode.toLowerCase()==="cash"){
+    cash+=expense.amount;
+  }
+
+  if(expense.payment_mode.toLowerCase()==="online"){
+  online+=expense.amount;
+}
+
+});
+
+  document.getElementById('total-expense').textContent=`₹${totalExpense.toFixed(2)}`;
+  document.getElementById('cash-expense').textContent=`₹${cash.toFixed(2)}`;
+  document.getElementById('online-expense').textContent=`₹${online.toFixed(2)}`;
+  document.getElementById('total-vendors').textContent=vendors.size;
+
+})
+
+.catch(error=>{
+  console.error("Error loading vendor expenses:",error);
+});
+
+}
+
+  function addVendorExpense(){
+
+const vendor=document.getElementById('vendorName').value;
+const material=document.getElementById('materialName').value;
+const amount=document.getElementById('expenseAmount').value;
+const paymentMode=document.getElementById('expensePaymentMode').value;
+
+if(!vendor || !material || !amount){
+alert("Please fill all fields");
+return;
+}
+
+fetch('/order/vendor-expenses',{
+
+method:'POST',
+
+headers:{
+'Content-Type':'application/json'
+},
+
+body:JSON.stringify({
+vendor:vendor,
+material:material,
+amount:amount,
+payment_mode:paymentMode
+})
+
+})
+.then(res=>res.json())
+.then(data=>{
+
+alert("Expense Added Successfully");
+
+document.getElementById('vendorName').value='';
+document.getElementById('materialName').value='';
+document.getElementById('expenseAmount').value='';
+loadVendorExpenses();
+})
+.catch(error=>{
+console.error("Error adding expense:",error);
+});
+}
+  
+document.addEventListener("DOMContentLoaded", function() {
+  loadDailySales();
+  loadMenu();
+  loadVendorExpenses();
+});
 </script>
 </body>
 </html>
