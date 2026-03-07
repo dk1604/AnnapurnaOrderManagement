@@ -1,4 +1,6 @@
-from sqlalchemy import Column, String, Integer, VARCHAR, Numeric, BigInteger
+from datetime import datetime
+
+from sqlalchemy import Column, String, Integer, VARCHAR, Numeric, BigInteger, DateTime, Float
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
@@ -31,4 +33,19 @@ class CustomerOrder(Base):
     user_name = Column(String(250), nullable=True)
     user_phone = Column(String(100), nullable=True)
     order_date = Column(BigInteger, nullable=False)
+
+
+class VendorExpense(Base):
+    __tablename__ = 'vendor_expenses'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    vendor = Column(String(100), nullable=False)
+    material = Column(String(100), nullable=False)
+    amount = Column(Float, nullable=False)
+    payment_mode = Column(String(20), nullable=False)
+    date = Column(DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f"<VendorExpense(vendor='{self.vendor}', material='{self.material}', amount={self.amount}, payment_mode='{self.payment_mode}', date='{self.date}')>"
+
 
