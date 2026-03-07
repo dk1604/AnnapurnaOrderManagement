@@ -1,8 +1,10 @@
 import logging
 import sys
 
-from src.admin.dao.AdminDao import save_dao
-from src.database.DbModels import menu
+from sqlalchemy import text
+
+from src.admin.dao.AdminDao import save_dao, save_all_dao, save_vendor_expense_dao, get_vendor_expense_dao
+from src.database.DbModels import menu, VendorExpense
 from src.database.PSQLAdapterImpl import SessionFactory
 
 
@@ -32,6 +34,67 @@ def save_repo(data):
     except Exception as ex:
         session.rollback()
         logging.error("exception occurred in save %s", str(ex))
+        None
+    finally:
+        session.close()
+
+def save_all_repo():
+    try:
+        sql_file_path = "db/db_script.sql"
+        get_session = SessionFactory.get_session()
+        logging.error("get_session successful")
+        with get_session as session:
+            with session.begin():
+                with open(sql_file_path, "r") as f:
+                    sql_content = f.read()
+
+                # Split statements by semicolon
+                statements = [stmt.strip() for stmt in sql_content.split(";") if stmt.strip()]
+                for stmt in statements:
+                    session.execute(text(stmt))
+
+                logging.info(f"SQL file {sql_file_path} executed successfully.")
+                return "successful"
+    except Exception as ex:
+        session.rollback()
+        logging.error("exception occurred in save %s", str(ex))
+        None
+    finally:
+        session.close()
+
+def save_vendor_expense_repo(data):
+    try:
+        get_session = SessionFactory.get_session()
+        logging.error("get_session successful")
+        with get_session as session:
+            with session.begin():
+                vendor_expense = save_vendor_expense_dao(session, VendorExpense(vendor=data.vendor,
+                                                             material=data.material,
+                                                             amount=data.amount,
+                                                             payment_mode=data.payment_mode,
+                                                             date=data.date,
+                                                             id=data.id))
+                logging.error("vendor_expense...........vendor_expense: %s", vendor_expense)
+                return vendor_expense
+    except Exception as ex:
+        session.rollback()
+        logging.error("exception occurred in save_vendor_expense_repo %s", str(ex))
+        None
+    finally:
+        session.close()
+
+def get_vendor_expense_repo():
+    try:
+        get_session = SessionFactory.get_session()
+        logging.error("get_session successful")
+        with get_session as session:
+            with session.begin():
+                vendor_expense = get_vendor_expense_dao(session)
+                logging.error("vendor_expense...........vendor_expense: %s", vendor_expense)
+                return vendor_expense
+    except Exception as ex:
+        session.rollback()
+        logging.error("exception occurred in get_vendor_expense_repo %s", str(ex))
         None
     finally:
         session.close()
