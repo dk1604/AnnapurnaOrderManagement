@@ -118,12 +118,9 @@ def get_vendor_expense_dao(session):
 def get_all_menu_dao(session):
     try:
         logging.error("inside get_vendor_expense_dao")
-        records = session.query(menu).all()
+        all_menu_item = session.query(menu).all()
         logging.error("Fetched all menu items")
-
-        expenses = session.query(menu).all()
-        logging.error("Fetched response_list_db %s", response_list)
-        return map_to_pydantic_manual_get_all_menu(expenses)
+        return map_to_pydantic_manual_get_all_menu(all_menu_item)
 
     except Exception as dbError:
         session.rollback()
