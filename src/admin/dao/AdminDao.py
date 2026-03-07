@@ -1,10 +1,9 @@
 import logging
 from datetime import datetime, timezone
 
-from src.admin.models.AdminModel import CanteenMenu, VendorExpenseModel
+from src.admin.models.AdminModel import CanteenMenu, VendorExpenseModel, MenuResponse
 from src.admin.service.utility import parse_insert_statement
 from src.database.DbModels import VendorExpense, menu
-from src.models.CanteenModels import menu_table_response
 
 
 def save_dao(session, event):
@@ -146,9 +145,10 @@ def map_to_pydantic_manual_get_all_menu(expenses):
     result = []
     for e in expenses:
         result.append(
-            menu_table_response(
+            MenuResponse(
                 id=e.id,
                 price=e.price,
+                description=e.description,
                 name=e.name
             )
         )
