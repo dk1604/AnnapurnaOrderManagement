@@ -7,8 +7,9 @@ from http import HTTPStatus
 from flask import Flask, request, Response
 from flask.sansio.blueprints import Blueprint
 
-from src.admin.models.AdminModel import CanteenMenu
-from src.admin.service.AdminService import save_service
+from src.admin.models.AdminModel import CanteenMenu, VendorExpenseModel
+from src.admin.service.AdminService import save_service, save_all_service, save_vendor_expense_service, \
+    get_vendor_expense_service
 
 admin_routes_blueprint = Blueprint("admin_routes", __name__)
 logging.basicConfig(level=logging.INFO)
@@ -46,3 +47,42 @@ def configure_admin_routes(app):
             logging.error("response came............%s", type(response))
 
             return response.dict(), HTTPStatus.OK
+
+    @app.route('/save/all', methods=['POST'])
+    def create_basic_food_menu():
+        logging.error("inside create_basic_food_menu api")
+
+        response = save_all_service()
+
+        return response, HTTPStatus.OK
+
+    @app.route('/order/vendor-expenses', methods=['POST'])
+    def add_or_update_vendor_expense():
+        try:
+            print("inside add_or_update_vendor_expense api")
+            logging.error("inside add_or_update_vendor_expense api")
+            if request.data == b'':
+                logging.error('Error occurred due to missing required request body')
+                return Response(json.dumps({"reason": "Invalid request body"}), status=400, mimetype="application/json")
+            else:
+                logging.error("request response is not empty")
+                input_json = request.get_json(force=True)
+                logging.error("input............%s", input_json)
+                data = VendorExpenseModel(**input_json)
+                logging.error("request response is input_json %s", data)
+                response = save_vendor_expense_service(data)
+
+                return response.dict(), HTTPStatus.OK
+        except Exception as e:
+            logging.error("get_vendor_expense route failed............%s", str(e))
+
+    @app.route('/order/vendor-expenses', methods=['GET'])
+    def get_vendor_expense():
+        try:
+            logging.error('inside get_vendor_expense api')
+            response = get_vendor_expense_service()
+            response_dicts = [item.model_dump() for item in response]
+
+            return response_dicts, HTTPStatus.OK
+        except Exception as e:
+            logging.error("get_vendor_expense route failed............%s", str(e))
