@@ -17,7 +17,7 @@ class CanteenMenu(BaseModel):
 class VendorExpenseModel(BaseModel):
     vendor: str
     material: str
-    amount: float
+    amount: int
     payment_mode: str
     date: Optional[datetime] = None
     id: Optional[int] = None
