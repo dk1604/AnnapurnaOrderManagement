@@ -122,8 +122,7 @@
       text-align: left;
     }
 
-<!--    this goes for main only amount -->
-    #total-collection-daily, #total-collection-custom, #total-vendor-expense {
+    #total-collection-daily, #total-collection-custom {
       font-size: 35px;
       font-weight: 800;
       color: #e74c3c;
@@ -131,14 +130,60 @@
       transition: all 0.3s ease;
       visibility: visible;
     }
-<!--    this goes for other amount with text -->
-    #total-orders-daily, #cash-collection-daily, #online-collection-daily, #total-orders-custom, #cash-collection-custom, #online-collection-custom {
+
+    #total-orders-daily, #cash-collection-daily, #online-collection-daily, #total-orders-custom, #cash-collection-custom, #online-collection-custom,
+    #vendor-expense-total, #vendor-expense-paid, #vendor-expense-balance {
       font-size: 20px;
       font-weight: 800;
       color: #e74c3c;
       letter-spacing: 1px;
       transition: all 0.3s ease;
       visibility: visible;
+    }
+
+    /* Vendor Expense Add button */
+    .section-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:10px;
+    }
+
+    /* Vendor Expense Add button */
+    .add-expense-btn{
+      width:auto;
+      padding:8px 14px;
+      font-size:14px;
+      background-color:#1ABC9C;
+      border-radius:6px;
+    }
+
+    /* Vendor Expense Add button Form open */
+    .modal{
+      display:none;
+      position:fixed;
+      z-index:2000;
+      left:0;
+      top:0;
+      width:100%;
+      height:100%;
+      background:rgba(0,0,0,0.5);
+    }
+
+    .modal-content{
+      background:#fff;
+      width:350px;
+      padding:20px;
+      border-radius:8px;
+      margin:10% auto;
+    }
+
+    .modal-content input,
+    .modal-content select{
+      width:100%;
+      padding:8px;
+      margin-top:5px;
+      margin-bottom:10px;
     }
 
     /* Button Styles */
@@ -381,7 +426,7 @@
       </table>
     </div>
 
-    <!-- custom sales report-->
+    <!-- custom sales report -->
     <div id="custom_sales" class="section">
       <h2>Today's Report</h2>
       <div class="sales-summary">
@@ -444,74 +489,69 @@
       </table>
     </div>
 
-    <!-- vendor_expense -->
+    <!-- vendor expense report -->
     <div id="vendor_expense" class="section">
-      <h2>Vendor Expense Report</h2>
+      <div class="section-header">
+        <h2>Vendor Expense Report</h2>
+        <button class="add-expense-btn" onclick="openVendorExpenseModal()">+ Add Expense</button>
+      </div>
       <div class="sales-summary">
         <div>
-          <h3>Total Expense</h3>
-          <p id="total-vendor-expense">₹0.00</p>
+          <h3>Expense</h3>
+          <p id="vendor-expense-total">₹0.00</p>
         </div>
         <div>
-          <h3>Vendor Balance</h3>
-          <p id="all-vendor-balance">₹0.00</p>
+          <h3>Paid</h3>
+          <p id="vendor-expense-paid">0</p>
         </div>
         <div>
-          <h3>Cash</h3>
-          <p id="cash-expense">₹0.00</p>
-        </div>
-        <div>
-          <h3>Online</h3>
-          <p id="online-expense">₹0.00</p>
+          <h3>Balance</h3>
+          <p id="vendor-expense-balance">₹0.00</p>
         </div>
       </div>
-
-      <h3>Add Vendor Expense</h3>
-      <div class="date-range-container">
-        <div class="input-group">
-          <label>Vendor Name</label>
-          <input type="text" id="vendorName">
-        </div>
-        <div class="input-group">
-          <label>Material</label>
-          <input type="text" id="materialName">
-        </div>
-        <div class="input-group">
-          <label>Amount</label>
-          <input type="number" id="expenseAmount">
-        </div>
-        <div class="input-group">
-          <label>Payment Mode</label>
-          <select id="expensePaymentMode">
-            <option value="cash">Cash</option>
-            <option value="online">Online</option>
-          </select>
-          <button onclick="addVendorExpense()">Add Expense</button>
-        </div>
-        <div class="input-group">
-          <label>Date</label>
-          <input type="date" id="expenseDate">
-        </div>
-        </div>
-      <div>
-        <!-- Table always goes below inputs -->
-        <div class="vendor-table-container">
-          <table id="vendorExpenseTable">
-            <thead>
-              <tr>
-                <th>Vendor</th>
-                <th>Material</th>
-                <th>Amount</th>
-                <th>Payment Mode</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-      </div>
-  </div>
+      <table id="vendorExpenseTable">
+        <thead>
+          <tr>
+            <th>Vendor</th>
+            <th>Material</th>
+            <th>Amount</th>
+            <th>Mode</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
 </div>
+  <!-- Vendor Expense Modal -->
+  <div id="vendorExpenseModal" class="modal">
+    <div class="modal-content">
+      <h3>Add Vendor Expense</h3>
+
+      <label>Vendor</label>
+      <input type="text" id="vendorName">
+
+      <label>Material</label>
+      <input type="text" id="materialName">
+
+      <label>Amount</label>
+      <input type="number" id="expenseAmount">
+
+      <label>Payment Mode</label>
+      <select id="expensePaymentMode">
+        <option value="cash">Cash</option>
+        <option value="online">Online</option>
+      </select>
+
+      <label>Date</label>
+      <input type="datetime-local" id="expenseDate">
+
+      <div style="margin-top:15px;">
+        <button onclick="addVendorExpense()">Save</button>
+        <button onclick="closeVendorExpenseModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
 
 <script>
   function getTodayDate(time = "00:00:00") {
@@ -809,6 +849,13 @@ function loadVendorExpenses(){
       console.error("Error loading vendor expenses:",error);
     });
   }
+function openVendorExpenseModal(){
+  document.getElementById("vendorExpenseModal").style.display="block";
+}
+
+function closeVendorExpenseModal(){
+  document.getElementById("vendorExpenseModal").style.display="none";
+}
 
 function addVendorExpense(){
   console.log('hi 1')
@@ -844,18 +891,20 @@ fetch('/order/vendor-expenses',{
 .then(res=>res.json())
 .then(data=>{
 
-alert("Expense Added Successfully"+expenseDate);
+    alert("Expense Added Successfully"+expenseDate);
+    closeVendorExpenseModal();
 
-document.getElementById('vendorName').value='';
-document.getElementById('materialName').value='';
-document.getElementById('expenseAmount').value='';
-document.getElementById('expensePaymentMode').value='';
-document.getElementById('expenseDate').value='';
-loadVendorExpenses();
-})
-.catch(error=>{
-  console.error("Error adding expense:",error);
-  });
+    document.getElementById('vendorName').value='';
+    document.getElementById('materialName').value='';
+    document.getElementById('expenseAmount').value='';
+    document.getElementById('expensePaymentMode').value='';
+    document.getElementById('expenseDate').value='';
+    loadVendorExpenses();
+  })
+  .catch(error=>{
+    console.error("Error adding expense:", error);
+    alert("Failed to add expense"+ error.message);
+    });
 }
 
 document.addEventListener("DOMContentLoaded", function() {
