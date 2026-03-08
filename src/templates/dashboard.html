@@ -353,7 +353,6 @@
           <!-- <h3>Total Collection</h3>-->
           <p id="total-collection-daily">₹0.00</p>
         </div>
-
         <div>
           <h3>Total Orders</h3>
           <p id="total-orders-daily">0</p>
@@ -367,9 +366,7 @@
           <p id="online-collection-daily">₹0.00</p>
         </div>
       </div>
-
       <button onclick="loadDailySales()">Today's Report</button>
-
       <table id="dailySalesTable">
         <thead>
         <tr>
@@ -455,22 +452,18 @@
           <h3>Total Expense</h3>
           <p id="total-vendor-expense">₹0.00</p>
         </div>
-
         <div>
           <h3>Vendor Balance</h3>
           <p id="all-vendor-balance">₹0.00</p>
         </div>
-
         <div>
           <h3>Cash</h3>
           <p id="cash-expense">₹0.00</p>
         </div>
-
         <div>
           <h3>Online</h3>
           <p id="online-expense">₹0.00</p>
         </div>
-
       </div>
 
       <h3>Add Vendor Expense</h3>
@@ -777,26 +770,25 @@ function loadVendorExpenses(){
       tableBody.innerHTML='';
 
       let totalExpense=0;
+      let vendorBalance=0;
       let cash=0;
       let online=0;
       let vendors=new Set();
+      console.log('data is:: '+data)
 
       data.forEach(expense=>{
 
         const row=document.createElement('tr');
 
-        row.innerHTML=`
-        <td>${expense.vendor}</td>
-        <td>${expense.material}</td>
-        <td>₹${expense.amount}</td>
-        <td>${expense.payment_mode}</td>
-        <td>${new Date(expense.date).toLocaleString()}</td>
-        `;
-
+        row.innerHTML=`<td>${expense.vendor}</td>
+                       <td>${expense.material}</td>
+                       <td>₹${expense.amount}</td>
+                       <td>${expense.payment_mode}</td>
+                       <td>${new Date(expense.date).toLocaleString()}</td>`;
         tableBody.appendChild(row);
 
         totalExpense+=expense.amount;
-        totalExpense+=(cash+online)-totalExpense;
+        vendorBalance+=(cash+online)-totalExpense;
         vendors.add(expense.vendor);
 
         if(expense.payment_mode.toLowerCase()==="cash"){
