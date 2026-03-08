@@ -823,9 +823,10 @@ function loadVendorExpenses(){
           "vendor_payment_cash": "Vendor Payment Cash",
           "vendor_payment_online": "Vendor Payment Online"
       };
-      console.log('data is:: '+data)
 
       data.forEach(expense=>{
+        console.log('expense is:: '+expense.vendor)
+        console.log('expense is:: '+expense.payment_mode)
 
         const row=document.createElement('tr');
 
