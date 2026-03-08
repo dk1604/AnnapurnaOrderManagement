@@ -42,7 +42,7 @@ class VendorExpense(Base):
     vendor = Column(String(100), nullable=False)
     material = Column(String(100), nullable=False)
     amount = Column(Integer, nullable=False)
-    payment_mode = Column(String(20), nullable=False)
+    payment_mode = Column(String(100), nullable=False)
     date = Column(DateTime, default=datetime.utcnow)
 
     def __repr__(self):
