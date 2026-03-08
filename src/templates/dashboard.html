@@ -855,8 +855,8 @@ function loadVendorExpenses(){
             break;
         }
       });
-      totalVendorBalance = totalExpense - totalVendorPaid;
-      animateNumber('vendor-expense-total', totalExpense);
+      totalVendorBalance = totalVendorExpense - totalVendorPaid;
+      animateNumber('vendor-expense-total', totalVendorExpense);
       document.getElementById('vendor-expense-paid').textContent = `₹${totalPaid.toFixed(2)}`;
       document.getElementById('vendor-expense-balance').textContent=`₹${totalVendorBalance.toFixed(2)}`;
     })
