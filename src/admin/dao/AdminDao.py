@@ -105,7 +105,6 @@ def get_vendor_expense_dao(session):
     try:
         logging.error("inside get_vendor_expense_dao")
         expenses = session.query(VendorExpense).order_by(VendorExpense.date.desc()).order_by(VendorExpense.date.desc()).all()
-        print(f"expenses  {expenses}")
         return map_to_pydantic_manual(expenses)
 
     except Exception as dbError:
