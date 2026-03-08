@@ -539,8 +539,11 @@
 
       <label>Payment Mode</label>
       <select id="expensePaymentMode">
-        <option value="cash">Cash</option>
-        <option value="online">Online</option>
+        <option value="purchase_pay_cash">Purchase & Pay Cash</option>
+        <option value="purchase_pay_online">Purchase & Pay Online</option>
+        <option value="purchase_on_credit">Purchase on Credit</option>
+        <option value="vendor_payment_cash">Vendor Payment Cash</option>
+        <option value="vendor_payment_online">Vendor Payment Online</option>
       </select>
 
       <label>Date</label>
@@ -809,11 +812,17 @@ function loadVendorExpenses(){
       const tableBody = document.querySelector('#vendorExpenseTable tbody');
       tableBody.innerHTML='';
 
-      let totalExpense=0;
-      let vendorBalance=0;
-      let cash=0;
-      let online=0;
-      let vendors=new Set();
+      let totalVendorExpense=0;
+      let totalVendorPaid=0;
+      let totalVendorBalance=0;
+
+      const labels = {
+          "purchase_pay_cash": "Purchase & Pay Cash",
+          "purchase_pay_online": "Purchase & Pay Online",
+          "purchase_on_credit": "Purchase on Credit",
+          "vendor_payment_cash": "Vendor Payment Cash",
+          "vendor_payment_online": "Vendor Payment Online"
+      };
       console.log('data is:: '+data)
 
       data.forEach(expense=>{
@@ -827,23 +836,29 @@ function loadVendorExpenses(){
                        <td>${new Date(expense.date).toLocaleString()}</td>`;
         tableBody.appendChild(row);
 
-        totalExpense+=expense.amount;
-        vendorBalance+=(cash+online)-totalExpense;
-        vendors.add(expense.vendor);
+        // Calculate totals based on type
+        switch(expense.payment_mode) {
+          case "purchase_pay_cash":
+          case "purchase_pay_online":
+            totalVendorExpense += expense.amount;
+            totalVendorPaid += expense.amount;
+            break;
 
-        if(expense.payment_mode.toLowerCase()==="cash"){
-          cash+=expense.amount;
-        }
+          case "purchase_on_credit":
+            totalVendorExpense += expense.amount;
+            // Not paid yet, so do not increase totalPaid
+            break;
 
-        if(expense.payment_mode.toLowerCase()==="online"){
-          online+=expense.amount;
+          case "vendor_payment_cash":
+          case "vendor_payment_online":
+            totalVendorPaid += expense.amount;
+            break;
         }
       });
-
-      animateNumber('total-vendor-expense', totalExpense);
-      document.getElementById('all-vendor-balance').textContent = `₹${totalExpense.toFixed(2)}`;
-      document.getElementById('cash-expense').textContent=`₹${cash.toFixed(2)}`;
-      document.getElementById('online-expense').textContent=`₹${online.toFixed(2)}`;
+      totalVendorBalance = totalExpense - totalVendorPaid;
+      animateNumber('vendor-expense-total', totalExpense);
+      document.getElementById('vendor-expense-paid').textContent = `₹${totalPaid.toFixed(2)}`;
+      document.getElementById('vendor-expense-balance').textContent=`₹${totalVendorBalance.toFixed(2)}`;
     })
     .catch(error=>{
       console.error("Error loading vendor expenses:",error);
