@@ -122,7 +122,8 @@
       text-align: left;
     }
 
-    #total-collection-daily, #total-collection-custom {
+<!--    this goes for main only amount -->
+    #total-collection-daily, #total-collection-custom, #total-vendor-expense {
       font-size: 35px;
       font-weight: 800;
       color: #e74c3c;
@@ -130,7 +131,7 @@
       transition: all 0.3s ease;
       visibility: visible;
     }
-
+<!--    this goes for other amount with text -->
     #total-orders-daily, #cash-collection-daily, #online-collection-daily, #total-orders-custom, #cash-collection-custom, #online-collection-custom {
       font-size: 20px;
       font-weight: 800;
@@ -452,7 +453,7 @@
       <div class="sales-summary">
         <div>
           <h3>Total Expense</h3>
-          <p id="total-expense">₹0.00</p>
+          <p id="total-vendor-expense">₹0.00</p>
         </div>
 
         <div>
@@ -772,54 +773,50 @@ function loadVendorExpenses(){
     .then(response => response.json())
     .then(data => {
 
-    const tableBody = document.querySelector('#vendorExpenseTable tbody');
-    tableBody.innerHTML='';
+      const tableBody = document.querySelector('#vendorExpenseTable tbody');
+      tableBody.innerHTML='';
 
-    let totalExpense=0;
-    let cash=0;
-    let online=0;
-    let vendors=new Set();
-    let vendorBalances=0;
+      let totalExpense=0;
+      let cash=0;
+      let online=0;
+      let vendors=new Set();
 
-    data.forEach(expense=>{
+      data.forEach(expense=>{
 
-    const row=document.createElement('tr');
+        const row=document.createElement('tr');
 
-    row.innerHTML=`
-    <td>${expense.vendor}</td>
-    <td>${expense.material}</td>
-    <td>₹${expense.amount}</td>
-    <td>${expense.payment_mode}</td>
-    <td>${new Date(expense.date*1000).toLocaleString()}</td>
-    `;
+        row.innerHTML=`
+        <td>${expense.vendor}</td>
+        <td>${expense.material}</td>
+        <td>₹${expense.amount}</td>
+        <td>${expense.payment_mode}</td>
+        <td>${new Date(expense.date).toLocaleString()}</td>
+        `;
 
-    tableBody.appendChild(row);
+        tableBody.appendChild(row);
 
-    totalExpense+=expense.amount;
-    totalExpense+=(cash+online)-totalExpense;
-    vendors.add(expense.vendor);
+        totalExpense+=expense.amount;
+        totalExpense+=(cash+online)-totalExpense;
+        vendors.add(expense.vendor);
 
-    if(expense.payment_mode.toLowerCase()==="cash"){
-    cash+=expense.amount;
+        if(expense.payment_mode.toLowerCase()==="cash"){
+          cash+=expense.amount;
+        }
+
+        if(expense.payment_mode.toLowerCase()==="online"){
+          online+=expense.amount;
+        }
+      });
+
+      animateNumber('total-vendor-expense', totalExpense);
+      document.getElementById('all-vendor-balance').textContent = `₹${totalExpense.toFixed(2)}`;
+      document.getElementById('cash-expense').textContent=`₹${cash.toFixed(2)}`;
+      document.getElementById('online-expense').textContent=`₹${online.toFixed(2)}`;
+    })
+    .catch(error=>{
+      console.error("Error loading vendor expenses:",error);
+    });
   }
-
-  if(expense.payment_mode.toLowerCase()==="online"){
-  online+=expense.amount;
-}
-
-});
-
-  document.getElementById('total-expense').textContent=`₹${totalExpense.toFixed(2)}`;
-  document.getElementById('all-vendor-balance').textContent = `₹${totalExpense.toFixed(2)}`;
-  document.getElementById('cash-expense').textContent=`₹${cash.toFixed(2)}`;
-  document.getElementById('online-expense').textContent=`₹${online.toFixed(2)}`;
-})
-
-.catch(error=>{
-  console.error("Error loading vendor expenses:",error);
-});
-
-}
 
 function addVendorExpense(){
   console.log('hi 1')
@@ -828,7 +825,7 @@ function addVendorExpense(){
   const material=document.getElementById('materialName').value;
   const amount=Number(document.getElementById('expenseAmount').value);
   const paymentMode=document.getElementById('expensePaymentMode').value;
-  const expenseDate = document.getElementById("expenseDate").value;
+  const expenseDate=document.getElementById("expenseDate").value;
 
   if(!vendor || !material || !amount){
     alert("Please fill all fields");
@@ -855,17 +852,18 @@ fetch('/order/vendor-expenses',{
 .then(res=>res.json())
 .then(data=>{
 
-alert("Expense Added Successfully");
+alert("Expense Added Successfully"+expenseDate);
 
 document.getElementById('vendorName').value='';
-document.getElementById('vendorName').value='';
 document.getElementById('materialName').value='';
-document.getElementById('vendorBalanceDiv').value='';
+document.getElementById('expenseAmount').value='';
+document.getElementById('expensePaymentMode').value='';
+document.getElementById('expenseDate').value='';
 loadVendorExpenses();
 })
 .catch(error=>{
-console.error("Error adding expense:",error);
-});
+  console.error("Error adding expense:",error);
+  });
 }
 
 document.addEventListener("DOMContentLoaded", function() {
