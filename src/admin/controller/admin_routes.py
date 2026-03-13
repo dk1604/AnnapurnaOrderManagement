@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import sys
+from dataclasses import asdict
 from http import HTTPStatus
 
 from flask import Flask, request, Response
@@ -57,6 +58,7 @@ def configure_admin_routes(app):
 
         return response, HTTPStatus.OK
 
+    # Save buy and vendor payment details in DB
     @app.route('/order/vendor-expenses', methods=['POST'])
     def add_or_update_vendor_expense():
         try:
@@ -75,16 +77,19 @@ def configure_admin_routes(app):
 
                 return response.dict(), HTTPStatus.OK
         except Exception as e:
-            logging.error("get_vendor_expense route failed............%s", str(e))
+            logging.error("save_vendor_expense_service route failed............%s", str(e))
 
+    # Get all admin payment history
     @app.route('/order/vendor-expenses', methods=['GET'])
     def get_vendor_expense():
         try:
+            page = int(request.args.get('page', 1))
+            page_size = int(request.args.get('page_size', 25))
             logging.error('inside get_vendor_expense api')
-            response = get_vendor_expense_service()
-            response_dicts = [item.model_dump() for item in response]
+            response = get_vendor_expense_service(page, page_size)
+            response['data'] = [item.model_dump() for item in response['data']]
 
-            return response_dicts, HTTPStatus.OK
+            return response, HTTPStatus.OK
         except Exception as e:
             logging.error("get_vendor_expense route failed............%s", str(e))
 
