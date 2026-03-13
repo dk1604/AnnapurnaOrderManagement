@@ -521,6 +521,11 @@
         </thead>
         <tbody></tbody>
       </table>
+      <div class="pagination-controls">
+        <button id="prevBtn" onclick="prevPage()">Previous</button>
+        <span id="pageNumber">Page 1</span>
+        <button id="nextBtn" onclick="nextPage()">Next</button>
+      </div>
     </div>
 </div>
   <!-- Vendor Expense Modal -->
@@ -803,9 +808,14 @@ function showSection(sectionId) {
 // Load daily sales by default
 showSection('daily_sales');
 
+let currentPage = 1;
+let pageSize = window.innerWidth < 768 ? 10 : 25;
+let totalPages = 1;
+
 // for vendor management
-function loadVendorExpenses(){
-  fetch('/order/vendor-expenses')
+function loadVendorExpenses(page = 1){
+  currentPage = page;
+  fetch('/order/vendor-expenses?page=${currentPage}&page_size=${pageSize}`')
     .then(response => response.json())
     .then(data => {
 
@@ -824,7 +834,7 @@ function loadVendorExpenses(){
           "vendor_payment_online": "Vendor Payment Online"
       };
 
-      data.forEach(expense=>{
+      data.data.forEach(expense=>{
         console.log('expense is:: '+expense.vendor)
         console.log('expense is:: '+expense.payment_mode)
 
@@ -860,6 +870,11 @@ function loadVendorExpenses(){
       document.getElementById('vendor-expense-total').textContent = `₹${totalVendorExpense.toFixed(2)}`;
       document.getElementById('vendor-expense-paid').textContent = `₹${totalVendorPaid.toFixed(2)}`;
       document.getElementById('vendor-expense-balance').textContent=`₹${totalVendorBalance.toFixed(2)}`;
+      
+      // Update pagination display
+      document.getElementById("pageNumber").innerText = `Page ${data.page} of ${data.total_pages}`;
+      document.getElementById("prevBtn").disabled = data.page === 1;
+      document.getElementById("nextBtn").disabled = data.page === data.total_pages;
     })
     .catch(error=>{
       console.error("Error loading vendor expenses:",error);
@@ -926,8 +941,22 @@ fetch('/order/vendor-expenses',{
 document.addEventListener("DOMContentLoaded", function() {
   loadDailySales();
   loadMenu();
-  loadVendorExpenses();
+  loadVendorExpenses(1);
 });
+
+function nextPage(){
+  if(currentPage < totalPages){
+    currentPage++;
+    loadVendorExpenses(currentPage);
+  }
+}
+
+function prevPage(){
+  if(currentPage > 1){
+    currentPage--;
+    loadVendorExpenses(currentPage);
+  }
+}
 </script>
 </body>
 </html>
