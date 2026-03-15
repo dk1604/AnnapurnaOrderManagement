@@ -14,6 +14,22 @@ function toggleSidebar(){
   document.querySelector(".sidebar").classList.toggle("open");
 }
 
+const sidebar = document.querySelector('.sidebar');
+const toggleBtn = document.getElementById('sidebarToggle');
+const overlay = document.getElementById('overlay');
+
+// Toggle sidebar on mobile
+toggleBtn.addEventListener('click', () => {
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('active');
+});
+
+// Close sidebar when clicking outside
+overlay.addEventListener('click', () => {
+  sidebar.classList.remove('open');
+  overlay.classList.remove('active');
+});
+
 function animateNumber(elementId, targetValue, duration = 1000) {
     const element = document.getElementById(elementId);
     const startValue = 0;
