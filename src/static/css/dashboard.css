@@ -415,7 +415,8 @@
         gap: 8px;
         margin-bottom: 0 10px 15px;
         padding: 10px;
-        width: calc(100% - 20px);
+        width: auto;
+        padding: 0;
     }
 
     .sales-summary > div {
