@@ -127,6 +127,33 @@
         margin: 0;
     }
 
+    .pagination-controls {
+        display: flex;
+        flex-direction: row;       /* horizontal layout */
+        align-items: center;       /* vertically align items */
+        justify-content: center;   /* center in parent */
+        gap: 10px;                 /* space between prev, page, next */
+        margin: 15px 0;
+    }
+
+    .pagination-controls button {
+        min-width: 20px;          /* smaller width */
+        max-width: 70px;
+        padding: 6px 0;           /* reduce vertical padding */
+        font-size: 12px;          /* smaller text */
+        text-align: center;
+        border-radius: 6px;
+    }
+
+    .pagination-controls #pageNumber {
+        display: flex;                /* make span a flex container */
+        align-items: center;          /* vertically center the text */
+        justify-content: center;      /* horizontally center inside span */
+        min-height: 28px;             /* match button height */
+        font-weight: bold;
+        font-size: 12px;
+    }
+
     #total-collection-daily, #total-collection-custom {
       font-size: 35px;
       font-weight: 800;
