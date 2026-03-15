@@ -89,14 +89,15 @@
     .sales-summary {
       display: flex;
       justify-content: space-between;
+      flex-wrap: wrap;
       margin-bottom: 30px;
       padding: 20px;
       border-radius: 8px;
-      height: 100px;
+      /*height: 100px;*/
     }
 
     .sales-summary > div {
-      flex: 1;
+      flex: 1 1 200px;
       padding: 15px;
       margin: 0 10px;
       background-color: #ecf0f1;
@@ -367,8 +368,7 @@
 
     .content {
         margin-left: 0 !important;
-        padding-top: 80px;
-        box-sizing: border-box;
+        padding-top: 60px;
     }
 
     #sidebarToggle {
@@ -401,11 +401,18 @@
     }
 
     .sales-summary {
-        flex-direction: column;
+        flex-direction: column; /* stack vertically */
+        margin-bottom: 20px;    /* space below summary to prevent overlap */
+        padding: 10px;          /* slightly smaller padding */
     }
 
     .sales-summary > div {
-        width: 100%;
+        width: 100%;            /* take full width */
+        margin: 5px 0;          /* space between stacked boxes */
+    }
+
+    .sales-summary h3 {
+        font-size: 14px;        /* smaller heading */
     }
 
     body {
@@ -414,10 +421,6 @@
 
     .section {
       width: 100%;
-    }
-
-    .sales-summary h3 {
-        font-size: 14px;
     }
 
     #total-collection-daily,
