@@ -14,6 +14,21 @@ function toggleSidebar(){
   document.querySelector(".sidebar").classList.toggle("open");
 }
 
+const sidebar = document.querySelector(".sidebar");
+const overlay = document.getElementById("overlay");
+const toggleBtn = document.getElementById("sidebarToggle");
+
+toggleBtn.addEventListener("click", () => {
+  sidebar.classList.toggle("open");
+  overlay.classList.toggle("show");
+});
+
+// Close sidebar when clicking outside
+overlay.addEventListener("click", () => {
+  sidebar.classList.remove("open");
+  overlay.classList.remove("show");
+});
+
 function animateNumber(elementId, targetValue, duration = 1000) {
     const element = document.getElementById(elementId);
     const startValue = 0;
