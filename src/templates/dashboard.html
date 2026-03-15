@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard</title>
-  <link rel="stylesheet" href="/static/css/dashboard.css">
+  <link rel="stylesheet" href="../static/css/dashboard.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -160,7 +160,7 @@
         <button id="nextBtn" onclick="nextPage()">Next</button>
       </div>
     </div>
-</div>
+  </div>
   <!-- Vendor Expense Modal -->
   <div id="vendorExpenseModal" class="modal">
     <div class="modal-content">
@@ -193,6 +193,7 @@
       </div>
     </div>
   </div>
+</div>
 
 <script>
   function getTodayDate(time = "00:00:00") {
@@ -448,10 +449,10 @@ let totalPages = 1;
 // for vendor management
 function loadVendorExpenses(page = 1){
   currentPage = page;
-  fetch('/order/vendor-expenses?page=${currentPage}&page_size=${pageSize}`')
+  fetch(`/order/vendor-expenses?page=${currentPage}&page_size=${pageSize}`)
     .then(response => response.json())
     .then(data => {
-
+      totalPages = data.total_pages;
       const tableBody = document.querySelector('#vendorExpenseTable tbody');
       tableBody.innerHTML='';
 
