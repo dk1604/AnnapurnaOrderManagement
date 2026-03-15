@@ -330,9 +330,9 @@ function loadVendorExpenses(page = 1){
         }
       });
       totalVendorBalance = totalVendorExpense - totalVendorPaid;
-      document.getElementById('vendor-expense-total').textContent = `₹${totalVendorExpense.toFixed(2)}`;
-      document.getElementById('vendor-expense-paid').textContent = `₹${totalVendorPaid.toFixed(2)}`;
-      document.getElementById('vendor-expense-balance').textContent=`₹${totalVendorBalance.toFixed(2)}`;
+      document.getElementById('vendor-expense-total').textContent = `₹${data.total_expense.toFixed(2)}`;
+      document.getElementById('vendor-expense-paid').textContent = `₹${data.total_paid.toFixed(2)}`;
+      document.getElementById('vendor-expense-balance').textContent=`₹${data.total_balance.toFixed(2)}`;
 
       // Update pagination display
       document.getElementById("pageNumber").innerText = `Page ${data.page} of ${data.total_pages}`;
