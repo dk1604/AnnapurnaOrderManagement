@@ -1,4 +1,4 @@
-  function getTodayDate(time = "00:00:00") {
+function getTodayDate(time = "00:00:00") {
     const today = new Date();
     const yyyy = today.getFullYear();
     let mm = today.getMonth() + 1; // Months are zero-based
@@ -251,10 +251,10 @@ let totalPages = 1;
 // for vendor management
 function loadVendorExpenses(page = 1){
   currentPage = page;
-  fetch('/order/vendor-expenses?page=${currentPage}&page_size=${pageSize}`')
+  fetch(`/order/vendor-expenses?page=${currentPage}&page_size=${pageSize}`)
     .then(response => response.json())
     .then(data => {
-
+      totalPages = data.total_pages;
       const tableBody = document.querySelector('#vendorExpenseTable tbody');
       tableBody.innerHTML='';
 
