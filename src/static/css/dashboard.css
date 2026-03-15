@@ -99,7 +99,8 @@
 
     .sales-summary > div {
       flex: 1 1 200px;
-      min-height: 100px;
+      min-width: 100px;
+      height: 100px;
       padding: 15px;
       margin: 0 10px;
       background-color: #ecf0f1;
@@ -411,13 +412,14 @@
 
     .sales-summary {
         flex-direction: column;
+        gap: 10px;
         margin-bottom: 20px;
         padding: 10px;
     }
 
     .sales-summary > div {
         width: 100%;
-        min-height: auto;
+        height: auto;
         margin: 5px 0;
         padding: 15px;
     }
@@ -425,7 +427,7 @@
     .sales-summary h3 {
         font-size: 14px;
     }
-    
+
     .sales-summary p {
         font-size: 18px;        /* keep numbers visible, smaller than desktop */
     }
