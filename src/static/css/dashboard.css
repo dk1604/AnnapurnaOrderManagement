@@ -410,32 +410,32 @@
         display: block;
     }
 
-    /*.sales-summary {
+    .sales-summary {
         flex-direction: column;
         gap: 8px;
         margin-bottom: 0 10px 15px;
-        margin: 0 10px 15px 0; *//* top:0, right:10px, bottom:15px, left:0 *//*
+        margin: 0 10px 15px 0; /* top:0, right:10px, bottom:15px, left:0 */
         padding: 10px;
         width: auto;
         padding: 0;
-    }
+    } 
 
-    .sales-summary > div {
+    /*.sales-summary > div {
         width: 100%;
         height: auto;
         padding: 12px;
         margin: 0;
         box-sizing: border-box;
         align-items: flex-start;
-    }
+    }*/
 
     .sales-summary h3 {
         font-size: 14px;
     }
 
     .sales-summary p {
-        font-size: 16px;        *//* keep numbers visible, smaller than desktop *//*
-    }*/
+        font-size: 16px;
+    }
 
     body {
       overflow-x: hidden;
