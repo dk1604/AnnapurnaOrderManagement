@@ -93,7 +93,7 @@
       margin-bottom: 20px;
       padding: 10px 15px;
       border-radius: 8px;
-      /*height: 100px;*/
+      height: 100px;
       gap: 10px;
       width: 100%;
     }
@@ -378,6 +378,8 @@
     .content {
         margin-left: 0 !important;
         padding-top: 60px;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 
     #sidebarToggle {
