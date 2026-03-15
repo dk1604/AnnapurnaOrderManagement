@@ -1,203 +1,445 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard</title>
-  <link rel="stylesheet" href="../static/css/dashboard.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
-<div class="container">
-  <!-- Left Sidebar -->
-  <div id="sidebarToggle" class="sidebar-toggle">☰</div>
-  <div class="sidebar">
-    <h2>Admin Panel</h2>
-    <ul class="nav">
-      <li><a href="#" onclick="showSection('daily_sales')">Daily Sales Report</a></li>
-      <li><a href="#" onclick="showSection('custom_sales')">Custom Sales Report</a></li>
-      <li><a href="#" onclick="showSection('menu')">Menu</a></li>
-      <li><a href="#" onclick="showSection('vendor_expense')">Vendor Expense Report</a></li>
-    </ul>
-  </div>
+<style>
+    /* General Styles */
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f6f9;
+      color: #333;
+      box-sizing: border-box;
+    }
 
-  <!-- Right Content Area -->
-  <div class="content">
-    <!-- Default to Daily Sales -->
-    <div id="daily_sales" class="section">
-      <h2>Today's Report</h2>
-      <div class="sales-summary">
-        <div>
-          <!-- <h3>Total Collection</h3>-->
-          <p id="total-collection-daily">₹0.00</p>
-        </div>
-        <div>
-          <h3>Total Orders</h3>
-          <p id="total-orders-daily">0</p>
-        </div>
-        <div>
-          <h3>Cash</h3>
-          <p id="cash-collection-daily">₹0.00</p>
-        </div>
-        <div>
-          <h3>Online</h3>
-          <p id="online-collection-daily">₹0.00</p>
-        </div>
-      </div>
-      <button onclick="loadDailySales()">Today's Report</button>
-      <table id="dailySalesTable">
-        <thead>
-        <tr>
-          <th>Cart Price</th>
-          <th>Payment Mode</th>
-          <th>User Phone</th>
-          <th>Order ID</th>
-          <th>Order Date</th>
-        </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
+    /* Container (Sidebar and Content) */
+    .container {
+      display: flex;
+      min-height: 100vh;
+      transition: margin-left 0.3s ease;
+      flex-direction: row;
+    }
 
-    <!-- custom sales report -->
-    <div id="custom_sales" class="section">
-      <h2>Today's Report</h2>
-      <div class="sales-summary">
-        <div>
-          <!-- <h3>Total Collection</h3>-->
-          <p id="total-collection-custom">₹0.00</p>
-        </div>
+    /* Sidebar Styles */
+    .sidebar {
+      width: 250px; /* Reduced width for the collapsed sidebar */
+      background-color: #2C3E50;
+      color: white;
+      padding: 20px;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
 
-        <div>
-          <h3>Total Orders</h3>
-          <p id="total-orders-custom">0</p>
-        </div>
-        <div>
-          <h3>Cash</h3>
-          <p id="cash-collection-custom">₹0.00</p>
-        </div>
-        <div>
-          <h3>Online</h3>
-          <p id="online-collection-custom">₹0.00</p>
-        </div>
-      </div>
-      <div class="date-range-container">
-        <div class="input-group">
-          <label for="startDate">Start Date & Time:</label>
-          <input type="datetime-local" id="startDate" name="startDate">
-        </div>
-        <div class="input-group">
-          <label for="endDate">End Date & Time:</label>
-          <input type="datetime-local" id="endDate" name="endDate">
-        </div>
-      </div>
-      <button onclick="loadCustomSales()">Get Report</button>
-      <table id="customSalesTable">
-        <thead>
-        <tr>
-          <th>Cart Price</th>
-          <th>Payment Mode</th>
-          <th>User Phone</th>
-          <th>Order Date</th>
-        </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 24px;
+      font-weight: 600;
+      color: #ecf0f1;
+    }
 
-    <!-- menu -->
-    <div id="menu" class="section">
-      <h2>Menu</h2>
-      <table id="menuTable">
-        <thead>
-        <tr>
-<!--          <th>Id</th>-->
-          <th>Item</th>
-          <th>Description</th>
-          <th>Category</th>
-          <th>Price</th>
-        </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
+    .nav {
+      list-style: none;
+      padding: 0;
+    }
 
-    <!-- vendor expense report -->
-    <div id="vendor_expense" class="section">
-      <div class="section-header">
-        <h2>Vendor Expense Report</h2>
-        <button class="add-expense-btn" onclick="openVendorExpenseModal()">+ Add Expense</button>
-      </div>
-      <div class="sales-summary">
-        <div>
-          <h3>Expense</h3>
-          <p id="vendor-expense-total">₹0.00</p>
-        </div>
-        <div>
-          <h3>Paid</h3>
-          <p id="vendor-expense-paid">0</p>
-        </div>
-        <div>
-          <h3>Balance</h3>
-          <p id="vendor-expense-balance">₹0.00</p>
-        </div>
-      </div>
-      <table id="vendorExpenseTable">
-        <thead>
-          <tr>
-            <th>Vendor</th>
-            <th>Material</th>
-            <th>Amount</th>
-            <th>Mode</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-      <div class="pagination-controls">
-        <button id="prevBtn" onclick="prevPage()">Previous</button>
-        <span id="pageNumber">Page 1</span>
-        <button id="nextBtn" onclick="nextPage()">Next</button>
-      </div>
-    </div>
-  </div>
-  <!-- Vendor Expense Modal -->
-  <div id="vendorExpenseModal" class="modal">
-    <div class="modal-content">
-      <h3>Add Vendor Expense</h3>
+    .nav li {
+      margin: 15px 0;
+    }
 
-      <label>Vendor</label>
-      <input type="text" id="vendorName">
+    .nav li a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      display: block;
+      padding: 12px 20px;
+      border-radius: 4px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
 
-      <label>Material</label>
-      <input type="text" id="materialName">
+    .nav li a:hover {
+      background-color: #34495E;
+      transform: translateX(5px);
+    }
 
-      <label>Amount</label>
-      <input type="number" id="expenseAmount">
+    /* Active Link */
+    .nav li a.active {
+      background-color: #1ABC9C;
+      font-weight: bold;
+    }
 
-      <label>Payment Mode</label>
-      <select id="expensePaymentMode">
-        <option value="purchase_pay_cash">Purchase & Pay Cash</option>
-        <option value="purchase_pay_online">Purchase & Pay Online</option>
-        <option value="purchase_on_credit">Purchase on Credit</option>
-        <option value="vendor_payment_cash">Vendor Payment Cash</option>
-        <option value="vendor_payment_online">Vendor Payment Online</option>
-      </select>
+    /* Content Area Styles */
+    .content {
+      flex: 1;
+      padding: 30px;
+      margin-left: 270px;
+      transition: margin-left 0.3s ease;
+    }
 
-      <label>Date</label>
-      <input type="datetime-local" id="expenseDate">
+    h2 {
+      font-size: 28px;
+      font-weight: 600;
+      color: #2C3E50;
+      margin-bottom: 20px;
+    }
 
-      <div style="margin-top:15px;">
-        <button onclick="addVendorExpense()">Save</button>
-        <button onclick="closeVendorExpenseModal()">Cancel</button>
-      </div>
-    </div>
-  </div>
+    /* Sales Summary Box Styles */
+    .sales-summary {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      padding: 20px;
+      border-radius: 8px;
+      height: 100px;
+    }
 
-  <!-- Overlay for closing sidebar on mobile -->
-  <div id="overlay"></div>
-</div>
+    .sales-summary > div {
+      flex: 1;
+      padding: 15px;
+      margin: 0 10px;
+      background-color: #ecf0f1;
+      border-radius: 8px;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
 
-<script src="../static/js/dashboard.js"></script>
-</body>
-</html>
+    .sales-summary h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #34495E;
+      margin: 0;
+      text-align: left;
+    }
+
+    #total-collection-daily, #total-collection-custom {
+      font-size: 35px;
+      font-weight: 800;
+      color: #e74c3c;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      visibility: visible;
+    }
+
+    #total-orders-daily, #cash-collection-daily, #online-collection-daily, #total-orders-custom, #cash-collection-custom, #online-collection-custom,
+    #vendor-expense-total, #vendor-expense-paid, #vendor-expense-balance {
+      font-size: 20px;
+      font-weight: 800;
+      color: #e74c3c;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      visibility: visible;
+    }
+
+    /* Vendor Expense Add button */
+    .section-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:10px;
+    }
+
+    /* Vendor Expense Add button */
+    .add-expense-btn{
+      width:auto;
+      padding:8px 14px;
+      font-size:14px;
+      background-color:#1ABC9C;
+      border-radius:6px;
+    }
+
+    /* Vendor Expense Add button Form open */
+    .modal{
+      display:none;
+      position:fixed;
+      z-index:2000;
+      left:0;
+      top:0;
+      width:100%;
+      height:100%;
+      background:rgba(0,0,0,0.5);
+    }
+
+    .modal-content{
+      background:#fff;
+      width:350px;
+      padding:20px;
+      border-radius:8px;
+      margin:10% auto;
+    }
+
+    .modal-content input,
+    .modal-content select{
+      width:100%;
+      padding:8px;
+      margin-top:5px;
+      margin-bottom:10px;
+    }
+
+    /* Button Styles */
+    button {
+      padding: 12px 20px;
+      background-color: #1ABC9C;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-bottom: 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #16a085;
+      transform: translateY(-3px);
+    }
+
+    /* Table Styles */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: #ffffff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: #2C3E50; /* Dark Blue */
+      color: white;
+      font-weight: bold;
+    }
+
+    td {
+      color: #555;
+    }
+
+    #dailySalesTable tbody tr:nth-child(even), #customSalesTable tbody tr:nth-child(even), #menuTable tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    #dailySalesTable tbody tr:hover, #customSalesTable tbody tr:hover, #menuTable tbody tr:hover {
+      background-color: #ecf0f1;
+      cursor: pointer;
+    }
+
+    /* Currency Symbol Styling */
+    strong {
+      font-size: 1.2em;
+      color: #333;
+    }
+
+    .date-range-container {
+      display: flex;
+      flex-direction: row;
+      gap: 40px; /* Add space between the input groups */
+      align-items: center; /* Add space below the form */
+      margin-bottom: 30px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: row;
+      align-items: center; /* Vertically align the label and input */
+      gap: 10px; /* Space between label and input */
+    }
+
+    /* Label Styling */
+    .input-group label {
+      font-size: 16px;
+      font-weight: 600;
+      color: #34495E;
+      margin: 0;
+      width: auto; /* Set a fixed width for the label */
+    }
+
+  input[type="datetime-local"] {
+    font-size: 16px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 200px;
+    background-color: #ffffff;
+    transition: border-color 0.3s ease;
+  }
+
+  input[type="datetime-local"]:focus {
+    border-color: #1ABC9C; /* Highlight border color when focused */
+    outline: none;
+  }
+
+@media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
+
+    .sidebar {
+      width: 100%;
+      position: relative;
+      height: auto;
+      top: 0;
+      left: 0;
+      transform: translateX(0);
+    }
+
+    .content {
+      margin-left: 0;
+      padding: 15px;
+    }
+
+    .sidebar h2 {
+      font-size: 20px;
+    }
+
+    .content {
+      margin-left: 0;
+      padding: 15px;
+    }
+
+    .content h2 {
+      font-size: 18px;
+    }
+
+    .nav li a {
+      font-size: 14px;
+      padding: 10px;
+    }
+
+    .sales-summary {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sales-summary > div {
+      margin-bottom: 15px;
+    }
+
+    button {
+      font-size: 14px;
+    }
+
+    table {
+      font-size: 12px;
+    }
+  }
+
+/* Media Queries for Mobile (max-width: 480px) */
+@media (max-width: 480px) {
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -250px; /* hidden by default */
+        width: 250px;
+        height: 100%;
+        background: #2C3E50;
+        color: white;
+        z-index: 1000;
+        transition: left 0.3s ease;
+    }
+
+    .sidebar.open {
+        left: 0;
+    }
+
+    .content {
+        margin-left: 0 !important;
+        padding-top: 60px;
+    }
+
+    #sidebarToggle {
+        display: block;
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        font-size: 24px;
+        color: white;
+        background-color: #1ABC9C;
+        padding: 8px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        z-index: 1100;
+      }
+
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      z-index: 900;
+    }
+
+    #overlay.active {
+        display: block;
+    }
+
+    .sales-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .sales-summary > div {
+        padding: 12px;
+    }
+
+    .sales-summary h3 {
+        font-size: 14px;
+    }
+
+    #total-collection-daily,
+    #total-collection-custom {
+        font-size: 28px;
+    }
+
+    #total-orders-daily,
+    #cash-collection-daily,
+    #online-collection-daily,
+    #vendor-expense-total,
+    #vendor-expense-paid,
+    #vendor-expense-balance {
+        font-size: 16px;
+    }
+
+    .date-range-container {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    .input-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    input[type="datetime-local"] {
+        width: 100%;
+    }
+
+    table {
+        font-size: 12px;
+    }
+
+    .modal-content {
+        width: 90%;
+    }
+
+}
+</style>
