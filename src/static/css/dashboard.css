@@ -420,14 +420,14 @@
         padding: 0;
     } 
 
-    /*.sales-summary > div {
+    .sales-summary > div {
         width: 100%;
         height: auto;
-        padding: 12px;
+        padding: 10px;
         margin: 0;
         box-sizing: border-box;
         align-items: flex-start;
-    }*/
+    }
 
     .sales-summary h3 {
         font-size: 14px;
