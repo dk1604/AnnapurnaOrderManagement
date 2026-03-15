@@ -10,7 +10,11 @@ function getTodayDate(time = "00:00:00") {
     return `${yyyy}-${mm}-${dd} ${time}`;
   }
 
-  function animateNumber(elementId, targetValue, duration = 1000) {
+function toggleSidebar(){
+  document.querySelector(".sidebar").classList.toggle("open");
+}
+
+function animateNumber(elementId, targetValue, duration = 1000) {
     const element = document.getElementById(elementId);
     const startValue = 0;
     const startTime = performance.now();
@@ -35,14 +39,14 @@ function getTodayDate(time = "00:00:00") {
     requestAnimationFrame(updateNumber);
 }
 
-  function loadDailySales(){
+function loadDailySales(){
     const startDate = getTodayDate("00:00:00");
     const endDate = getTodayDate("23:59:59");
 
     loadSales(startDate, endDate, 'daily')
   }
 
-  function loadCustomSales(){
+function loadCustomSales(){
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
     var formattedStartDate = new Date(startDate).toISOString().slice(0, 19).replace('T', ' ');
@@ -56,8 +60,8 @@ function getTodayDate(time = "00:00:00") {
     loadSales(formattedStartDate, formattedEndDate, 'custom')
   }
 
-  //// Function to load daily sales
-  function loadSales(startDate, endDate, tableType) {
+//// Function to load daily sales
+function loadSales(startDate, endDate, tableType) {
     fetch(`/order/summary?start_date=${startDate}&end_date=${endDate}`)
         .then(response => response.json())
         .then(data => {
