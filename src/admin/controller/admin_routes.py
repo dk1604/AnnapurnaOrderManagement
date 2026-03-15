@@ -83,8 +83,8 @@ def configure_admin_routes(app):
     @app.route('/order/vendor-expenses', methods=['GET'])
     def get_vendor_expense():
         try:
-            page = int(request.args.get('page', 1))
-            page_size = int(request.args.get('page_size', 25))
+            page = request.args.get('page', default=1, type=int)
+            page_size = request.args.get('page_size', default=25, type=int)
             logging.error('inside get_vendor_expense api')
             response = get_vendor_expense_service(page, page_size)
             response['data'] = [item.model_dump() for item in response['data']]
