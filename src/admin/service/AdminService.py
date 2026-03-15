@@ -1,7 +1,5 @@
 import math
 
-from Demos.mmapfile_demo import offset
-
 from src.admin.repository.AdminRepo import save_repo, save_all_repo, save_vendor_expense_repo, get_vendor_expense_repo, \
     get_all_menu_repo
 
