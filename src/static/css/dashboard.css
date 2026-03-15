@@ -91,9 +91,8 @@
       justify-content: space-between;
       flex-wrap: nowrap;
       margin-bottom: 20px;
-      padding: 10px 15px;
       border-radius: 8px;
-      height: 100px;
+      /*height: 100px;*/
       gap: 10px;
       width: 100%;
     }
@@ -102,7 +101,6 @@
       flex: 1;
       min-width: 0px;
       height: 80px;
-      padding: 10px 12px;
       background-color: #ecf0f1;
       border-radius: 8px;
       display: flex;
@@ -378,8 +376,6 @@
     .content {
         margin-left: 0 !important;
         padding-top: 60px;
-        padding-left: 10px;
-        padding-right: 10px;
     }
 
     #sidebarToggle {
@@ -415,13 +411,11 @@
         flex-direction: column;
         gap: 8px;
         margin-bottom: 15px;
-        padding: 5px 10px;
     }
 
     .sales-summary > div {
         width: 100%;
         height: auto;
-        padding: 8px 10px;
     }
 
     .sales-summary h3 {
