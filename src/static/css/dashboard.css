@@ -91,19 +91,16 @@
       justify-content: space-between;
       flex-wrap: nowrap;
       margin-bottom: 20px;
-      /*border-radius: 8px;*/
+      border-radius: 8px;
       /*height: 100px;*/
-      /*gap: 10px;*/
-      padding: 10px 0;
+      gap: 10px;
       width: 100%;
     }
 
     .sales-summary > div {
       flex: 1;
-      margin: 0 5px;
       min-width: 0px;
       height: 80px;
-      padding: 10px;
       background-color: #ecf0f1;
       border-radius: 8px;
       display: flex;
@@ -111,10 +108,6 @@
       justify-content: center;
       align-items: flex-start;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.2);
-    }
-
-    .sales-summary > div:last-child {
-        margin-right: 0;   /* no extra space at end */
     }
 
     .sales-summary h3 {
@@ -418,15 +411,11 @@
         flex-direction: column;
         gap: 8px;
         margin-bottom: 15px;
-        padding: 0;
     }
 
     .sales-summary > div {
         width: 100%;
         height: auto;
-        padding: 12px;
-        box-sizing: border-box;
-        margin: 0; 
     }
 
     .sales-summary h3 {
