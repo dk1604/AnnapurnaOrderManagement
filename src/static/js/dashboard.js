@@ -30,6 +30,13 @@ overlay.addEventListener('click', () => {
   overlay.classList.remove('active');
 });
 
+document.querySelectorAll('.nav a').forEach(link => {
+  link.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('active');
+  });
+});
+
 function animateNumber(elementId, targetValue, duration = 1000) {
     const element = document.getElementById(elementId);
     const startValue = 0;
