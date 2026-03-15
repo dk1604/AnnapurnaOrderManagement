@@ -352,6 +352,7 @@
         height: 100%;
 
         background: #2C3E50;
+        background: #2C3E50;
         color: white;
         z-index: 1000;
 
@@ -399,11 +400,19 @@
     }
 
     .sales-summary {
-        grid-template-columns: 1fr;
+        flex-direction: column;
     }
 
     .sales-summary > div {
-        padding: 12px;
+        width: 100%;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+    
+    .section {
+      width: 100%;
     }
 
     .sales-summary h3 {
@@ -440,7 +449,10 @@
     }
 
     table {
-        font-size: 12px;
+      width: 100%;
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
     }
 
     .modal-content {
